@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Car Group {{ carGroup.gid }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <header>
+        <h2 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
+        <h3 class="text-center mb-2 display-6 text-primary fw-bold text-shadow">{{ 'entity.car_group.name'|trans}}: {{ carGroup.gid }}</h3>
+    </header>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <section class="mb-5">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </section>
+        </div>
+        <div class="col">
+            Pocet aut: 30
+            Oskenovanych: 29
+        </div>
+        <table>
+            <tr><td>Auto 1</td></tr>
+        </table>
+
+    </div>
+</div>
+{% endblock %}

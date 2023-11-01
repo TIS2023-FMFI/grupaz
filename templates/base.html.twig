@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.11.2/css/flag-icons.min.css" integrity="sha512-ZQKxM5Z+PmOVa/VmISvHcqlUgzPejY92+I+sur69qiB7Vd+dAaDNMwy7AnRr6HcFbYY4so1FFPBgugE5s2jm7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        {% block stylesheets %}
+        {% endblock %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>        {% block javascripts %}
+        {% endblock %}
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-sm bg-body-tertiary">
+        <div class="container">
+            <a class="navbar-brand" href={{ path('app_index_no_locale') }}>CEVALogistics</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">{{ 'main.logout'|trans }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href={{ path('app_login') }}>{{ 'main.login'|trans }}</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if app.locale == "en" %}
+                                <span class="fi fi-gb"></span>
+                            {% else %}
+                                <span class="fi fi-{{ app.locale }}"></span>
+                            {% endif %}
+                            {{ 'main.language'|trans }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for locale in app_locales|split('|') %}
+                                {% set routeParams = app.request.attributes.get('_route_params')|merge({_locale: locale}) %}
+                                <li>
+                                    <a class="dropdown-item" href={{ path(app.request.attributes.get('_route'), routeParams)}}>
+                                        {% if locale == "en" %}
+                                            <span class="fi fi-gb"></span>
+                                        {% else %}
+                                            <span class="fi fi-{{ locale }}"></span>
+                                        {% endif %}
+                                        {{ locale|upper }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+        {% block body %}{% endblock %}
+    </body>
+</html>
