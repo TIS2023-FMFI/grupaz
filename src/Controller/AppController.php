@@ -16,10 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class AppController extends AbstractController
 {
     #[Route('/', name: 'app_index_no_locale')]
-    public function indexNoLocale(): Response
+    public function indexNoLocale(Request $request): Response
     {
         //choose language
-//        return new Response("Ahoj");
         return $this->render('app/index_no_locale.html.twig', [
         ]);
     }
@@ -31,10 +30,10 @@ class AppController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
-            if ($carGroup != null)
-                return $this->redirectToRoute('app_car_group_view', [
-                    'id' => $carGroup->getId(),
-                ]);
+
+            return $this->redirectToRoute('app_car_group_view', [
+                'id' => $carGroup->getId(),
+            ]);
         }
         return $this->render('app/index.html.twig', [
             'form' => $form,

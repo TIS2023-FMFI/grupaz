@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FilterCarGroupType extends AbstractType
 {
@@ -21,6 +22,7 @@ class FilterCarGroupType extends AbstractType
         $builder
             ->add('gid', null, [
                 'label' => 'entity.carGroup.gid',
+                'constraints' => [new NotBlank(),],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',

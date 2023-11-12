@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.locale }}">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -39,10 +39,15 @@
                             {{ 'main.language'|trans }}
                         </a>
                         <ul class="dropdown-menu">
+                            {% if app.request.attributes.get('_route') == 'app_index_no_locale' %}
+                                {% set goToRoute = 'app_index' %}
+                            {% else %}
+                                {% set goToRoute = app.request.attributes.get('_route') %}
+                            {% endif %}
                             {% for locale in app_locales|split('|') %}
                                 {% set routeParams = app.request.attributes.get('_route_params')|merge({_locale: locale}) %}
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'), routeParams)}}">
+                                    <a class="dropdown-item" href="{{ path(goToRoute, routeParams)}}">
                                         {% if locale == "en" %}
                                             <span class="fi fi-gb"></span>
                                         {% else %}
