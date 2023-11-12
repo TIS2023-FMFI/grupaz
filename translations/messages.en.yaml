@@ -10,15 +10,19 @@ main:
   dashboard: Dashboard
   logout: Logout
   login: Login
+  password: Password
+crud:
+  edit: Edit
+  detail: Detail
 entity:
   car:
     name: Car
     cars: Cars
-    replaced_car: Replaced car
+    replacedCar: Replaced car
     vis: VIS
     note: Note
     status: Status
-  car_group:
+  carGroup:
     name: Car group
     gid: Group ID
     front_license_plate: Front License Plate

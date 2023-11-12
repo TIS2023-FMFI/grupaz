@@ -23,7 +23,9 @@ class CarGroupCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index','entity.car_group.name')
+            ->setPageTitle('index','entity.carGroup.name')
+            ->setPageTitle('edit', 'entity.carGroup.name')
+            ->setPageTitle('detail','entity.carGroup.name')
             ->setSearchFields(['gid'])
             ->setDefaultSort(['exportTime' => 'DESC', 'gid' => 'DESC',])
             // the max number of entities to display per page
@@ -49,21 +51,21 @@ class CarGroupCrudController extends AbstractCrudController
             IdField::new('id')
                 ->onlyOnDetail(),
             TextField::new('gid')
-                ->setLabel('entity.car_group.gid'),
+                ->setLabel('entity.carGroup.gid'),
             AssociationField::new('cars') //TO DO - change field
                 ->setLabel('entity.car.cars'),
             TextField::new('frontLicensePlate')
-                ->setLabel('entity.car_group.front_license_plate'),
+                ->setLabel('entity.carGroup.front_license_plate'),
             TextField::new('backLicensePlate')
-                ->setLabel('entity.car_group.back_license_plate'),
+                ->setLabel('entity.carGroup.back_license_plate'),
             TextField::new('destination')
                 -> onlyOnDetail()
-                ->setLabel('entity.car_group.destination'),
+                ->setLabel('entity.carGroup.destination'),
             DateTimeField::new('importTime')
                 ->onlyOnDetail()
-                ->setLabel('entity.car_group.import_time'),
+                ->setLabel('entity.carGroup.import_time'),
             DateTimeField::new('exportTime')
-                ->setLabel('entity.car_group.export_time'),
+                ->setLabel('entity.carGroup.export_time'),
             //status
 
 

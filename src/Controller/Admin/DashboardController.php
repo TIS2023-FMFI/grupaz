@@ -22,6 +22,10 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('Admin')
+            ->setLocales([
+                'en' => 'English',
+                'sk' => 'Slovensky'
+            ])
             ;
     }
 
@@ -30,7 +34,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('main.homepage', 'fa fa-home', 'app_index_no_locale');
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
-        yield MenuItem::linkToCrud('entity.car_group.name', 'fas fa-list', CarGroup::class);
+        yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class);
         yield MenuItem::linkToLogout('main.logout', 'fa fa-exit');
 
 

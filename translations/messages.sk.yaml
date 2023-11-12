@@ -10,11 +10,15 @@ main:
   dashboard: Hlavný panel
   logout: Odhlásenie
   login: Prihlásenie
+  password: Heslo
+crud:
+  edit: Upraviť
+  detail: Detail
 entity:
   car:
     name: Auto
     cars: Autá
-    replacedCar: Náhradné vozidlo
+    replaced_car: Náhradné vozidlo
     vis: VIS
     note: Poznámka
     status: Status

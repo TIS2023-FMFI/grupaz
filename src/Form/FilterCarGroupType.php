@@ -20,7 +20,7 @@ class FilterCarGroupType extends AbstractType
     {
         $builder
             ->add('gid', null, [
-                'label' => 'entity.car_group.gid',
+                'label' => 'entity.carGroup.gid',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',

@@ -20,6 +20,8 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
+                target_path_parameter: go_to
+                #default_target_path: app_index_no_locale
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
             remember_me:

@@ -9,21 +9,21 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/login', name: 'app_login')]
+    #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $email = $authenticationUtils->getLastUsername();
         return $this->render('login/index.html.twig', [
-            'last_username' => $lastUsername,
+            'email' => $email,
             'error'         => $error,
             ]);
     }
 
-    #[Route('/{_locale<%app.supported_locales%>}/logout', name: 'app_logout', methods: ['GET'])]
+    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
     public function logout(): never
     {
         // controller can be blank: it will never be called!

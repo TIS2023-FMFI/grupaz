@@ -22,6 +22,8 @@ class CarCrudController extends AbstractCrudController
     {
         return $crud
             ->setPageTitle('index','entity.car.cars')
+            ->setPageTitle('edit', 'entity.car.name')
+            ->setPageTitle('detail','entity.car.name')
             ->setSearchFields(['vis'])
             ->setDefaultSort(['id' => 'ASC'])
             // the max number of entities to display per page
@@ -47,13 +49,14 @@ class CarCrudController extends AbstractCrudController
             TextField::new('vis')
                 ->setLabel('entity.car.vis'),
             AssociationField::new('carGroup')
-                ->setLabel('entity.car_group.name'),
+                ->setLabel('entity.carGroup.name'),
             TextEditorField::new('note')
                 ->hideOnIndex()
                 ->setLabel('entity.car.note'),
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
             //status
+
 
         ];
     }

@@ -19,6 +19,7 @@ class AppController extends AbstractController
     public function indexNoLocale(): Response
     {
         //choose language
+//        return new Response("Ahoj");
         return $this->render('app/index_no_locale.html.twig', [
         ]);
     }
@@ -38,20 +39,20 @@ class AppController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    #[Route('/{_locale<%app.supported_locales%>}/group-{id}', name: 'app_car_group_view')]
-    public function view(CarGroup $carGroup, Request $request, ManagerRegistry $managerRegistry): Response
-    {
-        $form = $this->createForm(CarGroupType::class, $carGroup);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $managerRegistry->getManager();
-            $manager->flush();
-        }
-
-        return $this->render('app/car_group/view.html.twig', [
-            'form' => $form,
-            'carGroup' => $carGroup,
-        ]);
-    }
+//
+//    #[Route('/{_locale<%app.supported_locales%>}/group-{id}', name: 'app_car_group_view')]
+//    public function view(CarGroup $carGroup, Request $request, ManagerRegistry $managerRegistry): Response
+//    {
+//        $form = $this->createForm(CarGroupType::class, $carGroup);
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $manager = $managerRegistry->getManager();
+//            $manager->flush();
+//        }
+//
+//        return $this->render('app/car_group/view.html.twig', [
+//            'form' => $form,
+//            'carGroup' => $carGroup,
+//        ]);
+//    }
 }
