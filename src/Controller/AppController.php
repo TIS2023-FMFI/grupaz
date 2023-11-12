@@ -31,9 +31,10 @@ class AppController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
-            return $this->redirectToRoute('app_car_group_view', [
-                'id' => $carGroup->getId(),
-            ]);
+            if ($carGroup != null)
+                return $this->redirectToRoute('app_car_group_view', [
+                    'id' => $carGroup->getId(),
+                ]);
         }
         return $this->render('app/index.html.twig', [
             'form' => $form,
