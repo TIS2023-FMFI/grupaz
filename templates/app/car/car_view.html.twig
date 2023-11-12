@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cars in Group {{ carGroup.gid }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <header>
+        <h2 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h2>
+        <h3 class="text-center mb-2 display-6 text-primary fw-bold text-shadow">{{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }}
+            <br>{{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }}
+            <br>{{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}</h3>
+    </header>
+    <hr>
+    <div class="row">
+        <section class="mb-5">
+            <table>
+                <tr>
+                    <th>{{ 'entity.car.status'|trans}}</th>
+                    <th>{{ 'entity.car.vis'|trans}}</th>
+                    <th>{{ 'entity.car.note'|trans}}</th>
+                    <th>{{ 'entity.car.replaced_car'|trans}}</th>
+                </tr>
+                {% set cars = carGroup.cars %}
+                {% for car in cars %}
+                    {{ $table }}
+                    <tr>
+                        {% if car.status == 0 %}
+                            <td>{{ 'entity.car.bad'|trans}}</td>
+                        {% else %}
+                            <td>{{ 'entity.car.ok'|trans}}</td>
+                        {% endif %}
+                        <td>{{ car.vis }}</td>
+                        <td>{{ car.note }}</td>
+                        <td>{{ car.replacedCar }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+    </div>
+</div>
+{% endblock %}

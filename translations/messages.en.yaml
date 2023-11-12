@@ -1,6 +1,7 @@
 title:
   worker_form: Enter required information
   choose_language: Choose Your Language
+  scan_form: Scan VIS numbers
 form:
   submit: Submit
 form_help:
@@ -16,9 +17,11 @@ crud:
   detail: Detail
 entity:
   car:
+    ok: ✔
+    bad: ✘
     name: Car
     cars: Cars
-    replacedCar: Replaced car
+    replaced_car: Replaced car
     vis: VIS
     note: Note
     status: Status
