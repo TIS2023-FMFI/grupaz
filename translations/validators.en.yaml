@@ -1,0 +1,2 @@
+car_group:
+  invalid_gid: Car group %gid% does not exist!

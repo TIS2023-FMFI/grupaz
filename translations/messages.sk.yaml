@@ -1,0 +1,33 @@
+title:
+  worker_form: Vyplňte požadované informácie
+  choose_language: Vyberte si jazyk
+form:
+  submit: Odoslať
+form_help:
+main:
+  homepage: Domov
+  language: Jazyk
+  dashboard: Hlavný panel
+  logout: Odhlásenie
+  login: Prihlásenie
+  password: Heslo
+crud:
+  edit: Upraviť
+  detail: Detail
+entity:
+  car:
+    name: Auto
+    cars: Autá
+    replaced_car: Náhradné vozidlo
+    vis: VIS
+    note: Poznámka
+    status: Status
+  carGroup:
+    name: Grupáž
+    gid: Id grupáže
+    front_license_plate: EČV kamióna
+    back_license_plate: EČV prívesu
+    destination: Destinácia
+    import_time: Čas nahratia
+    export_time: Čas exportu
+

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AppController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="container">
+    <header>
+        <h2 class="text-center mb-5 display-4 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
+    </header>
+    <hr>
+    <div class="row">
+        <section class="mb-5">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </section>
+    </div>
+</div>
+{% endblock %}

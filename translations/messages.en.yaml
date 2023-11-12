@@ -1,0 +1,32 @@
+title:
+  worker_form: Enter required information
+  choose_language: Choose Your Language
+form:
+  submit: Submit
+form_help:
+main:
+  homepage: Home
+  language: Language
+  dashboard: Dashboard
+  logout: Logout
+  login: Login
+  password: Password
+crud:
+  edit: Edit
+  detail: Detail
+entity:
+  car:
+    name: Car
+    cars: Cars
+    replacedCar: Replaced car
+    vis: VIS
+    note: Note
+    status: Status
+  carGroup:
+    name: Car group
+    gid: Group ID
+    front_license_plate: Front License Plate
+    back_license_plate: Back License Plate
+    destination: Destination
+    import_time: Import time
+    export_time: Export time
