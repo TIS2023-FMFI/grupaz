@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(name:'app_car_')]
 class CarController extends AbstractController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/group-{id}', name: 'view')]
+    #[Route('/{_locale<%app.supported_locales%>}/group-{id}/car', name: 'view')]
     public function view(CarGroup $carGroup, Request $request, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(CarGroupType::class, $carGroup);
