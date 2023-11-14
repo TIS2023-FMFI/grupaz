@@ -22,7 +22,7 @@
                 </tr>
                 {% set cars = carGroup.cars %}
                 {% for car in cars %}
-                    {{ $table }}
+{#                    {{ $table }}#}
                     <tr>
                         {% if car.status == 0 %}
                             <td>{{ 'entity.car.bad'|trans}}</td>

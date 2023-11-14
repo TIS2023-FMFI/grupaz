@@ -24,9 +24,9 @@ class CarGroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $managerRegistry->getManager();
             $manager->flush();
-//            return $this->redirectToRoute('app_car_view', [
-//                'id' => $carGroup->getId(),
-//            ]);
+            return $this->redirectToRoute('app_car_view', [
+                'id' => $carGroup->getId(),
+            ]);
         }
 
         return $this->render('app/car_group/view.html.twig', [
