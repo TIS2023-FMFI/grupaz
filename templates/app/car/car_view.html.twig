@@ -21,8 +21,9 @@
                     <th>{{ 'entity.car.replaced_car'|trans}}</th>
                 </tr>
                 {% set cars = carGroup.cars %}
+{#                {% set table = tableExtend(cars) %}#}
+{#                {{ table }}#}
                 {% for car in cars %}
-{#                    {{ $table }}#}
                     <tr>
                         {% if car.status == 0 %}
                             <td>{{ 'entity.car.bad'|trans}}</td>
