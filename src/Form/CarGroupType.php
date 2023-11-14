@@ -16,11 +16,11 @@ class CarGroupType extends AbstractType
         $builder
             ->add('frontLicensePlate', null, [
                 'label' => 'entity.carGroup.front_license_plate',
-//                'constraints' => [new NotBlank(),],
+                'constraints' => [new NotBlank(),],
             ])
             ->add('backLicensePlate', null, [
                 'label' => 'entity.carGroup.back_license_plate',
-//                'constraints' => [new NotBlank(),],
+                'constraints' => [new NotBlank(),],
                 //'help' => 'form_help.car.front_license_plate'
             ])
             ->add('submit', SubmitType::class, [
