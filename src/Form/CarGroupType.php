@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CarGroupType extends AbstractType
 {
@@ -15,9 +16,11 @@ class CarGroupType extends AbstractType
         $builder
             ->add('frontLicensePlate', null, [
                 'label' => 'entity.carGroup.front_license_plate',
+                'constraints' => [new NotBlank(),],
             ])
             ->add('backLicensePlate', null, [
                 'label' => 'entity.carGroup.back_license_plate',
+                'constraints' => [new NotBlank(),],
                 //'help' => 'form_help.car.front_license_plate'
             ])
             ->add('submit', SubmitType::class, [
