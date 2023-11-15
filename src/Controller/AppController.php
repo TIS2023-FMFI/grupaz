@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AppController extends AbstractController
 {
     #[Route('/', name: 'app_index_no_locale')]
-    public function indexNoLocale(Request $request): Response
+    public function indexNoLocale(): Response
     {
         //choose language
         return $this->render('app/index_no_locale.html.twig', [

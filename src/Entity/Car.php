@@ -29,6 +29,9 @@ class Car
     #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $replacedCar = null;
 
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $isDamaged = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,5 +100,17 @@ class Car
     public function __toString(): string
     {
         return $this->vis;
+    }
+
+    public function getIsDamaged(): ?int
+    {
+        return $this->isDamaged;
+    }
+
+    public function setIsDamaged(int $isDamaged): static
+    {
+        $this->isDamaged = $isDamaged;
+
+        return $this;
     }
 }
