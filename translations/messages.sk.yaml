@@ -33,4 +33,5 @@ entity:
     destination: Destinácia
     import_time: Čas nahratia
     export_time: Čas exportu
-
+  user:
+    forgot_password: Zabudli ste svoje heslo?

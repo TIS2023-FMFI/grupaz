@@ -1,2 +1,8 @@
 car_group:
   invalid_gid: Grupáž %gid% neexistuje!
+password:
+  enter: Prosím zadajte heslo
+  limit: Tvoje heslo má mať aspoň 5 znakov
+  match: Obe zadané heslá musia byť rovnaké
+email:
+  enter: Prosím zadajte email

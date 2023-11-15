@@ -33,3 +33,5 @@ entity:
     destination: Destination
     import_time: Import time
     export_time: Export time
+  user:
+    forgot_password: Did you forgot your password?
