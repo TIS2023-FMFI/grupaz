@@ -33,10 +33,10 @@ class ChangePasswordFormType extends AbstractType
                             'max' => 256,
                         ]),
                     ],
-                    'label' => 'New password',
+                    'label' => 'entity.user.new_password',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => 'entity.user.repeat_password',
                 ],
                 'invalid_message' => 'password.match',
                 // Instead of being set onto the object directly,

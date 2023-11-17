@@ -35,3 +35,13 @@ entity:
     export_time: Čas exportu
   user:
     forgot_password: Zabudli ste svoje heslo?
+    new_password: Nové helo
+    repeat_password: Zopakuj heslo
+    reset_request: Tvoja požiadavka na vyresetovanie hesla
+    reset_password: Obnovenie hesla
+    enter_email: Zadaj svoj email a my ti pošleme link na zmenu hesla.
+    send_email: Poslať email na zmenu hesla
+    email_sent: Email na zresetovanie hesla poslaný
+    message_after_sending: Ak existuje účet s daným emailom, tak sme Vám poslali mail, ktorý obsahuje link, ktorý môžete použíť na zmenenie hesla. Tento link expiruje do
+    check_spam: Ak Vám nepríde email skontrolujte si spam alebo
+    try_again: skúste znova

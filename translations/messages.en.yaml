@@ -35,3 +35,14 @@ entity:
     export_time: Export time
   user:
     forgot_password: Did you forgot your password?
+    new_password: New password
+    repeat_password: Repeat password
+    reset_request: Your password reset request
+    reset_password: Reset your password
+    enter_email: Enter your email address, and we will send you a link to reset your password.
+    send_email: Send password reset email
+    email_sent: Password Reset Email Sent
+    message_after_sending: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+      This link will expire in
+    check_spam: If you don't receive an email please check your spam folder or
+    try_again: try again
