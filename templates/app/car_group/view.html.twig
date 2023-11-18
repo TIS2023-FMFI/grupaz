@@ -11,9 +11,7 @@
     <hr>
     <div class="row">
         <section class="mb-5">
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
+            {% include '_reusables/form.html.twig' %}
         </section>
     </div>
 </div>

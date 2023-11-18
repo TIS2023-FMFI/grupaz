@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'main.login'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <form action="{{ path('app_login') }}" method="post">
+        <form action="{{ path('app_login') }}" method="post" novalidate>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
@@ -35,6 +35,9 @@
                 </label>
             </div>
             #}
+            <div class="mb-3">
+                <a href="{{ path('app_forgot_password_request') }}">{{ 'entity.user.forgot_password'|trans }}</a>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary" type="submit">
                     {{ 'main.login'|trans }}

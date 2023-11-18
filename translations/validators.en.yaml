@@ -1,2 +1,8 @@
 car_group:
   invalid_gid: Car group %gid% does not exist!
+password:
+  enter: Please enter a password
+  limit: Your password should be at least 5 characters
+  match: The password fields must match.
+email:
+  enter: Please enter your email
