@@ -9,7 +9,7 @@
         {% endfor %}
         <h1>{{ 'entity.user.reset_password'|trans }}</h1>
 
-        {{ form_start(requestForm) }}
+        {{ form_start(requestForm, {'attr': {'novalidate': 'novalidate'}}) }}
             {{ form_row(requestForm.email) }}
             <div>
                 <small>
