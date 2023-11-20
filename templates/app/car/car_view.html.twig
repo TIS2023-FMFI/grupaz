@@ -13,29 +13,46 @@
     <hr>
     <div class="row">
         <section class="mb-5">
-            <table>
-                <tr>
-                    <th>{{ 'entity.car.status'|trans}}</th>
-                    <th>{{ 'entity.car.vis'|trans}}</th>
-                    <th>{{ 'entity.car.note'|trans}}</th>
-                    <th>{{ 'entity.car.replaced_car'|trans}}</th>
-                </tr>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr class="table-primary">
+                        <th scope="col">#</th>
+                        <th scope="col">{{ 'entity.car.status'|trans}}</th>
+                        <th scope="col">{{ 'entity.car.vis'|trans}}</th>
+                        <th scope="col">{{ 'entity.car.note'|trans}}</th>
+                        <th scope="col">{{ 'entity.car.replaced_car'|trans}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
                 {% set cars = carGroup.cars %}
-{#                {% set table = tableExtend(cars) %}#}
-{#                {{ table }}#}
+                {% set count = 0 %}
                 {% for car in cars %}
-                    <tr>
-                        {% if car.status == 0 %}
-                            <td>{{ 'entity.car.bad'|trans}}</td>
-                        {% else %}
-                            <td>{{ 'entity.car.ok'|trans}}</td>
-                        {% endif %}
+                    {% set count = count + 1 %}
+                    {% if car.status == 0 %}
+                        <tr  class="table-danger">
+                    {% else %}
+                        <tr  class="table-success">
+                    {% endif %}
+                        <th scope="row">{{count}}</th>
+                    {% if car.status == 0 %}
+                        <td>{{ 'entity.car.bad'|trans}}</td>
+                    {% else %}
+                        <td>{{ 'entity.car.ok'|trans}}</td>
+                    {% endif %}
                         <td>{{ car.vis }}</td>
                         <td>{{ car.note }}</td>
                         <td>{{ car.replacedCar }}</td>
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
+        </section>
+    </div>
+    <div class="row">
+        <section class="mb-5">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
         </section>
     </div>
 </div>

@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Car;
 use App\Entity\CarGroup;
 use App\Form\CarGroupType;
 use App\Form\FilterCarGroupType;
+use App\Form\ScanCarFormType;
 use App\Repository\CarGroupRepository;
 use App\Service\Import;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,17 +19,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class CarController extends AbstractController
 {
     #[Route('/{_locale<%app.supported_locales%>}/group-{id}/car', name: 'view')]
-    public function view(CarGroup $carGroup, Request $request, ManagerRegistry $managerRegistry): Response
+    public function view(CarGroup $carGroup, Car $car, Request $request, ManagerRegistry $managerRegistry): Response
     {
-        $form = $this->createForm(CarGroupType::class, $carGroup);
+        $form = $this->createForm(ScanCarFormType::class);
         $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 //            $manager = $managerRegistry->getManager();
 //            $manager->flush();
-//            return $this->redirectToRoute('app_cars_view', [
-//                'id' => $carGroup->getId(),
-//            ]);
-//        }
+            $car ->setStatus(1);
+        }
 
         return $this->render('app/car/car_view.html.twig', [
             'form' => $form,
