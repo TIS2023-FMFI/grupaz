@@ -2,12 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\CarGroup;
-use App\Form\DataTransformer\CarGroupToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ScanCarFormType extends AbstractType
@@ -17,7 +15,10 @@ class ScanCarFormType extends AbstractType
         $builder
             ->add('vis', null, [
                 'label' => 'entity.car.vis',
-                'constraints' => [new NotBlank(),],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(8)
+                    ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',

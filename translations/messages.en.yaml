@@ -4,6 +4,7 @@ title:
   scan_form: Scan VIS numbers
 form:
   submit: Submit
+  check: Check
 form_help:
 main:
   homepage: Home
