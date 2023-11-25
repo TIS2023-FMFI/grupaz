@@ -35,6 +35,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
         yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class);
+        yield MenuItem::linkToRoute('main.upload', null, 'app_upload_handle');
         yield MenuItem::linkToLogout('main.logout', 'fa fa-exit');
 
 
