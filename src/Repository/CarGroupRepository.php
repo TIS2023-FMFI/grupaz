@@ -27,7 +27,6 @@ class CarGroupRepository extends ServiceEntityRepository
             ->andWhere('c.gid = :gid')
             ->setParameter('gid', $gid)
             ->getQuery()->getOneOrNullResult();
-
     }
 
 //    /**

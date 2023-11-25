@@ -36,13 +36,25 @@ class CarController extends AbstractController
             $loaded = $carManager->loadCar($carGroup, $vis, $managerRegistry);
             if (!$loaded) {
                 $carManager->unloadCars($carGroup, $managerRegistry);
+                $this->addFlash(
+                    'warning',
+                    'Scanned wrong car.'
+                );
                 return $this->redirectToRoute('app_index');
             }
         }
         if ($endForm->isSubmitted()) {
             if ($carManager->allIsLoaded($carGroup)) {
+                $this->addFlash(
+                    'success',
+                    'All cars have been loaded.'
+                );
                 return $this->redirectToRoute('app_index');
             }
+            $this->addFlash(
+                'danger',
+                'After check, wrong cars for group id.'
+            );
             $carManager->unloadCars($carGroup, $managerRegistry);
             return $this->redirectToRoute('app_index');
         }
