@@ -13,6 +13,13 @@
         <h2 class="text-center mb-5 display-4 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
     </header>
     <hr>
+    {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <div class="row">
         <section class="mb-5">
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}

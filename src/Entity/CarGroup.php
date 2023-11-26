@@ -17,7 +17,7 @@ class CarGroup
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 3)]
+    #[ORM\Column(length: 3, unique: true)]
     #[Assert\NotBlank()]
     #[Assert\Length(max: 3)]
     private ?string $gid = null;

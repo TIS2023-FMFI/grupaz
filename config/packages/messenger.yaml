@@ -14,11 +14,18 @@ framework:
                     multiplier: 2
             failed: 'doctrine://default?queue_name=failed'
             sync: 'sync://'
+            upload_car:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%?queue_name=upload_car'
+                retry_strategy:
+                    max_retries: 2
+                    delay: 300000 #5 minutes
+                    multiplier: 3
 
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: sync
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
+            App\Message\UploadCar: upload_car
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async

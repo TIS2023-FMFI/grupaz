@@ -18,7 +18,7 @@ class AppController extends AbstractController
     #[Route('/', name: 'app_index_no_locale')]
     public function indexNoLocale(): Response
     {
-        dump(get_declared_classes());
+//        dump(get_declared_classes());
         //choose language
         return $this->render('app/index_no_locale.html.twig', [
         ]);
