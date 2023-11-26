@@ -8,7 +8,9 @@
         {% block stylesheets %}
 
         {% endblock %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>        {% block javascripts %}
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {% block javascripts %}
         {% endblock %}
     </head>
     <body>
@@ -19,21 +21,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin') }}">{{ 'main.dashboard'|trans }}</a>
-                    </li>
-                    {% endif %}
-                    {% if app.user %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_logout') }}">{{ 'main.logout'|trans }}</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">{{ 'main.login'|trans }}</a>
-                        </li>
-                    {% endif %}
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {% if app.locale == "en" %}
@@ -65,9 +53,32 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('admin') }}">{{ 'main.dashboard'|trans }}</a>
+                        </li>
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link" href="{{ path('app_logout') }}">{{ 'main.logout'|trans }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">{{ 'main.login'|trans }}</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>
+    <div class="container">
+        {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
+            {% for message in messages %}
+                <div class="flash-{{ label }} alert alert-{{ label }}">
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block body %}{% endblock %}
+    </div>
     </body>
 </html>

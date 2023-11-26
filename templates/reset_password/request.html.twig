@@ -3,23 +3,19 @@
 {% block title %}{{ 'entity.user.reset_password'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="container">
-        {% for flash_error in app.flashes('reset_password_error') %}
-            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-        {% endfor %}
-        <h1>{{ 'entity.user.reset_password'|trans }}</h1>
-
-        {{ form_start(requestForm, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_row(requestForm.email) }}
-            <div>
-                <small>
-                    {{ 'entity.user.enter_email'|trans }}
-                </small>
-            </div>
-            <div>
-                <button class="btn btn-primary">{{ 'entity.user.send_email'|trans }}</button>
-            </div>
-
-        {{ form_end(requestForm) }}
+{% for flash_error in app.flashes('reset_password_error') %}
+    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+{% endfor %}
+<h1>{{ 'entity.user.reset_password'|trans }}</h1>
+<div>
+    <p>
+        {{ 'entity.user.enter_email'|trans }}
+    </p>
+</div>
+{{ form_start(requestForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_row(requestForm.email) }}
+    <div>
+        <button class="btn btn-primary">{{ 'entity.user.send_email'|trans }}</button>
     </div>
+{{ form_end(requestForm) }}
 {% endblock %}
