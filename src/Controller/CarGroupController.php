@@ -22,8 +22,8 @@ class CarGroupController extends AbstractController
         $form = $this->createForm(CarGroupType::class, $carGroup);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $managerRegistry->getManager();
-            $manager->flush();
+            $carGroup->setStatus(2);
+            $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_view', [
                 'id' => $carGroup->getId(),
             ]);
