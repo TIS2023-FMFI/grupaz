@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Car;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,28 +34,18 @@ class CarRepository extends ServiceEntityRepository
             ->setParameter('vis', $vis)
             ->getQuery()->getOneOrNullResult();
     }
-//    /**
-//     * @return Car[] Returns an array of Car objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Car
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByFormData(DateTimeInterface $start, DateTimeInterface $end): array
+    {
+        return $this->createQueryBuilder('car')
+            ->select('car_group, car')
+            ->leftJoin('car.carGroup', 'car_group')
+            ->andWhere('car_group.exportTime >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('car_group.exportTime <= :end')
+            ->setParameter('end', $end)
+            ->orderBy('car_group.exportTime', 'DESC')
+            ->getQuery()->getResult();
+    }
+
 }

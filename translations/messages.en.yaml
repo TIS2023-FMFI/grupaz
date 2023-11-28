@@ -18,8 +18,6 @@ crud:
   detail: Detail
 entity:
   car:
-    ok: ✔
-    bad: ✘
     name: Car
     cars: Cars
     replaced_car: Replaced car
@@ -43,7 +41,19 @@ entity:
     enter_email: Enter your email address, and we will send you a link to reset your password.
     send_email: Send password reset email
     email_sent: Password Reset Email Sent
-    message_after_sending: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-      This link will expire in
-    check_spam: If you don't receive an email please check your spam folder or
-    try_again: try again
+    message_after_sending: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in %expiry%.
+    check_spam: If you don't receive an email please check your spam folder or <a href="%path%">try again</a>.
+export:
+  start: From
+  end: To
+  car:
+    no_data_in_interval: There are no data for export from %start% to %end%.
+import:
+  file:
+    upload: Uploading file
+    count_in_queue: In queue are waiting %filesInQueue% files.
+  car:
+    success: You have imported %importedCars% cars.
+    no_cars_in_file: There are no cars in given file.
+    wrong_file_keys: Column names are incorrectly set in given file.
+    count_in_queue: In queue are waiting %carsInQueue% cars.
