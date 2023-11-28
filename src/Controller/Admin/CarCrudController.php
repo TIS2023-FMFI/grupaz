@@ -36,7 +36,19 @@ class CarCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $exportAction = Action::new('export')
+            ->linkToRoute('app_export_car')
+            ->createAsGlobalAction()
+            ->setCssClass('btn btn-primary')
+        ;
+//        $importAction = Action::new('import')
+//            ->linkToRoute('app_import_car')
+//            ->createAsGlobalAction()
+//            ->setCssClass('btn btn-primary')
+//        ;
         return $actions
+//            ->add(Crud::PAGE_INDEX, $importAction)
+            ->add(Crud::PAGE_INDEX, $exportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ;
@@ -55,9 +67,7 @@ class CarCrudController extends AbstractCrudController
                 ->setLabel('entity.car.note'),
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
-            //status
-
-
+            //TODO status
         ];
     }
 

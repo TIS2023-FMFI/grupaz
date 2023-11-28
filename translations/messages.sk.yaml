@@ -49,7 +49,8 @@ export:
   car:
     no_data_in_interval: Žiadne dáta na export od %start% do %end%.
 import:
-  upload: Priložený súbor
+  file:
+    upload: Priložený súbor
   car:
     success: Naimportovali ste %importedCars% aút.
     no_cars_in_file: V danom súbore nie sú žiadne autá.

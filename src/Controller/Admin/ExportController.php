@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Controller\Admin;
+
+use App\Form\ExportType;
+use App\Repository\CarRepository;
+use App\Serializer\CarNormalizer;
+use App\Service\FileResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Translation\TranslatableMessage;
+
+#[Route('/admin/{_locale<%app.supported_locales%>}/export', name:'app_export_')]
+class ExportController extends AbstractController
+{
+    /**
+     * @throws ExceptionInterface
+     */
+    #[Route('/car',name: 'car')]
+    public function car(Request $request, CarRepository $carRepository): Response
+    {
+        $form = $this->createForm(ExportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $start = $form->get('start')->getData();
+            $end = $form->get('end')->getData();
+            $result = $carRepository->findByFormData($start, $end);
+            if (empty($result)) {
+                $this->addFlash(
+                    'warning',
+                    new TranslatableMessage('export.car.no_data_in_interval', [
+                        '%start%' => $start->format('Y-m-d'),
+                        '%end%' => $end->format('Y-m-d')
+                    ])
+                );
+                return $this->redirectToRoute('admin', ['routeName' => 'app_export_car']);
+            }
+            $serializer = new Serializer([new CarNormalizer()], [new CsvEncoder()]);
+            $content = $serializer->serialize($result, 'csv');
+            return FileResponse::get($content, sprintf('cars_%s_%s.csv', $start->format('Y-m-d'), $end->format('Y-m-d')),'text/csv');
+        }
+        return $this->render('admin/export.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+
+}
