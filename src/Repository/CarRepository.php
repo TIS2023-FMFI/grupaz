@@ -48,4 +48,24 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
+    public function findOneByVisInGroup(int $id, string $vis): ?Car
+    {
+        return $this->createQueryBuilder('car')
+            ->andWhere('car.vis = :vis')
+            ->setParameter('vis', $vis)
+            ->andWhere('car.carGroup = :id')
+            ->setParameter('id', $id)
+            ->getQuery()->getOneOrNullResult();
+    }
+
+    public function countAllLoaded(int $id): int
+    {
+        return $this->createQueryBuilder('car')
+            ->select('COUNT(car.vis)')
+            ->andWhere('car.carGroup = :id')
+            ->setParameter('id', $id)
+            ->andWhere('car.status = :status')
+            ->setParameter('status', 1)
+            ->getQuery()->getSingleScalarResult();
+    }
 }

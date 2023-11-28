@@ -24,13 +24,14 @@ class AppController extends AbstractController
     }
 
     #[Route('/{_locale<%app.supported_locales%>}/', name: 'app_index')]
-    public function index(Request $request): Response
+    public function index(Request $request, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(FilterCarGroupType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
-
+            $carGroup->setStatus(1);
+            $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_group_view', [
                 'id' => $carGroup->getId(),
             ]);

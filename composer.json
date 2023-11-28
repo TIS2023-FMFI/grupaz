@@ -6,15 +6,16 @@
     "require": {
         "php": ">=8.1",
         "ext-ctype": "*",
+        "ext-http": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "easycorp/easyadmin-bundle": "^4.8",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "phpoffice/phpspreadsheet": "^1.29",
+        "phpoffice/phpspreadsheet": "*",
         "phpstan/phpdoc-parser": "^1.24",
-        "symfony/apache-pack": "^1.0",
+        "symfony/apache-pack": "*",
         "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",
         "symfony/doctrine-messenger": "6.3.*",
@@ -44,8 +45,7 @@
         "symfonycasts/reset-password-bundle": "^1.18",
         "twig/extra-bundle": "^3.7",
         "twig/intl-extra": "^3.7",
-        "twig/twig": "^2.12|^3.0",
-      "ext-http": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
