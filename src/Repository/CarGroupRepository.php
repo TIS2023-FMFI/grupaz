@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CarGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,6 +22,9 @@ class CarGroupRepository extends ServiceEntityRepository
         parent::__construct($registry, CarGroup::class);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function findOneByGid(string $gid): ?CarGroup
     {
         return $this->createQueryBuilder('c')
@@ -29,28 +33,5 @@ class CarGroupRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-//    /**
-//     * @return CarGroup[] Returns an array of CarGroup objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?CarGroup
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

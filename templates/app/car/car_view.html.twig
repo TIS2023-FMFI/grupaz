@@ -3,64 +3,44 @@
 {% block title %}Cars in Group {{ carGroup.gid }}{% endblock %}
 
 {% block body %}
-<div class="container">
-    <header>
-        <h2 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h2>
-        <h3 class="text-center mb-2 display-6 text-primary fw-bold text-shadow">{{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }}
-            <br>{{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }}
-            <br>{{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}</h3>
-    </header>
-    <hr>
-    <div class="row">
-        <section class="mb-5">
-            {{ form_start(scanForm, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(scanForm) }}
-            {{ form_end(scanForm) }}
-        </section>
-    </div>
-    <div class="row">
-        <section class="mb-5">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr class="table-primary">
-                        <th scope="col">#</th>
-                        <th scope="col">{{ 'entity.car.status'|trans}}</th>
-                        <th scope="col">{{ 'entity.car.vis'|trans}}</th>
-                        <th scope="col">{{ 'entity.car.note'|trans}}</th>
-                        <th scope="col">{{ 'entity.car.replaced_car'|trans}}</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                {% set cars = carGroup.cars %}
-                {% set count = 0 %}
-                {% for car in cars %}
-                    {% set count = count + 1 %}
-                    {% if car.status == 0 %}
-                        <tr  class="table-danger">
-                    {% else %}
-                        <tr  class="table-success">
-                    {% endif %}
-                        <th scope="row">{{count}}</th>
-                    {% if car.status == 0 %}
-                        <td>{{ 'entity.car.bad'|trans}}</td>
-                    {% else %}
-                        <td>{{ 'entity.car.ok'|trans}}</td>
-                    {% endif %}
-                        <td>{{ car.vis }}</td>
-                        <td>{{ car.note }}</td>
-                        <td>{{ car.replacedCar }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </div>
-    <div class="row">
-        <section class="mb-5">
-            {{ form_start(endForm, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(endForm) }}
-            {{ form_end(endForm) }}
-        </section>
-    </div>
+<header>
+    <h2 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h2>
+    <h3 class="text-center mb-2 display-6 text-primary fw-bold text-shadow">{{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }}
+        <br>{{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }}
+        <br>{{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}</h3>
+</header>
+<hr>
+<div class="row">
+    <section class="mb-5">
+        {{ form_start(scanForm, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(scanForm) }}
+        {{ form_end(scanForm) }}
+    </section>
+</div>
+<div class="row">
+    <section class="mb-5">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">#</th>
+                    <th scope="col">{{ 'entity.car.status'|trans}}</th>
+                    <th scope="col">{{ 'entity.car.vis'|trans}}</th>
+                    <th scope="col">{{ 'entity.car.note'|trans}}</th>
+                    <th scope="col">{{ 'entity.car.replaced_car'|trans}}</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            {% for car in carGroup.cars %}
+                <tr class="table-{% if car.status == 0 %}danger{% else %}success{% endif %}">
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{% if car.status == 0 %}✘{% else %}✔{% endif %}</td>
+                    <td>{{ car.vis }}</td>
+                    <td>{{ car.note }}</td>
+                    <td>{{ car.replacedCar }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
 </div>
 {% endblock %}

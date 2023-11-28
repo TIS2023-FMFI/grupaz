@@ -44,7 +44,6 @@ class CarGroupCrudController extends AbstractCrudController
             ;
     }
 
-
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -66,9 +65,7 @@ class CarGroupCrudController extends AbstractCrudController
                 ->setLabel('entity.carGroup.import_time'),
             DateTimeField::new('exportTime')
                 ->setLabel('entity.carGroup.export_time'),
-            //status
-
-
+            //TODO status
         ];
     }
 }
