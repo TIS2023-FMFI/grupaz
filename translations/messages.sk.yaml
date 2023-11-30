@@ -1,5 +1,5 @@
 title:
-  worker_form: Vyplňte požadované informácie
+  worker_form: Vyplňte informácie
   choose_language: Vyberte si jazyk
   scan_form: Naskenujte čísla VIS
 form:
@@ -24,6 +24,8 @@ entity:
     vis: VIS
     note: Poznámka
     status: Status
+    wrong_car: Naskenovali ste zlé auto.
+    all_loaded: Všetky autá sú úspešne naskenované.
   carGroup:
     name: Grupáž
     gid: Id grupáže
@@ -32,6 +34,7 @@ entity:
     destination: Destinácia
     import_time: Čas nahratia
     export_time: Čas exportu
+    closed: Grupáž je už uzatvorená.
   user:
     forgot_password: Zabudli ste svoje heslo?
     new_password: Nové helo
