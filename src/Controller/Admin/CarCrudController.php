@@ -41,6 +41,11 @@ class CarCrudController extends AbstractCrudController
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
+        $deleteAction = Action::new('remove')
+            ->linkToRoute('app_delete_car')
+            ->createAsGlobalAction()
+            ->setCssClass('btn btn-primary')
+            ;
 //        $importAction = Action::new('import')
 //            ->linkToRoute('app_import_car')
 //            ->createAsGlobalAction()
@@ -48,6 +53,7 @@ class CarCrudController extends AbstractCrudController
 //        ;
         return $actions
 //            ->add(Crud::PAGE_INDEX, $importAction)
+            ->add(Crud::PAGE_INDEX, $deleteAction)
             ->add(Crud::PAGE_INDEX, $exportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
