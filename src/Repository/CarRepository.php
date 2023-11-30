@@ -48,6 +48,18 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
+    public function deleteByFormData(DateTimeInterface $startTime, DateTimeInterface $endTime)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete('car_group, car')
+            ->leftJoin('car.carGroup', 'car_group')
+            ->andWhere('c.exportTime >= :startTime')
+            ->setParameter('startTime', $startTime)
+            ->andWhere('c.exportTime <= :endTime')
+            ->setParameter('endTime', $endTime)
+            ->getQuery()->execute();
+    }
+
     public function findOneByVisInGroup(int $id, string $vis): ?Car
     {
         return $this->createQueryBuilder('car')
