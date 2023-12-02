@@ -69,6 +69,15 @@ class CarRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()->getOneOrNullResult();
     }
+    public function unloadAllCarInGroup(int $id): ?bool
+    {
+        return $this->createQueryBuilder('car')
+            ->update()
+            ->set('car.status', 0)
+            ->where('car.carGroup = :car_carGroup')
+            ->setParameter('car_carGroup', $id)
+            ->getQuery()->getOneOrNullResult();
+    }
 
     public function countAllLoaded(int $id): int
     {
