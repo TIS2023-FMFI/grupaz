@@ -26,6 +26,9 @@ entity:
     status: Status
     wrong_car: Naskenovali ste zlé auto.
     all_loaded: Všetky autá sú úspešne naskenované.
+    timeout_title: Nebola zachytená žiadna aktivita!
+    timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.
+    timeout_button: Chcem pokračovať.
   carGroup:
     name: Grupáž
     gid: Id grupáže
