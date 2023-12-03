@@ -4,18 +4,71 @@ namespace App\Controller\Admin;
 
 use App\Entity\Car;
 use App\Entity\CarGroup;
+use App\Repository\CarGroupRepository;
+use App\Repository\CarRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/admin', name: 'admin')]
+    private ServiceLocator $serviceLocator;
+    private CarGroupRepository $carGroupRepository;
+    private CarRepository $carRepository;
+
+    public function __construct(ServiceLocator $serviceLocator, CarGroupRepository $carGroupRepository, CarRepository $carRepository)
+    {
+        $this->serviceLocator = $serviceLocator;
+        $this->carGroupRepository = $carGroupRepository;
+        $this->carRepository = $carRepository;
+    }
+
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    #[Route('/admin/{_locale<%app.supported_locales%>}', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        $importCarTransport = $this->serviceLocator->get('messenger.transport.import_car');
+        if ($importCarTransport instanceof MessageCountAwareInterface) {
+            $carsInQueue = $importCarTransport->getMessageCount();
+        }
+
+        $importCarsTransport = $this->serviceLocator->get('messenger.transport.import_cars');
+        if ($importCarsTransport instanceof MessageCountAwareInterface) {
+            $filesInQueue = $importCarsTransport->getMessageCount();
+        }
+
+        return $this->render('admin/dashboard.html.twig', [
+            'carsInQueue' => $carsInQueue ?? null,
+            'filesInQueue' => $filesInQueue ?? null,
+            'toApproveNotifications' => $this->getToApproveNotifications(),
+            'workInProgressNotifications' => $this->getWorkInProgressNotifications(),
+        ]);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    #[Route('/admin/{_locale<%app.supported_locales%>}/notifications', name: 'admin_notifications')]
+    public function notifications(): Response
+    {
+        return $this->render('admin/_notification.html.twig', [
+            'toApproveNotifications' => $this->getToApproveNotifications(),
+            'workInProgressNotifications' => $this->getWorkInProgressNotifications(),
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -24,7 +77,7 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Admin')
             ->setLocales([
                 'en' => 'English',
-                'sk' => 'Slovensky'
+                'sk' => 'Slovenčina'
             ])
             ;
     }
@@ -35,10 +88,27 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
         yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class);
-        yield MenuItem::linkToRoute('main.upload', null, 'app_upload_handle');
         yield MenuItem::linkToLogout('main.logout', 'fa fa-exit');
+    }
+    private function getToApproveNotifications(): array
+    {
+        return $this->carGroupRepository->findToAdminApprove();
+    }
 
-
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    private function getWorkInProgressNotifications(): array
+    {
+        $notifications = [];
+        $groupsWorkInProgress = $this->carGroupRepository->findInProgress();
+        foreach ($groupsWorkInProgress as $groupWorkInProgress)
+        {
+            $countAll = $this->carRepository->countAll($groupWorkInProgress->getId());
+            $countAllLoaded = $this->carRepository->countAllLoaded($groupWorkInProgress->getId());
+            $notifications[] = [$groupWorkInProgress, $countAll, $countAllLoaded];
+        }
+        return $notifications;
     }
 }

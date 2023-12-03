@@ -32,6 +32,22 @@ class CarGroupRepository extends ServiceEntityRepository
             ->setParameter('gid', $gid)
             ->getQuery()->getOneOrNullResult();
     }
+    public function findToAdminApprove()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.status = :status')
+            ->setParameter('status', 3)
+            ->getQuery()->getResult();
+    }
+
+    public function findInProgress()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('(c.status = :openedGroup OR c.status = :startedScan)')
+            ->setParameter('openedGroup', 1)
+            ->setParameter('startedScan', 2)
+            ->getQuery()->getResult();
+    }
 
 
 }
