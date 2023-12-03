@@ -23,9 +23,9 @@ class CarController extends AbstractController
             $vis = $form->get('vis')->getData();
             $car = $carRepository->findOneByVisInGroup($carGroup->getId(), $vis);
 
-            if ($car === null){
+            if ($car === null) {
                 $this->addFlash('warning', 'entity.car.wrong_car');
-                $this->unloadCars($carGroup);
+                $carRepository->unloadAllCarInGroup($carGroup->getId());
                 $carGroup->setStatus(0);
                 $managerRegistry->getManager()->flush();
                 return $this->redirectToRoute('app_index');
@@ -35,7 +35,7 @@ class CarController extends AbstractController
             $managerRegistry->getManager()->flush();
 
             $count = $carRepository->countAllLoaded($carGroup->getId());
-            if ($count === $carGroup->getCars()->count()){
+            if ($count === $carGroup->getCars()->count()) {
                 $this->addFlash('success', 'entity.car.all_loaded');
                 $carGroup->setStatus(3);
                 $managerRegistry->getManager()->flush();
@@ -48,12 +48,4 @@ class CarController extends AbstractController
             'carGroup' => $carGroup,
         ]);
     }
-
-    public function unloadCars(CarGroup $carGroup): void
-    {
-        foreach ($carGroup->getCars() as $car){
-            $car->setStatus(0);
-        }
-    }
-
 }

@@ -23,15 +23,12 @@ entity:
     replaced_car: Náhradné vozidlo
     vis: VIS
     note: Poznámka
+    status: Status
     wrong_car: Naskenovali ste zlé auto.
     all_loaded: Všetky autá sú úspešne naskenované.
-    status:
-      scanned: Naskenované
-      free: Voľné
-    isDamaged:
-      name: Pokazené
-      damaged: áno
-      new: nie
+    timeout_title: Nebola zachytená žiadna aktivita!
+    timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.
+    timeout_button: Chcem pokračovať.
   carGroup:
     name: Grupáž
     gid: Id grupáže
@@ -41,12 +38,6 @@ entity:
     import_time: Čas nahratia
     export_time: Čas exportu
     closed: Grupáž je už uzatvorená.
-    status:
-      approved: Schválená
-      all_scanned: Naskenovaná
-      scanning: Skenovanie
-      start: Prihlásená
-      free: Voľná
   user:
     forgot_password: Zabudli ste svoje heslo?
     new_password: Nové helo
