@@ -32,9 +32,7 @@ class AppController extends AbstractController
             $carGroup = $form->get('gid')->getData();
             if ($carGroup->getStatus() >= 3){
                 $this->addFlash('warning', 'entity.carGroup.closed');
-                return $this->render('app/index.html.twig', [
-                    'form' => $form,
-                ]);
+                return $this->redirectToRoute('app_index');
             }
             $carGroup->setStatus(1);
             $managerRegistry->getManager()->flush();
