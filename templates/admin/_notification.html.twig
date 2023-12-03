@@ -1,0 +1,14 @@
+{% if toApproveNotifications is not empty %}
+    <div class="alert alert-info">
+        {% for notification in toApproveNotifications %}
+        <p>{{ notification.gid }}</p>
+    {% endfor %}
+    </div>
+{% endif %}
+{% if workInProgressNotifications is not empty %}
+    <div class="alert alert-info">
+    {% for notification in workInProgressNotifications %}
+        <p {% if loop.last %}class="mb-0" {% endif %}>{{ attribute(notification, 0).gid }}, loaded cars {{ attribute(notification, 2) }} / {{ attribute(notification, 1) }}</p>
+    {% endfor %}
+    </div>
+{% endif %}
