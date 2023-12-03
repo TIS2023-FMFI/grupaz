@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -38,7 +39,31 @@ class CarGroupCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
+        $exportAction = Action::new('export')
+            ->linkToRoute('app_export_car')
+            ->createAsGlobalAction()
+            ->setCssClass('btn btn-primary')
+        ;
+//        $importAction = Action::new('import')
+//            ->linkToRoute('app_import_car')
+//            ->createAsGlobalAction()
+//            ->setCssClass('btn btn-primary')
+//        ;
+        $deleteAction = Action::new('remove')
+            ->linkToRoute('app_delete_car')
+            ->createAsGlobalAction()
+            ->setCssClass('btn btn-primary')
+        ;
+
+//        $cimportAction = Action::new('aaimport')
+//            ->linkToRoute('app_import_car')
+//            ->setCssClass('btn btn-primary')
+//        ;
         return $actions
+//            ->add(Crud::PAGE_INDEX, $importAction)
+            ->add(Crud::PAGE_INDEX, $exportAction)
+            ->add(Crud::PAGE_INDEX, $deleteAction)
+//            ->add(Crud::PAGE_DETAIL, $cimportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ;
@@ -52,7 +77,8 @@ class CarGroupCrudController extends AbstractCrudController
             TextField::new('gid')
                 ->setLabel('entity.carGroup.gid'),
             AssociationField::new('cars') //TO DO - change field
-                ->setLabel('entity.car.cars'),
+                ->setLabel('entity.car.cars')
+                ->setTemplatePath('admin\showCarGroup.html.twig'),
             TextField::new('frontLicensePlate')
                 ->setLabel('entity.carGroup.front_license_plate'),
             TextField::new('backLicensePlate')
@@ -65,7 +91,14 @@ class CarGroupCrudController extends AbstractCrudController
                 ->setLabel('entity.carGroup.import_time'),
             DateTimeField::new('exportTime')
                 ->setLabel('entity.carGroup.export_time'),
-            //TODO status
+            ChoiceField::new('status')
+            ->setTranslatableChoices([
+                4 => ('entity.carGroup.status.approved'),
+                3 => ('entity.carGroup.status.all_scanned'),
+                2 => ('entity.carGroup.status.scanning'),
+                1 => ('entity.carGroup.status.start'),
+                0 => ('entity.carGroup.status.free'),
+            ])
         ];
     }
 }

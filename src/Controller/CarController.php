@@ -35,7 +35,6 @@ class CarController extends AbstractController
             $managerRegistry->getManager()->flush();
 
             $count = $carRepository->countAllLoaded($carGroup->getId());
-            dump($count);
             if ($count === $carGroup->getCars()->count()){
                 $this->addFlash('success', 'entity.car.all_loaded');
                 $carGroup->setStatus(3);

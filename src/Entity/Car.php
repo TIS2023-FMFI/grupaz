@@ -14,7 +14,7 @@ class Car
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10, unique: true)]
+    #[ORM\Column(length: 8, unique: true)]
     private ?string $vis = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
