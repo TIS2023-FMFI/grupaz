@@ -6,6 +6,7 @@ use App\Entity\Car;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -60,6 +61,9 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()->execute();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function findOneByVisInGroup(int $id, string $vis): ?Car
     {
         return $this->createQueryBuilder('car')
@@ -69,6 +73,10 @@ class CarRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @throws NonUniqueResultException
+     */
     public function unloadAllCarInGroup(int $id): ?bool
     {
         return $this->createQueryBuilder('car')
@@ -79,6 +87,10 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function countAllLoaded(int $id): int
     {
         return $this->createQueryBuilder('car')
@@ -87,6 +99,19 @@ class CarRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->andWhere('car.status = :status')
             ->setParameter('status', 1)
+            ->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countAll(int $id): int
+    {
+        return $this->createQueryBuilder('car')
+            ->select('COUNT(car.vis)')
+            ->andWhere('car.carGroup = :id')
+            ->setParameter('id', $id)
             ->getQuery()->getSingleScalarResult();
     }
 }
