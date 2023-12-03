@@ -17,6 +17,13 @@ class CarGroupController extends AbstractController
     #[Route('/{_locale<%app.supported_locales%>}/group-{id}', name: 'view')]
     public function view(CarGroup $carGroup, Request $request, ManagerRegistry $managerRegistry, CarRepository $carRepository): Response
     {
+        if ($carGroup->getStatus() != 1) {
+            if ($carGroup->getStatus() < 3){
+                $carGroup->setStatus(0);
+            }
+            $this->addFlash('danger', 'entity.carGroup.no_access');
+            return $this->redirectToRoute('app_index');
+        }
         $form = $this->createForm(CarGroupType::class, $carGroup);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -26,6 +26,7 @@ entity:
     status:
       scanned: Scanned
       free: Free
+      name: State
     isDamaged:
       name: damaged
       damaged: yes
@@ -44,6 +45,7 @@ entity:
     import_time: Import time
     export_time: Export time
     closed: This group is already closed.
+    no_access: Operation is not allowed!
     status:
       approved: Approved
       all_scanned: All scanned

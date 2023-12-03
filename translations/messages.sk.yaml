@@ -26,6 +26,7 @@ entity:
     status:
       scanned: Naskenované
       free: Voľné
+      name: Stav
     isDamaged:
       name: Pokazené
       damaged: áno
@@ -44,6 +45,7 @@ entity:
     import_time: Čas nahratia
     export_time: Čas exportu
     closed: Grupáž je už uzatvorená.
+    no_access: Táto operácia nie je dovolená!
     status:
       approved: Schválená
       all_scanned: Naskenovaná
