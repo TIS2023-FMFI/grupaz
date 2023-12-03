@@ -7,3 +7,5 @@ password:
 form:
   date_range:
     invalid: Daterange is invalid.
+  import:
+    invalid_document: Please upload a valid document

@@ -23,7 +23,13 @@ entity:
     replaced_car: Replaced car
     vis: VIS
     note: Note
-    status: Status
+    status:
+      scanned: Scanned
+      free: Free
+    isDamaged:
+      name: damaged
+      damaged: yes
+      new: no
     wrong_car: Scanned wrong car.
     all_loaded: All cars have been loaded.
     timeout_title: No activity was detected!
@@ -38,6 +44,12 @@ entity:
     import_time: Import time
     export_time: Export time
     closed: This group is already closed.
+    status:
+      approved: Approved
+      all_scanned: All scanned
+      scanning: Scanning
+      start: Logged in
+      free: Free
   user:
     forgot_password: Did you forgot your password?
     new_password: New password
