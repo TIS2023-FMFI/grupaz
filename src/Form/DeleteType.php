@@ -17,7 +17,7 @@ class DeleteType extends AbstractType
     {
         $builder
             ->add('start', DateType::class, [
-                'label' => 'export.start',
+                'label' => 'delete.start',
                 'input' => 'datetime_immutable',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
@@ -27,7 +27,7 @@ class DeleteType extends AbstractType
                 ],
             ])
             ->add('end', DateType::class, [
-                'label' => 'export.end',
+                'label' => 'delete.end',
                 'input' => 'datetime_immutable',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
@@ -40,6 +40,9 @@ class DeleteType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
+                'attr' => [
+                    'onsubmit' => 'return confirmDelete();',
+                ],
             ]);
     }
 

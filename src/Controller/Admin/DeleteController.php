@@ -25,7 +25,13 @@ class DeleteController extends AbstractController
     #[Route('/car',name: 'car')]
     public function car(Request $request, CarRepository $carRepository): Response
     {
-        $form = $this->createForm(DeleteType::class);
+        $form = $this->createForm(DeleteType::class, null, [
+            'action' => $this->generateUrl('app_delete_car'),
+            'method' => 'POST',
+            'attr' => [
+                'onsubmit' => 'return confirmDelete();',
+            ],
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $start = $form->get('start')->getData();
@@ -34,16 +40,21 @@ class DeleteController extends AbstractController
             if (empty($result)) {
                 $this->addFlash(
                     'warning',
-                    new TranslatableMessage('export.car.no_data_in_interval', [
+                    new TranslatableMessage('delete.car.no_data_in_interval', [
                         '%start%' => $start->format('Y-m-d'),
                         '%end%' => $end->format('Y-m-d')
                     ])
                 );
                 return $this->redirectToRoute('admin', ['routeName' => 'app_delete_car']);
             }
-            $serializer = new Serializer([new CarNormalizer()], [new CsvEncoder()]);
-            $content = $serializer->serialize($result, 'csv');
-            return FileResponse::get($content, sprintf('cars_%s_%s.csv', $start->format('Y-m-d'), $end->format('Y-m-d')),'text/csv');
+            $this->addFlash(
+                'success',
+                new TranslatableMessage('delete.confirmation', [
+                    '%start%' => $start->format('Y-m-d'),
+                    '%end%' => $end->format('Y-m-d')
+                ])
+            );
+            return $this->redirectToRoute('admin', ['routeName' => 'app_delete_car']);
         }
         return $this->render('admin/delete.html.twig', [
             'form' => $form,

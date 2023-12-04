@@ -48,6 +48,13 @@ export:
   end: To
   car:
     no_data_in_interval: There are no data for export from %start% to %end%.
+delete:
+  start: From
+  end: To
+  car:
+    no_data_in_interval: There are no data for deletion from %start% to %end%.
+  confirmation: Deletion confirmed
+  control: Are you sure you want to delete?
 import:
   file:
     upload: Uploading file

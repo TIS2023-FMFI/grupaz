@@ -48,6 +48,13 @@ export:
   end: Po dátum vrátane
   car:
     no_data_in_interval: Žiadne dáta na export od %start% do %end%.
+delete:
+  start: Od dátumu vrátane
+  end: Po dátum vrátane
+  car:
+    no_data_in_interval: Žiadne dáta na zmazanie od %start% do %end%.
+  confirmation: Zmazanie potvrdené
+  control: Naozaj chcete zmazať všetky grupáže?
 import:
   file:
     upload: Priložený súbor
