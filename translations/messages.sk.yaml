@@ -47,6 +47,7 @@ entity:
     closed: Grupáž je už uzatvorená.
     no_access: Táto operácia nie je dovolená!
     status:
+      name: Stav
       approved: Schválená
       all_scanned: Naskenovaná
       scanning: Skenovanie
