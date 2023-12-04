@@ -2,15 +2,64 @@
 
 {% block title %}Cars in Group {{ carGroup.gid }}{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const startActivity = 2000
+        const noActivityFromStart = 60000
+        const noButtonPressed = 20000
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        const startTimer = async () => {
+            await delay(startActivity);
+            const saveButton = document.getElementById("saveButton");
+            saveButton.addEventListener("click", relocate);
+            saveButton.addEventListener("close", relocate);
+            const myWindow = new bootstrap.Modal(document.getElementById("myWindow"), {
+                keyboard: false
+            });
+
+            await delay(noActivityFromStart-startActivity);
+            myWindow.show()
+
+            await delay(noButtonPressed);
+            window.location = "http://127.0.0.1:8000/";
+        };
+        function relocate() {
+            window.location = window.location.href;
+        }
+        startTimer()
+    </script>
+{% endblock %}
+
 {% block body %}
 <div class="container">
     <header>
-        <h2 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h2>
-        <h3 class="text-center mb-2 display-6 text-primary fw-bold text-shadow">{{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }}
-            <br>{{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }}
-            <br>{{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}</h3>
+        <h6 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h6>
+        <div style="text-align: center;">
+            {{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }} |
+            {{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }} |
+            {{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}
+        </div>
     </header>
     <hr>
+
+    <div class="modal fade" id="myWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">{{ 'entity.car.timeout_title'|trans}}</h5>
+                </div>
+                <div class="modal-body">
+                    {{ 'entity.car.timeout_text'|trans}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="saveButton" class="btn btn-primary">{{ 'entity.car.timeout_button'|trans}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <section class="mb-5">
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -24,7 +73,7 @@
                 <thead>
                 <tr class="table-primary">
                     <th scope="col">#</th>
-                    <th scope="col">{{ 'entity.car.status'|trans}}</th>
+                    <th scope="col">{{ 'entity.car.status.name'|trans}}</th>
                     <th scope="col">{{ 'entity.car.vis'|trans}}</th>
                     <th scope="col">{{ 'entity.car.note'|trans}}</th>
                     <th scope="col">{{ 'entity.car.replaced_car'|trans}}</th>

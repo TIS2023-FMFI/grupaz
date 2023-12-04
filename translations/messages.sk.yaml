@@ -1,5 +1,5 @@
 title:
-  worker_form: Vyplňte požadované informácie
+  worker_form: Vyplňte informácie
   choose_language: Vyberte si jazyk
   scan_form: Naskenujte čísla VIS
 form:
@@ -23,7 +23,19 @@ entity:
     replaced_car: Náhradné vozidlo
     vis: VIS
     note: Poznámka
-    status: Status
+    status:
+      scanned: Naskenované
+      free: Voľné
+      name: Stav
+    isDamaged:
+      name: Pokazené
+      damaged: áno
+      new: nie
+    wrong_car: Naskenovali ste zlé auto.
+    all_loaded: Všetky autá sú úspešne naskenované.
+    timeout_title: Nebola zachytená žiadna aktivita!
+    timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.
+    timeout_button: Chcem pokračovať.
   carGroup:
     name: Grupáž
     gid: Id grupáže
@@ -32,6 +44,15 @@ entity:
     destination: Destinácia
     import_time: Čas nahratia
     export_time: Čas exportu
+    closed: Grupáž je už uzatvorená.
+    no_access: Táto operácia nie je dovolená!
+    status:
+      name: Stav
+      approved: Schválená
+      all_scanned: Naskenovaná
+      scanning: Skenovanie
+      start: Prihlásená
+      free: Voľná
   user:
     forgot_password: Zabudli ste svoje heslo?
     new_password: Nové helo

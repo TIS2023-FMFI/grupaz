@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -36,25 +37,7 @@ class CarCrudController extends AbstractCrudController
     }
     public function configureActions(Actions $actions): Actions
     {
-        $exportAction = Action::new('export')
-            ->linkToRoute('app_export_car')
-            ->createAsGlobalAction()
-            ->setCssClass('btn btn-primary')
-        ;
-        $deleteAction = Action::new('remove')
-            ->linkToRoute('app_delete_car')
-            ->createAsGlobalAction()
-            ->setCssClass('btn btn-primary')
-            ;
-//        $importAction = Action::new('import')
-//            ->linkToRoute('app_import_car')
-//            ->createAsGlobalAction()
-//            ->setCssClass('btn btn-primary')
-//        ;
         return $actions
-//            ->add(Crud::PAGE_INDEX, $importAction)
-            ->add(Crud::PAGE_INDEX, $deleteAction)
-            ->add(Crud::PAGE_INDEX, $exportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ;
@@ -73,7 +56,18 @@ class CarCrudController extends AbstractCrudController
                 ->setLabel('entity.car.note'),
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
-            //TODO status
+            ChoiceField::new('status')
+                ->setLabel('entity.car.status.name')
+                ->setTranslatableChoices([
+                    1 => ('entity.car.status.scanned'),
+                    0 => ('entity.car.status.free'),
+                ]),
+            ChoiceField::new('isDamaged')
+                ->setLabel('entity.car.isDamaged.name')
+                ->setTranslatableChoices([
+                    1 => ('entity.car.isDamaged.damaged'),
+                    0 => ('entity.car.isDamaged.new'),
+                ]),
         ];
     }
 

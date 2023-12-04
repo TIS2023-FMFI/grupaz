@@ -7,3 +7,5 @@ password:
 form:
   date_range:
     invalid: Zadaný dátumový interval je nesprávny.
+  import:
+    invalid_document: Prosim importujte validný dokument

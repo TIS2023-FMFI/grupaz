@@ -1,5 +1,5 @@
 title:
-  worker_form: Enter required information
+  worker_form: Enter information
   choose_language: Choose Your Language
   scan_form: Scan VIS numbers
 form:
@@ -23,7 +23,19 @@ entity:
     replaced_car: Replaced car
     vis: VIS
     note: Note
-    status: Status
+    status:
+      scanned: Scanned
+      free: Free
+      name: State
+    isDamaged:
+      name: damaged
+      damaged: yes
+      new: no
+    wrong_car: Scanned wrong car.
+    all_loaded: All cars have been loaded.
+    timeout_title: No activity was detected!
+    timeout_text: If you want to continue in scanning, please push button bellow.
+    timeout_button: I want continue.
   carGroup:
     name: Car group
     gid: Group ID
@@ -32,6 +44,15 @@ entity:
     destination: Destination
     import_time: Import time
     export_time: Export time
+    closed: This group is already closed.
+    no_access: Operation is not allowed!
+    status:
+      name: State
+      approved: Approved
+      all_scanned: All scanned
+      scanning: Scanning
+      start: Logged in
+      free: Free
   user:
     forgot_password: Did you forgot your password?
     new_password: New password

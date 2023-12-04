@@ -30,6 +30,10 @@ class AppController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
+            if ($carGroup->getStatus() >= 3){
+                $this->addFlash('warning', 'entity.carGroup.closed');
+                return $this->redirectToRoute('app_index');
+            }
             $carGroup->setStatus(1);
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_group_view', [

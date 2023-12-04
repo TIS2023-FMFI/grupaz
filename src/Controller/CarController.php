@@ -17,15 +17,22 @@ class CarController extends AbstractController
     #[Route('/{_locale<%app.supported_locales%>}/group-{id}/car', name: 'view')]
     public function view(CarGroup $carGroup, CarRepository $carRepository, Request $request, ManagerRegistry $managerRegistry): Response
     {
+        if ($carGroup->getStatus() != 2){
+            if ($carGroup->getStatus() < 3){
+                $carGroup->setStatus(0);
+            }
+            $this->addFlash('danger', 'entity.carGroup.no_access');
+            return $this->redirectToRoute('app_index');
+        }
         $form = $this->createForm(ScanCarFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $vis = $form->get('vis')->getData();
             $car = $carRepository->findOneByVisInGroup($carGroup->getId(), $vis);
 
-            if ($car === null){
-                $this->addFlash('warning', 'Scanned wrong car.');
-                $this->unloadCars($carGroup);
+            if ($car === null) {
+                $this->addFlash('warning', 'entity.car.wrong_car');
+                $carRepository->unloadAllCarInGroup($carGroup->getId());
                 $carGroup->setStatus(0);
                 $managerRegistry->getManager()->flush();
                 return $this->redirectToRoute('app_index');
@@ -35,9 +42,8 @@ class CarController extends AbstractController
             $managerRegistry->getManager()->flush();
 
             $count = $carRepository->countAllLoaded($carGroup->getId());
-            dump($count);
-            if ($count === $carGroup->getCars()->count()){
-                $this->addFlash('success', 'All cars have been loaded.');
+            if ($count === $carGroup->getCars()->count()) {
+                $this->addFlash('success', 'entity.car.all_loaded');
                 $carGroup->setStatus(3);
                 $managerRegistry->getManager()->flush();
                 return $this->redirectToRoute('app_index');
@@ -49,12 +55,4 @@ class CarController extends AbstractController
             'carGroup' => $carGroup,
         ]);
     }
-
-    public function unloadCars(CarGroup $carGroup): void
-    {
-        foreach ($carGroup->getCars() as $car){
-            $car->setStatus(0);
-        }
-    }
-
 }
