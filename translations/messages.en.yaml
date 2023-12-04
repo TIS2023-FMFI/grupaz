@@ -47,6 +47,7 @@ entity:
     closed: This group is already closed.
     no_access: Operation is not allowed!
     status:
+      name: State
       approved: Approved
       all_scanned: All scanned
       scanning: Scanning

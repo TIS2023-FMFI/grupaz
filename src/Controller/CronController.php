@@ -20,7 +20,7 @@ class CronController extends AbstractController
     #[Route('/process', name: 'process')]
     public function process(KernelInterface $kernel): Response
     {
-        //runs every 10 minutes, and runs whole 10 minutes
+        //runs every 30 seconds, and runs whole 30 seconds
         $time = 10 * 3 - 5;
 
         //order of receivers is important; higher they are sooner they are processed
@@ -49,7 +49,6 @@ class CronController extends AbstractController
         //$command = $application->find('messenger:consume');
         //$commandTester = new CommandTester($command);
         //$commandTester->execute($arguments);
-        //order of receivers is important; higher they are sooner they are processed
 
         // You can use NullOutput() if you don't need the output
         $input = new ArrayInput(array_merge(['command' => 'messenger:consume'], $arguments));

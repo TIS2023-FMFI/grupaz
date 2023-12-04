@@ -57,6 +57,7 @@ class CarCrudController extends AbstractCrudController
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
             ChoiceField::new('status')
+                ->setLabel('entity.car.status.name')
                 ->setTranslatableChoices([
                     1 => ('entity.car.status.scanned'),
                     0 => ('entity.car.status.free'),
