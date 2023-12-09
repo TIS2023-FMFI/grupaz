@@ -34,7 +34,7 @@ entity:
     wrong_car: Scanned wrong car.
     all_loaded: All cars have been loaded.
     timeout_title: No activity was detected!
-    timeout_text: If you want to continue in scanning, please push button bellow.
+    timeout_text: If you want to continue in scanning, please push button below.
     timeout_button: I want continue.
   carGroup:
     name: Car group
@@ -47,6 +47,7 @@ entity:
     closed: This group is already closed.
     no_access: Operation is not allowed!
     status:
+      name: State
       approved: Approved
       all_scanned: All scanned
       scanning: Scanning

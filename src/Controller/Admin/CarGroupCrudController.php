@@ -92,13 +92,14 @@ class CarGroupCrudController extends AbstractCrudController
             DateTimeField::new('exportTime')
                 ->setLabel('entity.carGroup.export_time'),
             ChoiceField::new('status')
-            ->setTranslatableChoices([
-                4 => ('entity.carGroup.status.approved'),
-                3 => ('entity.carGroup.status.all_scanned'),
-                2 => ('entity.carGroup.status.scanning'),
-                1 => ('entity.carGroup.status.start'),
-                0 => ('entity.carGroup.status.free'),
-            ])
+                ->setLabel('entity.carGroup.status.name')
+                ->setTranslatableChoices([
+                    4 => ('entity.carGroup.status.approved'),
+                    3 => ('entity.carGroup.status.all_scanned'),
+                    2 => ('entity.carGroup.status.scanning'),
+                    1 => ('entity.carGroup.status.start'),
+                    0 => ('entity.carGroup.status.free'),
+                ])
         ];
     }
 }
