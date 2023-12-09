@@ -48,6 +48,8 @@ class CarController extends AbstractController
                 $managerRegistry->getManager()->flush();
                 return $this->redirectToRoute('app_index');
             }
+
+            return $this->redirectToRoute('app_car_view', ['id' => $carGroup->getId(),]);
         }
 
         return $this->render('app/car/car_view.html.twig', [
