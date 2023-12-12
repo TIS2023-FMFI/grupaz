@@ -43,14 +43,14 @@
         <hr>
 
         <div class="row">
-            <section class="mb-5">
+            <section class="mb-2">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
             </section>
         </div>
         <div class="row">
-            <section class="mb-5">
+            <section class="mb-2">
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered">
                         <thead>
@@ -64,9 +64,9 @@
                         </thead>
                         <tbody class="table-group-divider">
                         {% for car in carGroup.cars %}
-                            <tr class="table-{% if car.status == 0 %}danger{% else %}success{% endif %}">
+                            <tr class="table-{% if car.isDamaged == 1%}warning{% elseif car.status == 1 %}success{% else %}danger{% endif %}">
                                 <th scope="row">{{ loop.index }}</th>
-                                <td>{% if car.status == 0 %}✘{% else %}✔{% endif %}</td>
+                                <td>{% if car.isDamaged == 1 %}{% elseif car.status == 1 %}✔{% else %}✘{% endif %}</td>
                                 <td>{{ car.vis }}</td>
                                 <td>{{ car.note }}</td>
                                 <td>{{ car.replacedCar }}</td>

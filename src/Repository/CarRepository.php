@@ -88,8 +88,8 @@ class CarRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws NonUniqueResultException
      * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function countAllLoaded(int $id): int
     {
@@ -98,6 +98,21 @@ class CarRepository extends ServiceEntityRepository
             ->andWhere('car.carGroup = :id')
             ->setParameter('id', $id)
             ->andWhere('car.status = :status')
+            ->setParameter('status', 1)
+            ->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countAllDamaged(int $id): int
+    {
+        return $this->createQueryBuilder('car')
+            ->select('COUNT(car.vis)')
+            ->andWhere('car.carGroup = :id')
+            ->setParameter('id', $id)
+            ->andWhere('car.isDamaged = 1')
             ->setParameter('status', 1)
             ->getQuery()->getSingleScalarResult();
     }
