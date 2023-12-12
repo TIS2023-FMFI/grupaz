@@ -6,6 +6,7 @@ use App\Entity\CarGroup;
 use App\Form\CarGroupType;
 use App\Form\FilterCarGroupType;
 use App\Repository\CarGroupRepository;
+use App\Repository\CarRepository;
 use App\Service\Import;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +25,7 @@ class AppController extends AbstractController
     }
 
     #[Route('/{_locale<%app.supported_locales%>}/', name: 'app_index')]
-    public function index(Request $request, ManagerRegistry $managerRegistry): Response
+    public function index(Request $request, ManagerRegistry $managerRegistry, CarRepository $carRepository): Response
     {
         $form = $this->createForm(FilterCarGroupType::class);
         $form->handleRequest($request);
@@ -35,6 +36,7 @@ class AppController extends AbstractController
                 return $this->redirectToRoute('app_index');
             }
             $carGroup->setStatus(1);
+            $carRepository->unloadAllCarInGroup($carGroup->getId());
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_group_view', [
                 'id' => $carGroup->getId(),
