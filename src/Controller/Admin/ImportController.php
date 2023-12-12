@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Form\UploadType;
 use App\Service\FileUploader;
+use App\Service\Logger;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,12 @@ class ImportController extends AbstractController
     /**
      * @throws Exception
      */
+    private $Logger;
+
+    public function __construct(Logger $logger)
+    {
+        $this->Logger = $logger;
+    }
     #[Route('/car', name: 'car')]
     public function car(Request $request, FileUploader $fileUploader): Response
     {
@@ -27,6 +34,7 @@ class ImportController extends AbstractController
             try {
                 $importedCars = $fileUploader->upload($uploadedFile);
                 if (0 < $importedCars) {
+                    $this->Logger->writeLog('Vykonaný import', 'súboru:', $uploadedFile);
                     $this->addFlash(
                         'success',
                         new TranslatableMessage('import.car.success', [
@@ -48,7 +56,6 @@ class ImportController extends AbstractController
                 );
             }
         }
-
         return $this->render('admin/import.html.twig', [
             'form' => $form,
         ]);

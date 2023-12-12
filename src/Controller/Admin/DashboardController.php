@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class DashboardController extends AbstractDashboardController
 {
     private ServiceLocator $serviceLocator;
@@ -58,6 +59,27 @@ class DashboardController extends AbstractDashboardController
         ]);
     }
 
+    #[Route('/admin/download-log-file', name: 'admin_download_log_file')]
+    public function downloadLogFile(): Response
+    {
+        $logFilePath = $this->getParameter('kernel.project_dir') . '/var/log/dev.log';
+
+        if (!file_exists($logFilePath)) {
+            throw $this->createNotFoundException('Log file not found.');
+        }
+
+        // Read the content of the log file
+        $logContent = file_get_contents($logFilePath);
+
+        // Create a Response with the log content
+        $response = new Response($logContent);
+        $response->headers->set('Content-Type', 'text/plain');
+        $response->headers->set('Content-Disposition', 'attachment; filename="dev.log"');
+
+        return $response;
+    }
+
+
     /**
      * @throws NonUniqueResultException
      * @throws NoResultException
@@ -88,6 +110,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
         yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class);
+        yield MenuItem::linkToRoute('Log', 'fa fa-download', 'admin_download_log_file')
+            ->setLinkTarget('_blank');
         yield MenuItem::linkToLogout('main.logout', 'fa fa-exit');
     }
     private function getToApproveNotifications(): array
