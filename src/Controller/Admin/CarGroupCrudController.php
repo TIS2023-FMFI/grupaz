@@ -66,6 +66,8 @@ class CarGroupCrudController extends AbstractCrudController
 //            ->add(Crud::PAGE_DETAIL, $cimportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
     }
 
@@ -86,6 +88,9 @@ class CarGroupCrudController extends AbstractCrudController
             TextField::new('destination')
                 -> onlyOnDetail()
                 ->setLabel('entity.carGroup.destination'),
+            TextField::new('receiver')
+                -> onlyOnDetail()
+                ->setLabel('entity.carGroup.receiver'),
             DateTimeField::new('importTime')
                 ->onlyOnDetail()
                 ->setLabel('entity.carGroup.import_time'),
