@@ -13,6 +13,7 @@ main:
   logout: Logout
   login: Login
   password: Password
+  create: Create
 crud:
   edit: Edit
   detail: Detail
@@ -55,6 +56,11 @@ entity:
       start: Logged in
       free: Free
   user:
+    name: User
+    users: Users
+    register: Register
+    new: New user
+    roles: User roles
     forgot_password: Did you forgot your password?
     new_password: New password
     repeat_password: Repeat password
@@ -65,6 +71,7 @@ entity:
     email_sent: Password Reset Email Sent
     message_after_sending: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in %expiry%.
     check_spam: If you don't receive an email please check your spam folder or <a href="%path%">try again</a>.
+    invalid_permissions: You do not have permissions to perform this action.
 export:
   start: From
   end: To
