@@ -3,13 +3,9 @@
 {% block content_title %}Delete{% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="row">
-            <section class="mb-5">
-                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </section>
-        </div>
-    </div>
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+
 {% endblock %}

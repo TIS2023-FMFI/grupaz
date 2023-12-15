@@ -4,6 +4,8 @@ password:
   enter: Please enter a password.
   limit: Your password should be at least 5 characters.
   match: The password fields must match.
+email:
+  enter: Please enter a valid email address.
 form:
   date_range:
     invalid: Daterange is invalid.
