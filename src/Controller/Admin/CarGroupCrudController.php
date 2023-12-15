@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 class CarGroupCrudController extends AbstractCrudController
 {
+    //TODO edit doesnt save new cars added in cargroup
     public static function getEntityFqcn(): string
     {
         return CarGroup::class;
@@ -54,7 +55,7 @@ class CarGroupCrudController extends AbstractCrudController
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
-
+        //TODO approve carGroup after all cars were scanned
 //        $cimportAction = Action::new('aaimport')
 //            ->linkToRoute('app_import_car')
 //            ->setCssClass('btn btn-primary')
