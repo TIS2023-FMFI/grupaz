@@ -41,6 +41,7 @@ entity:
     gid: Id grupáže
     front_license_plate: EČV kamióna
     back_license_plate: EČV prívesu
+    receiver: Príjemca
     destination: Destinácia
     import_time: Čas nahratia
     export_time: Čas exportu

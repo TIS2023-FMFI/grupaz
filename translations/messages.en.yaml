@@ -41,6 +41,7 @@ entity:
     gid: Group ID
     front_license_plate: Front License Plate
     back_license_plate: Back License Plate
+    receiver: Receiver
     destination: Destination
     import_time: Import time
     export_time: Export time
