@@ -47,6 +47,9 @@ class CarGroup
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $destination = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $receiver = null;
+
     public function __construct()
     {
         $this->cars = new ArrayCollection();
@@ -173,5 +176,17 @@ class CarGroup
     public function __toString(): string
     {
         return "CarGroup ".$this->gid;
+    }
+
+    public function getReceiver(): ?string
+    {
+        return $this->receiver;
+    }
+
+    public function setReceiver(?string $receiver): static
+    {
+        $this->receiver = $receiver;
+
+        return $this;
     }
 }

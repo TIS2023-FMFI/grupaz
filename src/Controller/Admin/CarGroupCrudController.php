@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 class CarGroupCrudController extends AbstractCrudController
 {
+    //TODO edit doesnt save new cars added in cargroup
     public static function getEntityFqcn(): string
     {
         return CarGroup::class;
@@ -54,7 +55,7 @@ class CarGroupCrudController extends AbstractCrudController
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
-
+        //TODO approve carGroup after all cars were scanned
 //        $cimportAction = Action::new('aaimport')
 //            ->linkToRoute('app_import_car')
 //            ->setCssClass('btn btn-primary')
@@ -66,6 +67,8 @@ class CarGroupCrudController extends AbstractCrudController
 //            ->add(Crud::PAGE_DETAIL, $cimportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
     }
 
@@ -86,6 +89,9 @@ class CarGroupCrudController extends AbstractCrudController
             TextField::new('destination')
                 -> onlyOnDetail()
                 ->setLabel('entity.carGroup.destination'),
+            TextField::new('receiver')
+                -> onlyOnDetail()
+                ->setLabel('entity.carGroup.receiver'),
             DateTimeField::new('importTime')
                 ->onlyOnDetail()
                 ->setLabel('entity.carGroup.import_time'),

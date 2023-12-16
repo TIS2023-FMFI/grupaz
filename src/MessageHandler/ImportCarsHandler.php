@@ -30,7 +30,7 @@ class ImportCarsHandler
             if ($count > 99) {
                 break;
             }
-            $this->messageBus->dispatch(new ImportCar($car[0], $car[1], $car[2]));
+            $this->messageBus->dispatch(new ImportCar($car[0], $car[1], $car[2], $car[3]));
             unset($cars[$key]);
             $count++;
         }
