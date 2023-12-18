@@ -112,7 +112,7 @@ class CarRepository extends ServiceEntityRepository
             ->select('COUNT(car.vis)')
             ->andWhere('car.carGroup = :id')
             ->setParameter('id', $id)
-            ->andWhere('car.isDamaged = 1')
+            ->andWhere('car.isDamaged = :status')
             ->setParameter('status', 1)
             ->getQuery()->getSingleScalarResult();
     }

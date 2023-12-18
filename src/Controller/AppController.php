@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CarGroup;
 use App\Form\CarGroupType;
+use App\Form\EndFormType;
 use App\Form\FilterCarGroupType;
 use App\Repository\CarGroupRepository;
 use App\Repository\CarRepository;
@@ -29,6 +30,8 @@ class AppController extends AbstractController
     {
         $form = $this->createForm(FilterCarGroupType::class);
         $form->handleRequest($request);
+        $end = $this->createForm(EndFormType::class);
+        $end->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
             if ($carGroup->getStatus() >= 3){
@@ -42,8 +45,13 @@ class AppController extends AbstractController
                 'id' => $carGroup->getId(),
             ]);
         }
+        if ($end->isSubmitted() && $end->isValid()) {
+            $managerRegistry->getManager()->flush();
+            return $this->redirectToRoute('app_index_no_locale');
+        }
         return $this->render('app/index.html.twig', [
             'form' => $form,
+            'end' => $end,
         ]);
     }
 }
