@@ -32,7 +32,7 @@ entity:
       name: damaged
       damaged: yes
       new: no
-    wrong_car: Scanned wrong car.
+    wrong_car: 'Warning! Wrong car: %carVis%'
     all_loaded: All cars have been loaded.
     timeout_title: No activity was detected!
     timeout_text: If you want to continue in scanning, please push button below.

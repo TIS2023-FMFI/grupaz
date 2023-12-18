@@ -26,6 +26,7 @@ class ScanCarFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
+                'attr' => ['class' => 'btn btn-success'],
             ])
         ;
     }

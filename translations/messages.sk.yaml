@@ -32,7 +32,7 @@ entity:
       name: Pokazené
       damaged: áno
       new: nie
-    wrong_car: Naskenovali ste zlé auto.
+    wrong_car: 'Pozor! Naskenovali ste zle auto: %carVis%'
     all_loaded: Všetky autá sú úspešne naskenované.
     timeout_title: Nebola zachytená žiadna aktivita!
     timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.

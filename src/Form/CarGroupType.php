@@ -37,7 +37,7 @@ class CarGroupType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
                 'attr' => [
-                    'class' => 'btn-lg btn btn-primary px-5 fw-bold'
+                    'class' => 'btn-lg btn btn-success px-5 fw-bold'
                 ],
             ])
         ;

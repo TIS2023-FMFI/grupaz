@@ -11,7 +11,7 @@
             setTimeout(function () {
                 myModal.show()
                 timeout = setTimeout(function () {
-                    window.location = "{{ path('app_index') }}"
+                    window.location = "{{ path('app_index_no_locale') }}"
                 }, noButtonPressed);
             }, noActivityFromStart);
         };
@@ -35,13 +35,15 @@
         <header>
             <h6 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h6>
             <div style="text-align: center;">
-                {{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }} |
-                {{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }} |
-                {{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}
+                {{ 'entity.carGroup.name'|trans }}: {{ carGroup.gid }} |
+                {{ 'entity.carGroup.front_license_plate'|trans }}: {{ carGroup.frontLicensePlate }} |
+                {{ 'entity.carGroup.back_license_plate'|trans }}: {{ carGroup.backLicensePlate }}
             </div>
         </header>
         <hr>
-
+        {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(end) }}
+        {{ form_end(end) }}
         <div class="row">
             <section class="mb-2">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -56,15 +58,17 @@
                         <thead>
                         <tr class="table-primary">
                             <th scope="col" style="text-align: center; width: 10px;">#</th>
-                            <th scope="col" style="text-align: center; width: 10px;">{{ 'entity.car.status.name'|trans}}</th>
-                            <th scope="col" style="text-align: center; width: 50px;">{{ 'entity.car.vis'|trans}}</th>
-                            <th scope="col" style="text-align: center;">{{ 'entity.car.note'|trans}}</th>
-                            <th scope="col" style="text-align: center; width: 200px;">{{ 'entity.car.replaced_car'|trans}}</th>
+                            <th scope="col"
+                                style="text-align: center; width: 10px;">{{ 'entity.car.status.name'|trans }}</th>
+                            <th scope="col" style="text-align: center; width: 50px;">{{ 'entity.car.vis'|trans }}</th>
+                            <th scope="col" style="text-align: center;">{{ 'entity.car.note'|trans }}</th>
+                            <th scope="col"
+                                style="text-align: center; width: 200px;">{{ 'entity.car.replaced_car'|trans }}</th>
                         </tr>
                         </thead>
                         <tbody class="table-group-divider">
                         {% for car in carGroup.cars %}
-                            <tr class="table-{% if car.isDamaged == 1%}warning{% elseif car.status == 1 %}success{% else %}danger{% endif %}">
+                            <tr class="table-{% if car.isDamaged == 1 %}warning{% elseif car.status == 1 %}success{% else %}danger{% endif %}">
                                 <th scope="row">{{ loop.index }}</th>
                                 <td>{% if car.isDamaged == 1 %}{% elseif car.status == 1 %}✔{% else %}✘{% endif %}</td>
                                 <td>{{ car.vis }}</td>
@@ -82,13 +86,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">{{ 'entity.car.timeout_title'|trans}}</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">{{ 'entity.car.timeout_title'|trans }}</h5>
                 </div>
                 <div class="modal-body">
-                    {{ 'entity.car.timeout_text'|trans}}
+                    {{ 'entity.car.timeout_text'|trans }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ 'entity.car.timeout_button'|trans}}</button>
+                    <button type="button" class="btn btn-primary"
+                            data-bs-dismiss="modal">{{ 'entity.car.timeout_button'|trans }}</button>
                 </div>
             </div>
         </div>
