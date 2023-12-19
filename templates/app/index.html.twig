@@ -11,10 +11,11 @@
     {{ form_widget(end) }}
     {{ form_end(end) }}
     <div class="row">
-        <section class="mb-5">
+        <section class="mb-5 col">
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
         </section>
+        <img class="center col" src="{{ asset('images/image.jpg') }}" alt="Image of finding group ID">
     </div>
 {% endblock %}
