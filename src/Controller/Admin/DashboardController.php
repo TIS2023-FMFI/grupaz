@@ -119,7 +119,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
         yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class);
-        yield MenuItem::linkToCrud('entity.user.users', 'fas fa-list', User::class)
+        yield MenuItem::linkToCrud('entity.user.users', 'fas fa-users', User::class)
             ->setPermission("ROLE_SUPER_ADMIN");
         yield MenuItem::linkToRoute('Log', 'fa fa-download', 'admin_download_log_file')
             ->setLinkTarget('_blank')

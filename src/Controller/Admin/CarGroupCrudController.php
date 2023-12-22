@@ -81,7 +81,10 @@ class CarGroupCrudController extends AbstractCrudController
                 ->setLabel('entity.carGroup.gid'),
             AssociationField::new('cars') //TO DO - change field
                 ->setLabel('entity.car.cars')
-                ->setTemplatePath('admin\showCarGroup.html.twig'),
+                ->setTemplatePath('admin\showCarGroup.html.twig')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                ]),
             TextField::new('frontLicensePlate')
                 ->setLabel('entity.carGroup.front_license_plate'),
             TextField::new('backLicensePlate')
