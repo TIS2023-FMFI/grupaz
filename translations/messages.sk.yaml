@@ -14,6 +14,7 @@ main:
   login: Prihlásenie
   password: Heslo
   create: Vytvoriť
+  info: Informácie
 crud:
   edit: Upraviť
   detail: Detail

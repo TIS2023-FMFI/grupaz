@@ -14,6 +14,7 @@ main:
   login: Login
   password: Password
   create: Create
+  info: Information
 crud:
   edit: Edit
   detail: Detail
