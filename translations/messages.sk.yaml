@@ -14,6 +14,7 @@ main:
   login: Prihlásenie
   password: Heslo
   create: Vytvoriť
+  info: Informácie
 crud:
   edit: Upraviť
   detail: Detail
@@ -84,3 +85,6 @@ import:
     success: Naimportovali ste %importedCars% aút.
     no_cars_in_file: V danom súbore nie sú žiadne autá.
     wrong_file_keys: V danom súbore sú zle nastavené názvy stĺpcov.
+log:
+  logs: Logy
+  time: Čas

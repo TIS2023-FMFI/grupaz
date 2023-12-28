@@ -3,14 +3,8 @@
 {% block content_title %}{{ 'entity.user.register'|trans }}{% endblock %}
 
 {% block main %}
-    {{ form_errors(registrationForm) }}
-
     {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'main.password'
-        }) }}
-
-        <button type="submit" class="btn btn-primary">{{ 'main.create'|trans }}</button>
+    {{ form_widget(registrationForm) }}
+    <button type="submit" class="btn btn-primary">{{ 'main.create'|trans }}</button>
     {{ form_end(registrationForm) }}
 {% endblock %}

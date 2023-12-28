@@ -1,0 +1,29 @@
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col">{{ 'entity.car.vis'|trans }}</th>
+                <th scope="col">{{ 'entity.car.status.name'|trans }}</th>
+                <th scope="col">{{ 'entity.car.note'|trans }}</th>
+                <th scope="col">{{ 'entity.car.replaced_car'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for car in field.value %}
+                <tr>
+                    <td>{{ car.vis }}</td>
+                    <td>{% if car.isDamaged == 1 %}
+                            {{ 'entity.car.isDamaged.damaged'|trans }}
+                        {% elseif car.status == 1 %}
+                            {{ 'entity.car.status.scanned'|trans }}
+                        {% else %}
+                            {{ 'entity.car.status.free'|trans }}
+                        {% endif %}
+                    </td>
+                    <td>{{ car.note }}</td>
+                    <td>{{ car.replacedCar }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
