@@ -48,13 +48,13 @@ class LogCrudController extends AbstractCrudController
             // set this number to 0 to display a simple "< Previous | Next >" pager
             ->setPaginatorRangeSize(3);
     }
-//    if superadmin doesnt want to see all superadmins
-//    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-//    {
-//        return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
-//            ->andWhere('entity.roles NOT LIKE :role')
-//                ->setParameter('role', '%ROLE_SUPER_ADMIN%');
-//    }
+    public function configureActions(Actions $actions): Actions
+    {
+        return parent::configureActions($actions);
+        //TODO set actions - detail, edit, delete for logCrud
+//            ->remove();
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
