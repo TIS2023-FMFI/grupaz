@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Car;
 use App\Entity\CarGroup;
 use App\Entity\User;
+use App\Entity\Log;
 use App\Repository\CarGroupRepository;
 use App\Repository\CarRepository;
 use Doctrine\ORM\NonUniqueResultException;
