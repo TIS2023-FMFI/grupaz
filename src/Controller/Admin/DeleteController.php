@@ -9,6 +9,7 @@ use App\Serializer\CarNormalizer;
 use App\Service\FileResponse;
 use App\Entity\Log;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +22,8 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[Route('/admin/{_locale<%app.supported_locales%>}/delete', name:'app_delete_')]
 class DeleteController extends AbstractController
 {
-    /**
-     * @throws ExceptionInterface
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     #[Route('/car',name: 'car')]
-    public function car(Request $request, CarRepository $carRepository): Response
+    public function car(Request $request, CarRepository $carRepository, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(DeleteType::class);
         $form->handleRequest($request);
@@ -49,11 +42,11 @@ class DeleteController extends AbstractController
                 return $this->redirectToRoute('admin', ['routeName' => 'app_delete_car']);
             }
             $log = new Log();
-            $log->setTime(new \DateTime());
+            $log->setTime(new \DateTimeImmutable());
             $log->setLog("Vymazanie dát od: $start->format('d.m.Y'), do: $end->format('d.m.Y)");
 
-            $this->entityManager->persist($log);
-            $this->entityManager->flush();
+            $managerRegistry->getManager()->persist($log);
+            $managerRegistry->getManager()->flush();
             $serializer = new Serializer([new CarNormalizer()], [new CsvEncoder()]);
             $content = $serializer->serialize($result, 'csv');
             return FileResponse::get($content, sprintf('cars_%s_%s.csv', $start->format('Y-m-d'), $end->format('Y-m-d')),'text/csv');

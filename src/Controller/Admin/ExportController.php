@@ -8,6 +8,7 @@ use App\Serializer\CarNormalizer;
 use App\Service\FileResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Log;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,15 +21,8 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[Route('/admin/{_locale<%app.supported_locales%>}/export', name:'app_export_')]
 class ExportController extends AbstractController
 {
-    /**
-     * @throws ExceptionInterface
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
     #[Route('/car',name: 'car')]
-    public function car(Request $request, CarRepository $carRepository): Response
+    public function car(Request $request, CarRepository $carRepository, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(ExportType::class);
         $form->handleRequest($request);
@@ -47,11 +41,11 @@ class ExportController extends AbstractController
                 return $this->redirectToRoute('admin', ['routeName' => 'app_export_car']);
             }
             $log = new Log();
-            $log->setTime(new \DateTime());
+            $log->setTime(new \DateTimeImmutable());
             $log->setLog('Vykonaný export dát od: ' . $start->format('d.m.Y') . ' do: ' . $end->format('d.m.Y'));
 
-            $this->entityManager->persist($log);
-            $this->entityManager->flush();
+            $managerRegistry->getManager()->persist($log);
+            $managerRegistry->getManager()->flush();
             $serializer = new Serializer([new CarNormalizer()], [new CsvEncoder()]);
             $content = $serializer->serialize($result, 'csv');
             return FileResponse::get($content, sprintf('cars_%s_%s.csv', $start->format('Y-m-d'), $end->format('Y-m-d')),'text/csv');
