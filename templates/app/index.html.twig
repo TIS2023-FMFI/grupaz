@@ -3,19 +3,27 @@
 {% block title %}Index{% endblock %}
 
 {% block body %}
-    <header>
-        <h2 class="text-center mb-5 display-5 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
-    </header>
-    <hr>
-    {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
-    {{ form_widget(end) }}
-    {{ form_end(end) }}
-    <div class="row">
-        <section class="mb-5 col">
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </section>
-        <img class="center col" src="{{ asset('images/groupage.jpg') }}" style="width: 50%" alt="Image of finding group ID">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <h2 class="text-center mb-5 display-5 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
+            </div>
+            <div class="col-md-3 text-end">
+                {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(end) }}
+                {{ form_end(end) }}
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <section class="mb-5 col">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </section>
+            <img class="center col" src="{{ asset('images/groupage.jpg') }}" style="width: 50%"
+                 alt="Image of finding group ID">
+        </div>
     </div>
 {% endblock %}

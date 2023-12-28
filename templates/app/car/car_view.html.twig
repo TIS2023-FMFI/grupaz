@@ -32,18 +32,23 @@
 
 {% block body %}
     <div class="container">
-        <header>
-            <h6 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h6>
-            <div style="text-align: center;">
-                {{ 'entity.carGroup.name'|trans }}: {{ carGroup.gid }} |
-                {{ 'entity.carGroup.front_license_plate'|trans }}: {{ carGroup.frontLicensePlate }} |
-                {{ 'entity.carGroup.back_license_plate'|trans }}: {{ carGroup.backLicensePlate }}
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <h6 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h6>
             </div>
-        </header>
+            <div class="col-md-3 text-end">
+                {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(end) }}
+                {{ form_end(end) }}
+            </div>
+        </div>
+        <div style="text-align: center;">
+            {{ 'entity.carGroup.name'|trans }}: {{ carGroup.gid }} |
+            {{ 'entity.carGroup.front_license_plate'|trans }}: {{ carGroup.frontLicensePlate }} |
+            {{ 'entity.carGroup.back_license_plate'|trans }}: {{ carGroup.backLicensePlate }}
+        </div>
+
         <hr>
-        {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_widget(end) }}
-        {{ form_end(end) }}
         <div class="row">
             <section class="mb-2">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
