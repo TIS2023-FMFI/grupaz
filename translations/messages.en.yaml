@@ -87,3 +87,6 @@ import:
     no_cars_in_file: There are no cars in given file.
     wrong_file_keys: Column names are incorrectly set in given file.
     count_in_queue: In queue are waiting %carsInQueue% cars.
+log:
+  logs: Logs
+  time: Time
