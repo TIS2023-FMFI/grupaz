@@ -4,7 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Form\UploadType;
 use App\Service\FileUploader;
-use App\Service\Logger;
+use App\Entity\Log;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +19,9 @@ class ImportController extends AbstractController
     /**
      * @throws Exception
      */
-    private $Logger;
-
-    public function __construct(Logger $logger)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->Logger = $logger;
+        $this->entityManager = $entityManager;
     }
     #[Route('/car', name: 'car')]
     public function car(Request $request, FileUploader $fileUploader): Response
@@ -34,7 +33,11 @@ class ImportController extends AbstractController
             try {
                 $importedCars = $fileUploader->upload($uploadedFile);
                 if (0 < $importedCars) {
-                    $this->Logger->writeLog('Vykonaný import', 'súboru:', $uploadedFile);
+                    $log = new Log();
+                    $log->setTime(new \DateTime());
+                    $log->setLog("Vykonaný import súboru: $uploadedFile");
+                    $this->entityManager->persist($log);
+                    $this->entityManager->flush();
                     $this->addFlash(
                         'success',
                         new TranslatableMessage('import.car.success', [
