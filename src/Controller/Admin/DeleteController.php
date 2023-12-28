@@ -7,7 +7,8 @@ use App\Form\ExportType;
 use App\Repository\CarRepository;
 use App\Serializer\CarNormalizer;
 use App\Service\FileResponse;
-use App\Service\Logger;
+use App\Entity\Log;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,9 @@ class DeleteController extends AbstractController
     /**
      * @throws ExceptionInterface
      */
-    private $Logger;
-
-    public function __construct(Logger $logger)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->Logger = $logger;
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/car',name: 'car')]
@@ -49,7 +48,12 @@ class DeleteController extends AbstractController
                 );
                 return $this->redirectToRoute('admin', ['routeName' => 'app_delete_car']);
             }
-            $this->Logger->writeLog('Vymazanie dát', 'od:', $start->format('d.m.Y'), 'do:', $end->format('d.m.Y'));
+            $log = new Log();
+            $log->setTime(new \DateTime());
+            $log->setLog("Vymazanie dát od: $start->format('d.m.Y'), do: $end->format('d.m.Y)");
+
+            $this->entityManager->persist($log);
+            $this->entityManager->flush();
             $serializer = new Serializer([new CarNormalizer()], [new CsvEncoder()]);
             $content = $serializer->serialize($result, 'csv');
             return FileResponse::get($content, sprintf('cars_%s_%s.csv', $start->format('Y-m-d'), $end->format('Y-m-d')),'text/csv');
