@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CarGroup;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,6 +49,31 @@ class CarGroupRepository extends ServiceEntityRepository
             ->setParameter('startedScan', 2)
             ->getQuery()->getResult();
     }
+    public function deleteByFormData(DateTimeInterface $startTime, DateTimeInterface $endTime): int
+    {
+        $carGroupIds = $this->createQueryBuilder('cg')
+            ->select('cg.id')
+            ->andWhere('cg.exportTime >= :fromTime')
+            ->andWhere('cg.exportTime <= :toTime')
+            ->setParameter('fromTime', $startTime)
+            ->setParameter('toTime', $endTime)
+            ->getQuery()
+            ->getResult();
 
+        $this->createQueryBuilder('cg')
+            ->delete('App\Entity\Car', 'car')
+            ->where('car.carGroup IN (:carGroupIds)')
+            ->setParameter('carGroupIds', $carGroupIds)
+            ->getQuery()
+            ->execute();
 
+        return $this->createQueryBuilder('cg')
+            ->delete('App\Entity\CarGroup', 'carGroup')
+            ->where('carGroup.exportTime >= :fromTime')
+            ->andWhere('carGroup.exportTime <= :toTime')
+            ->setParameter('fromTime', $startTime)
+            ->setParameter('toTime', $endTime)
+            ->getQuery()
+            ->execute();
+    }
 }
