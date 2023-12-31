@@ -52,11 +52,10 @@ class CarRepository extends ServiceEntityRepository
     public function deleteByFormData(DateTimeInterface $startTime, DateTimeInterface $endTime)
     {
         return $this->createQueryBuilder('c')
-            ->delete('car_group, car')
-            ->leftJoin('car.carGroup', 'car_group')
-            ->andWhere('c.exportTime >= :startTime')
+            ->delete('App\Entity\CarGroup', 'car_group')
+            ->andWhere('car_group.exportTime >= :startTime')
             ->setParameter('startTime', $startTime)
-            ->andWhere('c.exportTime <= :endTime')
+            ->andWhere('car_group.exportTime <= :endTime')
             ->setParameter('endTime', $endTime)
             ->getQuery()->execute();
     }

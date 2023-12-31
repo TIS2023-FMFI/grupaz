@@ -25,7 +25,13 @@ class DeleteController extends AbstractController
     #[Route('/car',name: 'car')]
     public function car(Request $request, CarRepository $carRepository, ManagerRegistry $managerRegistry): Response
     {
-        $form = $this->createForm(DeleteType::class);
+        $form = $this->createForm(DeleteType::class, null, [
+            'action' => $this->generateUrl('app_delete_car'),
+            'method' => 'POST',
+            'attr' => [
+                'onsubmit' => 'return confirmDelete();',
+            ],
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $start = $form->get('start')->getData();
@@ -34,13 +40,20 @@ class DeleteController extends AbstractController
             if (empty($result)) {
                 $this->addFlash(
                     'warning',
-                    new TranslatableMessage('export.car.no_data_in_interval', [
+                    new TranslatableMessage('delete.car.no_data_in_interval', [
                         '%start%' => $start->format('Y-m-d'),
                         '%end%' => $end->format('Y-m-d')
                     ])
                 );
                 return $this->redirectToRoute('admin', ['routeName' => 'app_delete_car']);
             }
+            $this->addFlash(
+                'success',
+                new TranslatableMessage('delete.confirmation', [
+                    '%start%' => $start->format('Y-m-d'),
+                    '%end%' => $end->format('Y-m-d')
+                ])
+            );
             $log = new Log();
             $log->setTime(new \DateTimeImmutable());
             $log->setLog("Vymazanie dát od: $start->format('d.m.Y'), do: $end->format('d.m.Y)");
