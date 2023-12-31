@@ -3,95 +3,105 @@
 {% block title %}Cars in Group {{ carGroup.gid }}{% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
     <script>
-        const startActivity = 2000
         const noActivityFromStart = 60000
-        const noButtonPressed = 20000
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-
-        const startTimer = async () => {
-            await delay(startActivity);
-            const saveButton = document.getElementById("saveButton");
-            saveButton.addEventListener("click", relocate);
-            saveButton.addEventListener("close", relocate);
-            const myWindow = new bootstrap.Modal(document.getElementById("myWindow"), {
-                keyboard: false
-            });
-
-            await delay(noActivityFromStart-startActivity);
-            myWindow.show()
-
-            await delay(noButtonPressed);
-            window.location = "http://127.0.0.1:8000/";
+        const noButtonPressed = 10000
+        let timeout = 0;
+        const startTimer = (myModal) => {
+            setTimeout(function () {
+                myModal.show()
+                timeout = setTimeout(function () {
+                    window.location = "{{ path('app_index_no_locale') }}"
+                }, noButtonPressed);
+            }, noActivityFromStart);
         };
-        function relocate() {
-            window.location = window.location.href;
-        }
-        startTimer()
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const myModalElement = document.getElementById('myModal')
+            const myModal = new bootstrap.Modal(myModalElement)
+
+            startTimer(myModal)
+            myModalElement.addEventListener('hidden.bs.modal', function () {
+                clearInterval(timeout);
+                startTimer(myModal)
+            })
+        });
     </script>
+
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    <header>
-        <h6 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h6>
-        <div style="text-align: center;">
-            {{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }} |
-            {{ 'entity.carGroup.front_license_plate'|trans}}: {{ carGroup.frontLicensePlate }} |
-            {{ 'entity.carGroup.back_license_plate'|trans}}: {{ carGroup.backLicensePlate }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <h6 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.scan_form'|trans }}</h6>
+            </div>
+            <div class="col-md-3 text-end">
+                {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(end) }}
+                {{ form_end(end) }}
+            </div>
         </div>
-    </header>
-    <hr>
+        <div style="text-align: center;">
+            {{ 'entity.carGroup.name'|trans }}: {{ carGroup.gid }} |
+            {{ 'entity.carGroup.front_license_plate'|trans }}: {{ carGroup.frontLicensePlate }} |
+            {{ 'entity.carGroup.back_license_plate'|trans }}: {{ carGroup.backLicensePlate }}
+        </div>
 
-    <div class="modal fade" id="myWindow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <hr>
+        <div class="row">
+            <section class="mb-2">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </section>
+        </div>
+        <div class="row">
+            <section class="mb-2">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr class="table-primary">
+                            <th scope="col" style="text-align: center; width: 10px;">#</th>
+                            <th scope="col"
+                                style="text-align: center; width: 10px;">{{ 'entity.car.status.name'|trans }}</th>
+                            <th scope="col" style="text-align: center; width: 50px;">{{ 'entity.car.vis'|trans }}</th>
+                            <th scope="col" style="text-align: center;">{{ 'entity.car.note'|trans }}</th>
+                            <th scope="col"
+                                style="text-align: center; width: 200px;">{{ 'entity.car.replaced_car'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        {% for car in carGroup.cars %}
+                            <tr class="table-{% if car.isDamaged == 1 %}warning{% elseif car.status == 1 %}success{% else %}danger{% endif %}">
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{% if car.isDamaged == 1 %}{% elseif car.status == 1 %}✔{% else %}✘{% endif %}</td>
+                                <td>{{ car.vis }}</td>
+                                <td>{{ car.note }}</td>
+                                <td>{{ car.replacedCar }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">{{ 'entity.car.timeout_title'|trans}}</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">{{ 'entity.car.timeout_title'|trans }}</h5>
                 </div>
                 <div class="modal-body">
-                    {{ 'entity.car.timeout_text'|trans}}
+                    {{ 'entity.car.timeout_text'|trans }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="saveButton" class="btn btn-primary">{{ 'entity.car.timeout_button'|trans}}</button>
+                    <button type="button" class="btn btn-primary"
+                            data-bs-dismiss="modal">{{ 'entity.car.timeout_button'|trans }}</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <section class="mb-5">
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </section>
-    </div>
-    <div class="row">
-        <section class="mb-5">
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr class="table-primary">
-                    <th scope="col">#</th>
-                    <th scope="col">{{ 'entity.car.status.name'|trans}}</th>
-                    <th scope="col">{{ 'entity.car.vis'|trans}}</th>
-                    <th scope="col">{{ 'entity.car.note'|trans}}</th>
-                    <th scope="col">{{ 'entity.car.replaced_car'|trans}}</th>
-                </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                {% for car in carGroup.cars %}
-                    <tr class="table-{% if car.status == 0 %}danger{% else %}success{% endif %}">
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{% if car.status == 0 %}✘{% else %}✔{% endif %}</td>
-                        <td>{{ car.vis }}</td>
-                        <td>{{ car.note }}</td>
-                        <td>{{ car.replacedCar }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </div>
-</div>
 {% endblock %}

@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Car;
 use App\Entity\CarGroup;
+use App\Entity\User;
+use App\Entity\Log;
 use App\Repository\CarGroupRepository;
 use App\Repository\CarRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -17,6 +19,8 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatableMessage;
+
 
 class DashboardController extends AbstractDashboardController
 {
@@ -58,6 +62,34 @@ class DashboardController extends AbstractDashboardController
         ]);
     }
 
+    #[Route('/admin/download-log-file', name: 'admin_download_log_file')]
+    public function downloadLogFile(): Response
+    {
+        if (!$this->isGranted("ROLE_SUPER_ADMIN")) {
+            $this->addFlash(
+                'warning',
+                new TranslatableMessage('entity.user.invalid_permissions')
+            );
+            return $this->redirectToRoute('admin');
+        }
+        $logFilePath = $this->getParameter('kernel.project_dir') . '/var/log/dev.log';
+
+        if (!file_exists($logFilePath)) {
+            throw $this->createNotFoundException('Log file not found.');
+        }
+
+        // Read the content of the log file
+        $logContent = file_get_contents($logFilePath);
+
+        // Create a Response with the log content
+        $response = new Response($logContent);
+        $response->headers->set('Content-Type', 'text/plain');
+        $response->headers->set('Content-Disposition', 'attachment; filename="dev.log"');
+
+        return $response;
+    }
+
+
     /**
      * @throws NonUniqueResultException
      * @throws NoResultException
@@ -88,6 +120,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
         yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class);
+        yield MenuItem::linkToCrud('entity.user.users', 'fas fa-users', User::class)
+            ->setPermission("ROLE_SUPER_ADMIN");
+        yield MenuItem::linkToCrud('log.logs', 'fas fa-list', Log::class)
+            ->setPermission("ROLE_SUPER_ADMIN");
         yield MenuItem::linkToLogout('main.logout', 'fa fa-exit');
     }
     private function getToApproveNotifications(): array

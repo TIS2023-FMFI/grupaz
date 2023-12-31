@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\CarGroup;
 use App\Form\CarGroupType;
+use App\Form\EndFormType;
 use App\Form\FilterCarGroupType;
 use App\Repository\CarGroupRepository;
+use App\Repository\CarRepository;
 use App\Service\Import;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,10 +26,12 @@ class AppController extends AbstractController
     }
 
     #[Route('/{_locale<%app.supported_locales%>}/', name: 'app_index')]
-    public function index(Request $request, ManagerRegistry $managerRegistry): Response
+    public function index(Request $request, ManagerRegistry $managerRegistry, CarRepository $carRepository): Response
     {
         $form = $this->createForm(FilterCarGroupType::class);
         $form->handleRequest($request);
+        $end = $this->createForm(EndFormType::class);
+        $end->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
             if ($carGroup->getStatus() >= 3){
@@ -35,13 +39,19 @@ class AppController extends AbstractController
                 return $this->redirectToRoute('app_index');
             }
             $carGroup->setStatus(1);
+            $carRepository->unloadAllCarInGroup($carGroup->getId());
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_group_view', [
                 'id' => $carGroup->getId(),
             ]);
         }
+        if ($end->isSubmitted() && $end->isValid()) {
+            $managerRegistry->getManager()->flush();
+            return $this->redirectToRoute('app_index_no_locale');
+        }
         return $this->render('app/index.html.twig', [
             'form' => $form,
+            'end' => $end,
         ]);
     }
 }

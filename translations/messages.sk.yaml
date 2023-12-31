@@ -13,6 +13,8 @@ main:
   logout: Odhlásenie
   login: Prihlásenie
   password: Heslo
+  create: Vytvoriť
+  info: Informácie
 crud:
   edit: Upraviť
   detail: Detail
@@ -31,7 +33,7 @@ entity:
       name: Pokazené
       damaged: áno
       new: nie
-    wrong_car: Naskenovali ste zlé auto.
+    wrong_car: 'Pozor! Naskenovali ste zle auto: %carVis%'
     all_loaded: Všetky autá sú úspešne naskenované.
     timeout_title: Nebola zachytená žiadna aktivita!
     timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.
@@ -41,6 +43,7 @@ entity:
     gid: Id grupáže
     front_license_plate: EČV kamióna
     back_license_plate: EČV prívesu
+    receiver: Príjemca
     destination: Destinácia
     import_time: Čas nahratia
     export_time: Čas exportu
@@ -54,6 +57,11 @@ entity:
       start: Prihlásená
       free: Voľná
   user:
+    name: Používateľ
+    users: Používatelia
+    register: Registrácia
+    new: Nový používateľ
+    roles: Používateľské roly
     forgot_password: Zabudli ste svoje heslo?
     new_password: Nové helo
     repeat_password: Zopakuj heslo
@@ -64,6 +72,7 @@ entity:
     email_sent: Email na zresetovanie hesla poslaný
     message_after_sending: Ak existuje účet s daným emailom, tak sme Vám poslali mail, ktorý obsahuje link, ktorý môžete použíť na zmenenie hesla. Tento link expiruje do %expiry%.
     check_spam: Ak Vám nepríde email skontrolujte si spam alebo <a href="%path%">skúste znova</a>.
+    invalid_permissions: Nemáte dostatočné povolenia na vykonanie tejto akcie.
 export:
   start: Od dátumu vrátane
   end: Po dátum vrátane
@@ -83,3 +92,6 @@ import:
     success: Naimportovali ste %importedCars% aút.
     no_cars_in_file: V danom súbore nie sú žiadne autá.
     wrong_file_keys: V danom súbore sú zle nastavené názvy stĺpcov.
+log:
+  logs: Logy
+  time: Čas

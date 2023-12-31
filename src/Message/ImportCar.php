@@ -7,12 +7,14 @@ class ImportCar
     private string $vis;
     private ?string $gid;
     private ?string $destination;
+    private ?string $receiver;
 
-    public function __construct(string $vis, ?string $gid, ?string $destination)
+    public function __construct(string $vis, ?string $gid, ?string $destination, ?string $receiver)
     {
         $this->vis = $vis;
         $this->gid = $gid;
         $this->destination = $destination;
+        $this->receiver = $receiver;
     }
 
     public function getVis(): string
@@ -36,5 +38,13 @@ class ImportCar
             return null;
         }
         return $this->destination;
+    }
+    public function getReceiver(): ?string
+    {
+        if($this->receiver === '')
+        {
+            return null;
+        }
+        return $this->receiver;
     }
 }

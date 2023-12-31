@@ -13,6 +13,8 @@ main:
   logout: Logout
   login: Login
   password: Password
+  create: Create
+  info: Information
 crud:
   edit: Edit
   detail: Detail
@@ -31,16 +33,17 @@ entity:
       name: damaged
       damaged: yes
       new: no
-    wrong_car: Scanned wrong car.
+    wrong_car: 'Warning! Wrong car: %carVis%'
     all_loaded: All cars have been loaded.
     timeout_title: No activity was detected!
-    timeout_text: If you want to continue in scanning, please push button bellow.
+    timeout_text: If you want to continue in scanning, please push button below.
     timeout_button: I want continue.
   carGroup:
     name: Car group
     gid: Group ID
     front_license_plate: Front License Plate
     back_license_plate: Back License Plate
+    receiver: Receiver
     destination: Destination
     import_time: Import time
     export_time: Export time
@@ -54,6 +57,11 @@ entity:
       start: Logged in
       free: Free
   user:
+    name: User
+    users: Users
+    register: Register
+    new: New user
+    roles: User roles
     forgot_password: Did you forgot your password?
     new_password: New password
     repeat_password: Repeat password
@@ -64,6 +72,7 @@ entity:
     email_sent: Password Reset Email Sent
     message_after_sending: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in %expiry%.
     check_spam: If you don't receive an email please check your spam folder or <a href="%path%">try again</a>.
+    invalid_permissions: You do not have permissions to perform this action.
 export:
   start: From
   end: To
@@ -85,3 +94,6 @@ import:
     no_cars_in_file: There are no cars in given file.
     wrong_file_keys: Column names are incorrectly set in given file.
     count_in_queue: In queue are waiting %carsInQueue% cars.
+log:
+  logs: Logs
+  time: Time

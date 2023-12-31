@@ -3,18 +3,26 @@
 {% block title %}{{ 'entity.carGroup.name'|trans }}{{ carGroup.gid }}{% endblock %}
 
 {% block body %}
-<div class="container">
-    <header>
-        <h2 class="text-center mb-3 display-4 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
-        <h3 class="text-center mb-2 display-6 text-primary fw-bold text-shadow">{{ 'entity.carGroup.name'|trans}}: {{ carGroup.gid }}</h3>
-    </header>
-    <hr>
-    <div class="row">
-        <section class="mb-5">
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <h2 class="mb-3 display-5 text-primary fw-bold text-shadow">{{ 'title.worker_form'|trans }}</h2>
+            </div>
+            <div class="col-md-3 text-end">
+                {{ form_start(end, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(end) }}
+                {{ form_end(end) }}
+            </div>
+        </div>
+        <h3 class="text-center mb-2 display-7 text-primary fw-bold text-shadow">{{ 'entity.carGroup.name'|trans }}
+            : {{ carGroup.gid }}</h3>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}

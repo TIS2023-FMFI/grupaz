@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CarGroup;
 use App\Form\CarGroupType;
+use App\Form\EndFormType;
 use App\Repository\CarRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,8 @@ class CarGroupController extends AbstractController
             $this->addFlash('danger', 'entity.carGroup.no_access');
             return $this->redirectToRoute('app_index');
         }
+        $end = $this->createForm(EndFormType::class);
+        $end->handleRequest($request);
         $form = $this->createForm(CarGroupType::class, $carGroup);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,9 +37,15 @@ class CarGroupController extends AbstractController
                 'id' => $carGroup->getId(),
             ]);
         }
-
+        if ($end->isSubmitted() && $end->isValid()) {
+            $carRepository->unloadAllCarInGroup($carGroup->getId());
+            $carGroup->setStatus(0);
+            $managerRegistry->getManager()->flush();
+            return $this->redirectToRoute('app_index_no_locale');
+        }
         return $this->render('app/car_group/view.html.twig', [
             'form' => $form,
+            'end' => $end,
             'carGroup' => $carGroup,
         ]);
     }

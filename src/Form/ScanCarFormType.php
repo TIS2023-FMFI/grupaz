@@ -18,10 +18,15 @@ class ScanCarFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new Length(8)
-                    ],
+                    ]
+                ,
+                'attr' => [
+                    'autofocus' => 'autofocus',
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
+                'attr' => ['class' => 'btn btn-success'],
             ])
         ;
     }

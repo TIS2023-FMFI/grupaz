@@ -34,6 +34,7 @@ class ImportCarHandler
                 $carGroup->setStatus(0);
                 $manager->persist($carGroup);
             }
+            $carGroup->setReceiver($uploadCar->getReceiver());
             $carGroup->setDestination($uploadCar->getDestination());
         }
         if($uploadCar->getVis() !== null)

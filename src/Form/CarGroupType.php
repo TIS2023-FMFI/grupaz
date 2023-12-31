@@ -17,14 +17,28 @@ class CarGroupType extends AbstractType
             ->add('frontLicensePlate', null, [
                 'label' => 'entity.carGroup.front_license_plate',
                 'constraints' => [new NotBlank(),],
+                'label_attr' => [
+                    'class' => 'col-form-label-lg fw-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control-lg'
+                ],
             ])
             ->add('backLicensePlate', null, [
                 'label' => 'entity.carGroup.back_license_plate',
                 'constraints' => [new NotBlank(),],
-                //'help' => 'form_help.car.front_license_plate'
+                'label_attr' => [
+                    'class' => 'col-form-label-lg fw-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control-lg'
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
+                'attr' => [
+                    'class' => 'btn-lg btn btn-success px-5 fw-bold'
+                ],
             ])
         ;
     }

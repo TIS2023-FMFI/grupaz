@@ -22,10 +22,19 @@ class FilterCarGroupType extends AbstractType
         $builder
             ->add('gid', null, [
                 'label' => 'entity.carGroup.gid',
+                'label_attr' => [
+                    'class' => 'col-form-label-lg fw-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control-lg'
+                ],
                 'constraints' => [new NotBlank(),],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
+                'attr' => [
+                    'class' => 'btn-lg btn btn-success px-5 fw-bold'
+                ],
             ])
         ;
 

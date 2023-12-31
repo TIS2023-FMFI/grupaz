@@ -30,14 +30,14 @@ class FileUploader
         $importCars = [];
         if (isset($sheetData[1])) {
             $headers = $sheetData[1];
-            if ($headers['A'] !== 'VIS' || $headers['E'] !== 'Rada' || $headers['K'] !== 'Stanica') {
+            if ($headers['A'] !== 'VIS' || $headers['E'] !== 'Rada' || $headers['K'] !== 'Stanica' || $headers['J'] !== 'Prijemca') {
                 throw new \Exception();
             }
             unset($sheetData[1]);
             foreach ($sheetData as $row) {
                 //potentially validate not null, "" for "vis" = row A
                 $importCars[] = [
-                    $row['A'], $row['E'], $row['K']
+                    $row['A'], $row['E'], $row['K'], $row['J']
                 ];
             }
 

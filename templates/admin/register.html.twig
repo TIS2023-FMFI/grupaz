@@ -1,0 +1,10 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}{{ 'entity.user.register'|trans }}{% endblock %}
+
+{% block main %}
+    {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(registrationForm) }}
+    <button type="submit" class="btn btn-primary">{{ 'main.create'|trans }}</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}
