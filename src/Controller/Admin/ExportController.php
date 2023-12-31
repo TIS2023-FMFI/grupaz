@@ -6,7 +6,7 @@ use App\Form\ExportType;
 use App\Repository\CarRepository;
 use App\Serializer\CarNormalizer;
 use App\Service\FileResponse;
-use Doctrine\ORM\EntityManagerInterface;
+use DateTimeImmutable;
 use App\Entity\Log;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -41,7 +40,7 @@ class ExportController extends AbstractController
                 return $this->redirectToRoute('admin', ['routeName' => 'app_export_car']);
             }
             $log = new Log();
-            $log->setTime(new \DateTimeImmutable());
+            $log->setTime(new DateTimeImmutable());
             $log->setLog('Vykonaný export dát od: ' . $start->format('d.m.Y') . ' do: ' . $end->format('d.m.Y'));
 
             $managerRegistry->getManager()->persist($log);

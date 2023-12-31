@@ -40,9 +40,6 @@ class DeleteType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.submit',
-                'attr' => [
-                    'onsubmit' => 'return confirmDelete();',
-                ],
             ]);
     }
 

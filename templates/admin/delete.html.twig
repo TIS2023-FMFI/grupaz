@@ -3,52 +3,46 @@
 {% block content_title %}Delete{% endblock %}
 
 {% block main %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const myModalElement = document.getElementById('myModal')
+            const myModal = new bootstrap.Modal(myModalElement)
+            const deleteForm = document.getElementById('deleteForm');
+            const deleteButton = document.getElementById("deleteButton")
+
+            deleteForm.addEventListener('submit', function (e) {
+                e.preventDefault()
+                myModal.show()
+            })
+            deleteButton.addEventListener("click", function (){
+                deleteForm.submit();
+            })
+        })
+    </script>
 <div class="container">
         <div class="row">
             <section class="mb-5">
-                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'deleteForm', 'onsubmit': 'return confirmDeleting();'}}) }}
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'deleteForm'}}) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
             </section>
         </div>
     </div>
 
-    <div class="modal" id="deletion" tabindex="-1">
+    <div class="modal" id="myModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Do you really want to delete all car groups from start to end?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>{{ 'delete.control'|trans }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="delete" class="btn btn-primary">Delete</button>
+                    <button type="button" id="deleteButton" class="btn btn-primary">Delete</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-    <script type="text/javascript">
-        function confirmDeleting($form) {
-            $form.preventDefault()
-            const deleteButton = document.getElementById("delete")
-            const closeButton = document.getElementById("close")
-            const myWindow = new bootstrap.Modal(document.getElementById("deletion"), {
-                keyboard: false
-            });
-            closeButton.addEventListener("click", relocate)
-            deleteButton.addEventListener("click", $form.send())
-            myWindow.show()
-        }
-
-        function relocate() {
-            window.location = window.location.href;
-        }
-
-    </script>
 {% endblock %}
