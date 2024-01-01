@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -47,7 +48,13 @@ class LogCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnDetail(),
             DateTimeField::new('time')
             ->setLabel('log.time'),
-            TextField::new('log')
+            TextField::new('log'),
+            IntegerField::new('admin_id')
+            ->setLabel('log.adminid'),
+            IntegerField::new('object_id')
+            ->setLabel('log.objectid'),
+            TextField::new('object_class')
+            ->setLabel('log.objectclass'),
 
         ];
     }
