@@ -40,8 +40,11 @@ class ExportController extends AbstractController
                 return $this->redirectToRoute('admin', ['routeName' => 'app_export_car']);
             }
             $log = new Log();
-            $log->setTime(new DateTimeImmutable());
+            $log->setTime(new \DateTimeImmutable());
             $log->setLog('Vykonaný export dát od: ' . $start->format('d.m.Y') . ' do: ' . $end->format('d.m.Y'));
+            $log->setAdminId((int)$this->getUser()->getId());
+            $log->setObjectId(NULL);
+            $log->setObjectClass('ExportController');
 
             $managerRegistry->getManager()->persist($log);
             $managerRegistry->getManager()->flush();
