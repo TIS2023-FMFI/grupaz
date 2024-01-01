@@ -95,3 +95,6 @@ import:
 log:
   logs: Logy
   time: Čas
+  adminid: Id admina
+  objectid: Id objeku
+  objectclass: Trieda objektu

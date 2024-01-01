@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Log;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,6 +41,14 @@ class RegistrationController extends AbstractController
             $user->setRoles(["ROLE_ADMIN"]);
 
             $entityManager->persist($user);
+            $entityManager->flush();
+            $log = new Log();
+            $log->setTime(new \DateTimeImmutable());
+            $log->setLog("Pridaný nový používateľ.");
+            $log->setAdminId((int)$this->getUser()->getId());
+            $log->setObjectId($user->getId());
+            $log->setObjectClass('RegistrationController');
+            $entityManager->persist($log);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin');

@@ -30,6 +30,9 @@ class ImportController extends AbstractController
                     $log = new Log();
                     $log->setTime(new \DateTimeImmutable());
                     $log->setLog("Vykonaný import súboru: $uploadedFile");
+                    $log->setAdminId((int)$this->getUser()->getId());
+                    $log->setObjectId(NULL);
+                    $log->setObjectClass('ImportController');
                     $managerRegistry->getManager()->persist($log);
                     $managerRegistry->getManager()->flush();
                     $this->addFlash(
