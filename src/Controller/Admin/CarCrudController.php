@@ -17,6 +17,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CarCrudController extends AbstractCrudController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    
     public static function getEntityFqcn(): string
     {
         return Car::class;
