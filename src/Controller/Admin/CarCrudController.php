@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Car;
+use App\Entity\Log;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -35,6 +37,52 @@ class CarCrudController extends AbstractCrudController
             // set this number to 0 to display a simple "< Previous | Next >" pager
             ->setPaginatorRangeSize(3);
     }
+    
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $changes = $this->getEntityChanges($entityInstance);
+
+        parent::updateEntity($entityManager, $entityInstance);
+
+        $log = new Log();
+        $log->setTime(new \DateTimeImmutable());
+        $log->setLog('Auto upravené. Zmeny: ' . implode(', ', $changes));
+        $log->setAdminId((int)$this->getUser()->getId());
+        $log->setObjectId((int)$entityInstance->getId());
+        $log->setObjectClass('Car');
+
+        $entityManager->persist($log);
+        $entityManager->flush();
+    }
+
+    private function getEntityChanges($entity): array
+    {
+        $changes = [];
+        $unitOfWork = $this->entityManager->getUnitOfWork();
+        $unitOfWork->computeChangeSets();
+
+        $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
+
+        foreach ($entityChangeSet as $field => $change) {
+            $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
+        }
+
+        return $changes;
+    }
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $log = new Log();
+        $log->setTime(new \DateTimeImmutable());
+        $log->setLog('Auto vymazané.');
+        $log->setAdminId((int) $this->getUser()->getId());
+        $log->setObjectId((int) $entityInstance->getId());
+        $log->setObjectClass('Car');
+
+        $entityManager->persist($log);
+        $entityManager->remove($entityInstance);
+        $entityManager->flush();
+    }
+    
     public function configureActions(Actions $actions): Actions
     {
         return $actions
