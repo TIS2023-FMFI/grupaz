@@ -35,6 +35,8 @@ class CarGroupCrudController extends AbstractCrudController
             ->setPageTitle('index','entity.carGroup.name')
             ->setPageTitle('edit', 'entity.carGroup.name')
             ->setPageTitle('detail','entity.carGroup.name')
+            ->setEntityLabelInPlural('entity.carGroup.car_groups')
+            ->setEntityLabelInSingular('entity.carGroup.name')
             ->setSearchFields(['gid'])
             ->setDefaultSort(['exportTime' => 'DESC', 'gid' => 'DESC',])
             // the max number of entities to display per page
@@ -48,16 +50,19 @@ class CarGroupCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $exportAction = Action::new('export')
+            ->setLabel('crud.export')
             ->linkToRoute('app_export_car')
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
         $importAction = Action::new('import')
+            ->setLabel('crud.import')
             ->linkToRoute('app_import_car')
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
         $deleteAction = Action::new('remove')
+            ->setLabel('crud.remove')
             ->linkToRoute('app_delete_car')
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
@@ -119,6 +124,7 @@ class CarGroupCrudController extends AbstractCrudController
         return [
             FormField::addTab('main.info'),
             IdField::new('id')
+                ->setLabel('crud.id')
                 ->onlyOnIndex(),
             TextField::new('gid')
                 ->setLabel('entity.carGroup.gid'),
