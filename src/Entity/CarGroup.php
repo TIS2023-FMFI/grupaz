@@ -77,7 +77,7 @@ class CarGroup
         return $this->frontLicensePlate;
     }
 
-    public function setFrontLicensePlate(string $frontLicensePlate): static
+    public function setFrontLicensePlate(?string $frontLicensePlate): static
     {
         $this->frontLicensePlate = $frontLicensePlate;
 
