@@ -3,9 +3,46 @@
 {% block content_title %}Delete{% endblock %}
 
 {% block main %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const myModalElement = document.getElementById('myModal')
+            const myModal = new bootstrap.Modal(myModalElement)
+            const deleteForm = document.getElementById('deleteForm');
+            const deleteButton = document.getElementById("deleteButton")
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
+            deleteForm.addEventListener('submit', function (e) {
+                e.preventDefault()
+                myModal.show()
+            })
+            deleteButton.addEventListener("click", function (){
+                deleteForm.submit();
+            })
+        })
+    </script>
+<div class="container">
+        <div class="row">
+            <section class="mb-5">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'deleteForm'}}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </section>
+        </div>
+    </div>
 
+    <div class="modal" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Do you really want to delete all car groups from start to end?</h5>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'delete.control'|trans }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="deleteButton" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

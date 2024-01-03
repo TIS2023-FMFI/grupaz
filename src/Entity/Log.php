@@ -3,48 +3,50 @@
 namespace App\Entity;
 
 use App\Repository\LogRepository;
-use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
-#[ORM\Table(name: '`log`')]
-class Log implements UserInterface
+class Log
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $time = null;
-
     #[ORM\Column]
-    #[Assert\Length(max: 80)]
+    private ?\DateTimeImmutable $time = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $log = null;
 
+    #[ORM\Column]
+    private ?int $admin_id = null;
 
+    #[ORM\Column]
+    private ?int $object_id = null;
 
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 25)]
+    private ?string $object_class = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTime(): ?\DateTimeInterface
+    public function getTime(): ?\DateTimeImmutable
     {
         return $this->time;
     }
 
-    public function setTime(\DateTimeInterface $time): static
+    public function setTime(\DateTimeImmutable $time): static
     {
         $this->time = $time;
 
         return $this;
     }
+
     public function getLog(): ?string
     {
         return $this->log;
@@ -57,38 +59,33 @@ class Log implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
+    public function getAdminId(): ?int
     {
-        return (int) $this->id;
+        return $this->admin_id;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
+    public function setAdminId(?int $admin_id): void
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        $this->admin_id = $admin_id;
     }
 
-    public function setRoles(array $roles): static
+    public function getObjectId(): ?int
     {
-        $this->roles = $roles;
-
-        return $this;
+        return $this->object_id;
     }
 
-    public function eraseCredentials(): void
+    public function setObjectId(?int $object_id): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->object_id = $object_id;
+    }
+
+    public function getObjectClass(): ?string
+    {
+        return $this->object_class;
+    }
+
+    public function setObjectClass(?string $object_class): void
+    {
+        $this->object_class = $object_class;
     }
 }

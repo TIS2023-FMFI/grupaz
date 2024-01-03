@@ -3,12 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Form\DeleteType;
-use App\Form\ExportType;
-use App\Repository\CarRepository;
-use App\Serializer\CarNormalizer;
-use App\Service\FileResponse;
+use App\Repository\CarGroupRepository;
 use App\Entity\Log;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,42 +20,41 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[Route('/admin/{_locale<%app.supported_locales%>}/delete', name:'app_delete_')]
 class DeleteController extends AbstractController
 {
-    /**
-     * @throws ExceptionInterface
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     #[Route('/car',name: 'car')]
-    public function car(Request $request, CarRepository $carRepository): Response
+    public function car(Request $request, CarGroupRepository $carGroupRepository, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(DeleteType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $start = $form->get('start')->getData();
             $end = $form->get('end')->getData();
-            $result = $carRepository->deleteByFormData($start, $end);
-            if (empty($result)) {
+            $result = $carGroupRepository->deleteByFormData($start, $end);
+            if ($result === 0) {
                 $this->addFlash(
                     'warning',
-                    new TranslatableMessage('export.car.no_data_in_interval', [
+                    new TranslatableMessage('delete.car.no_data_in_interval', [
                         '%start%' => $start->format('Y-m-d'),
                         '%end%' => $end->format('Y-m-d')
                     ])
                 );
-                return $this->redirectToRoute('admin', ['routeName' => 'app_delete_car']);
             }
-            $log = new Log();
-            $log->setTime(new \DateTime());
-            $log->setLog("Vymazanie dát od: $start->format('d.m.Y'), do: $end->format('d.m.Y)");
+            else {
+                $this->addFlash(
+                    'success',
+                    new TranslatableMessage('delete.confirmation', [
+                        '%start%' => $start->format('Y-m-d'),
+                        '%end%' => $end->format('Y-m-d')
+                    ])
+                );
+            }
+            $log->setTime(new \DateTimeImmutable());
+            $log->setLog("Vymazanie dát od: {$start->format('d.m.Y')}, do: {$end->format('d.m.Y')}");
+            $log->setAdminId((int)$this->getUser()->getId());
+            $log->setObjectId(NULL);
+            $log->setObjectClass('DeleteController');
 
-            $this->entityManager->persist($log);
-            $this->entityManager->flush();
-            $serializer = new Serializer([new CarNormalizer()], [new CsvEncoder()]);
-            $content = $serializer->serialize($result, 'csv');
-            return FileResponse::get($content, sprintf('cars_%s_%s.csv', $start->format('Y-m-d'), $end->format('Y-m-d')),'text/csv');
+            $managerRegistry->getManager()->persist($log);
+            $managerRegistry->getManager()->flush();
         }
         return $this->render('admin/delete.html.twig', [
             'form' => $form,

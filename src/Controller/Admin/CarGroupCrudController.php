@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CarGroup;
+use App\Entity\Log;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,6 +18,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CarGroupCrudController extends AbstractCrudController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    
     public static function getEntityFqcn(): string
     {
         return CarGroup::class;
@@ -68,6 +77,41 @@ class CarGroupCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
+    }
+    
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $changes = $this->getEntityChanges($entityInstance);
+
+        parent::updateEntity($entityManager, $entityInstance);
+
+        $log = new Log();
+        $log->setTime(new \DateTimeImmutable());
+        $log->setLog('Grupáž upravená. Zmeny: ' . implode(', ', $changes));
+        $log->setAdminId((int)$this->getUser()->getId());
+        $log->setObjectId((int)$entityInstance->getId());
+        $log->setObjectClass('Cargroup');
+
+        $entityManager->persist($log);
+        $entityManager->flush();
+    }
+
+    private function getEntityChanges($entity): array
+    {
+        $changes = [];
+        $unitOfWork = $this->entityManager->getUnitOfWork();
+        $unitOfWork->computeChangeSets();
+
+        $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
+
+        foreach ($entityChangeSet as $field => $change) {
+            if ($change[0] instanceof \DateTimeInterface && $change[1] instanceof \DateTimeInterface) {
+                $changes[] = sprintf('%s: %s => %s', $field, $change[0]->format('Y-m-d H:i:s'), $change[1]->format('Y-m-d H:i:s'));
+            } else {
+                $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
+            }
+        }
+        return $changes;
     }
 
     public function configureFields(string $pageName): iterable

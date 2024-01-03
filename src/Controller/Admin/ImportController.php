@@ -6,6 +6,7 @@ use App\Form\UploadType;
 use App\Service\FileUploader;
 use App\Entity\Log;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,15 +17,8 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[Route('/admin/{_locale<%app.supported_locales%>}/import', name:'app_import_')]
 class ImportController extends AbstractController
 {
-    /**
-     * @throws Exception
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
     #[Route('/car', name: 'car')]
-    public function car(Request $request, FileUploader $fileUploader): Response
+    public function car(Request $request, FileUploader $fileUploader, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(UploadType::class);
         $form->handleRequest($request);
@@ -34,10 +28,13 @@ class ImportController extends AbstractController
                 $importedCars = $fileUploader->upload($uploadedFile);
                 if (0 < $importedCars) {
                     $log = new Log();
-                    $log->setTime(new \DateTime());
+                    $log->setTime(new \DateTimeImmutable());
                     $log->setLog("Vykonaný import súboru: $uploadedFile");
-                    $this->entityManager->persist($log);
-                    $this->entityManager->flush();
+                    $log->setAdminId((int)$this->getUser()->getId());
+                    $log->setObjectId(NULL);
+                    $log->setObjectClass('ImportController');
+                    $managerRegistry->getManager()->persist($log);
+                    $managerRegistry->getManager()->flush();
                     $this->addFlash(
                         'success',
                         new TranslatableMessage('import.car.success', [
