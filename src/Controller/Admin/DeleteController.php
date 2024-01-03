@@ -47,7 +47,8 @@ class DeleteController extends AbstractController
                     ])
                 );
             }
-            $log->setTime(new \DateTimeImmutable());
+            $log = new Log();
+            $log->setTime(new DateTimeImmutable());
             $log->setLog("Vymazanie dát od: {$start->format('d.m.Y')}, do: {$end->format('d.m.Y')}");
             $log->setAdminId((int)$this->getUser()->getId());
             $log->setObjectId(NULL);

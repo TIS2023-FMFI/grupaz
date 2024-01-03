@@ -34,6 +34,8 @@ class CarCrudController extends AbstractCrudController
             ->setPageTitle('index','entity.car.cars')
             ->setPageTitle('edit', 'entity.car.name')
             ->setPageTitle('detail','entity.car.name')
+            ->setEntityLabelInPlural('entity.car.cars')
+            ->setEntityLabelInSingular('entity.car.name')
             ->setSearchFields(['vis'])
             ->setDefaultSort(['id' => 'ASC'])
             // the max number of entities to display per page

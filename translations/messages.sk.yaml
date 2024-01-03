@@ -16,8 +16,12 @@ main:
   create: Vytvoriť
   info: Informácie
 crud:
+  id: ID
   edit: Upraviť
   detail: Detail
+  remove: Odstrániť
+  import: Importovať
+  export: Exportovať
 entity:
   car:
     name: Auto
@@ -39,6 +43,7 @@ entity:
     timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.
     timeout_button: Chcem pokračovať.
   carGroup:
+    car_groups: Grupáže
     name: Grupáž
     gid: Id grupáže
     front_license_plate: EČV kamióna
@@ -59,6 +64,7 @@ entity:
   user:
     name: Používateľ
     users: Používatelia
+    email: Email
     register: Registrácia
     new: Nový používateľ
     roles: Používateľské roly
@@ -92,7 +98,11 @@ import:
     success: Naimportovali ste %importedCars% aút.
     no_cars_in_file: V danom súbore nie sú žiadne autá.
     wrong_file_keys: V danom súbore sú zle nastavené názvy stĺpcov.
+history:
+  singular: História
+  plural: História
 log:
+  log: Log
   logs: Logy
   time: Čas
   adminid: Id admina
