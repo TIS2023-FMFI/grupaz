@@ -2,34 +2,31 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Log;
+use App\Entity\CarGroup;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_SUPER_ADMIN')]
-class LogCrudController extends AbstractCrudController
+class HistoryCarGroupCrudController extends CarGroupCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Log::class;
+        return CarGroup::class;
     }
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index','log.logs')
-            ->setPageTitle('edit', 'log.logs')
-            ->setPageTitle('detail','log.logs')
-            ->setEntityLabelInPlural('log.logs')
-            ->setEntityLabelInSingular('log.log')
-            ->setSearchFields(['time', 'log'])
-            ->setDefaultSort(['time' => 'DESC', 'id' => 'DESC',])
+            ->setEntityLabelInPlural('history.plural')
+            ->setEntityLabelInSingular('history.singular')
+            ->setDefaultSort(['exportTime' => 'DESC',])
             // the max number of entities to display per page
             ->setPaginatorPageSize(30)
             // the number of pages to display on each side of the current page
@@ -38,29 +35,31 @@ class LogCrudController extends AbstractCrudController
             // set this number to 0 to display a simple "< Previous | Next >" pager
             ->setPaginatorRangeSize(3);
     }
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): \Doctrine\ORM\QueryBuilder
+    {
+        return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
+            ->andWhere('entity.exportTime IS NOT NULL');
+    }
     public function configureActions(Actions $actions): Actions
     {
-        return parent::configureActions($actions)
+        return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::EDIT)
+            ->remove(Crud::PAGE_INDEX, Action::EDIT)
             ;
     }
 
+    /*
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->onlyOnDetail(),
-            DateTimeField::new('time')
-                ->setLabel('log.time'),
-            TextField::new('log')
-                ->setLabel('log.log'),
-            IntegerField::new('admin_id')
-                ->setLabel('log.adminid'),
-            IntegerField::new('object_id')
-                ->setLabel('log.objectid'),
-            TextField::new('object_class')
-                ->setLabel('log.objectclass'),
-
+            IdField::new('id'),
+            TextField::new('title'),
+            TextEditorField::new('description'),
         ];
     }
+    */
 }

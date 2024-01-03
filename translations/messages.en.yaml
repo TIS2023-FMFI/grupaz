@@ -16,8 +16,12 @@ main:
   create: Create
   info: Information
 crud:
+  id: ID
   edit: Edit
   detail: Detail
+  remove: Remove
+  import: Import
+  export: Export
 entity:
   car:
     name: Car
@@ -39,6 +43,7 @@ entity:
     timeout_text: If you want to continue in scanning, please push button below.
     timeout_button: I want continue.
   carGroup:
+    car_groups: Car groups
     name: Car group
     gid: Group ID
     front_license_plate: Front License Plate
@@ -59,6 +64,7 @@ entity:
   user:
     name: User
     users: Users
+    email: Email
     register: Register
     new: New user
     roles: User roles
@@ -94,7 +100,11 @@ import:
     no_cars_in_file: There are no cars in given file.
     wrong_file_keys: Column names are incorrectly set in given file.
     count_in_queue: In queue are waiting %carsInQueue% cars.
+history:
+  singular: History
+  plural: History
 log:
+  log: Log
   logs: Logs
   time: Time
   adminid: Admin Id
