@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use function Symfony\Component\Clock\now;
 
 /**
  * @extends ServiceEntityRepository<Car>
@@ -116,5 +117,20 @@ class CarRepository extends ServiceEntityRepository
             ->andWhere('car.carGroup = :id')
             ->setParameter('id', $id)
             ->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @throws \DateMalformedStringException
+     */
+    public function confirmCarGroup(int $id): ?Car
+    {
+        return $this->createQueryBuilder('car')
+            ->update()
+            ->set('car.status', 4)
+            ->set('car.exportTime', now()->format('yyyy-MM-dd'))
+            ->andWhere('car.carGroup = :car_carGroup')
+            ->andWhere('car.status = 3')
+            ->setParameter('car_carGroup', $id)
+            ->getQuery()->getResult();
     }
 }

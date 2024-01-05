@@ -85,12 +85,18 @@ export:
   car:
     no_data_in_interval: There are no data for export from %start% to %end%.
 delete:
+  name: Deletion
+  confirm_name: Confirm deletion
   start: From
   end: To
   car:
     no_data_in_interval: There are no data for deletion from %start% to %end%.
-  confirmation: Deletion confirmed
-  control: Are you sure you want to delete?
+  confirmation: Deletion of car groups from %start% to %end% confirmed.
+  control: Are you sure you want to delete data from %start% to %end%?
+  close: Close
+  deletion: Delete
+approve:
+  confirmation: Car group with group id %gid% was approved.
 import:
   file:
     upload: Uploading file

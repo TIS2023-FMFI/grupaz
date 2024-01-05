@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use function Symfony\Component\Clock\now;
 
 /**
  * @extends ServiceEntityRepository<CarGroup>
@@ -38,6 +39,13 @@ class CarGroupRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.status = :status')
             ->setParameter('status', 3)
+            ->getQuery()->getResult();
+    }
+
+    public function  findExportedCarGroups()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exportTime IS NOT NULL')
             ->getQuery()->getResult();
     }
 
