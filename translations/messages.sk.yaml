@@ -79,6 +79,13 @@ entity:
     message_after_sending: Ak existuje účet s daným emailom, tak sme Vám poslali mail, ktorý obsahuje link, ktorý môžete použíť na zmenenie hesla. Tento link expiruje do %expiry%.
     check_spam: Ak Vám nepríde email skontrolujte si spam alebo <a href="%path%">skúste znova</a>.
     invalid_permissions: Nemáte dostatočné povolenia na vykonanie tejto akcie.
+    approve: Pre admina na schválenie
+    deny: Zrušiť naloženie
+    no_approve: Žiadna grupáž na schválenie.
+    scanning: Prebieha skenovanie
+    scanned: Naskenované
+    all: Všetky
+    no_deny: Práve sa neskenuje žiadna grupáž.
 export:
   start: Od dátumu vrátane
   end: Po dátum vrátane

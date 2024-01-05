@@ -79,6 +79,13 @@ entity:
     message_after_sending: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password. This link will expire in %expiry%.
     check_spam: If you don't receive an email please check your spam folder or <a href="%path%">try again</a>.
     invalid_permissions: You do not have permissions to perform this action.
+    approve: For admin to approve
+    deny: Deny loading
+    no_approve: There are no car groups for approval.
+    scanning: Scanning progress
+    scanned: Scanned
+    all: All
+    no_deny: There are no currently scanned car groups.
 export:
   start: From
   end: To
