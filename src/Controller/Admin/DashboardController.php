@@ -54,46 +54,13 @@ class DashboardController extends AbstractDashboardController
             $filesInQueue = $importCarsTransport->getMessageCount();
         }
 
-        $exportedCars = $this->carGroupRepository->findExportedCarGroups();
-        $approveCar = $this->carRepository->confirmCarGroup("");
-
         return $this->render('admin/dashboard.html.twig', [
             'carsInQueue' => $carsInQueue ?? null,
             'filesInQueue' => $filesInQueue ?? null,
-            'exportedCars' => $exportedCars ?? null,
-            'approveCar' => $approveCar ?? null,
             'toApproveNotifications' => $this->getToApproveNotifications(),
             'workInProgressNotifications' => $this->getWorkInProgressNotifications(),
         ]);
     }
-
-    #[Route('/admin/download-log-file', name: 'admin_download_log_file')]
-    public function downloadLogFile(): Response
-    {
-        if (!$this->isGranted("ROLE_SUPER_ADMIN")) {
-            $this->addFlash(
-                'warning',
-                new TranslatableMessage('entity.user.invalid_permissions')
-            );
-            return $this->redirectToRoute('admin');
-        }
-        $logFilePath = $this->getParameter('kernel.project_dir') . '/var/log/dev.log';
-
-        if (!file_exists($logFilePath)) {
-            throw $this->createNotFoundException('Log file not found.');
-        }
-
-        // Read the content of the log file
-        $logContent = file_get_contents($logFilePath);
-
-        // Create a Response with the log content
-        $response = new Response($logContent);
-        $response->headers->set('Content-Type', 'text/plain');
-        $response->headers->set('Content-Disposition', 'attachment; filename="dev.log"');
-
-        return $response;
-    }
-
 
     /**
      * @throws NonUniqueResultException

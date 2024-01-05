@@ -7,9 +7,11 @@ use App\Entity\Car;
 use App\Entity\Log;
 use App\Repository\CarRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -17,14 +19,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CarGroupCrudController extends AbstractCrudController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private CarRepository $carRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, CarRepository $carRepository)
     {
         $this->entityManager = $entityManager;
+        $this->carRepository = $carRepository;
     }
     
     public static function getEntityFqcn(): string
@@ -70,22 +76,18 @@ class CarGroupCrudController extends AbstractCrudController
             ->setCssClass('btn btn-primary')
         ;
         $approveAction = Action::new('approve')
-            ->setTemplatePath('admin/approve.html.twig')
             ->linkToCrudAction('approve')
             ->addCssClass('btn btn-success')
             ->setIcon('fa fa-check-circle')
-            ->displayAsButton();
-        //TODO approve carGroup after all cars were scanned
-//        $cimportAction = Action::new('aaimport')
-//            ->linkToRoute('app_import_car')
-//            ->setCssClass('btn btn-primary')
-//        ;
+            ->displayIf(static function (CarGroup $carGroup): bool {
+                return $carGroup->getStatus() == 3;
+            });;
+
         return $actions
             ->add(Crud::PAGE_INDEX, $importAction)
             ->add(Crud::PAGE_INDEX, $exportAction)
             ->add(Crud::PAGE_INDEX, $deleteAction)
             ->add(Crud::PAGE_DETAIL, $approveAction)
-//            ->add(Crud::PAGE_DETAIL, $cimportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
@@ -136,7 +138,8 @@ class CarGroupCrudController extends AbstractCrudController
                 ->setLabel('crud.id')
                 ->onlyOnIndex(),
             TextField::new('gid')
-                ->setLabel('entity.carGroup.gid'),
+                ->setLabel('entity.carGroup.gid')
+                ->hideOnForm(),
             TextField::new('frontLicensePlate')
                 ->setLabel('entity.carGroup.front_license_plate'),
             TextField::new('backLicensePlate')
@@ -175,8 +178,37 @@ class CarGroupCrudController extends AbstractCrudController
         ];
     }
 
-    public function approve(String $gid, CarRepository $car): ?Car
+    public function approve(AdminContext $adminContext, AdminUrlGenerator $adminUrlGenerator)
     {
-        return $car->confirmCarGroup($gid);
+        $carGroup = $adminContext->getEntity()->getInstance();
+        if (!$carGroup instanceof CarGroup) {
+            throw new \LogicException('Entity is missing or not a CarGroup');
+        }
+        $carGroup->setStatus(4);
+        $carGroup->setExportTime(new \DateTimeImmutable());
+        $this->entityManager->flush();
+
+        $this->addFlash('success', "grupaz schvalena");
+        $targetUrl = $adminUrlGenerator
+            ->setController(self::class)
+            ->setAction(Crud::PAGE_DETAIL)
+            ->setEntityId($carGroup->getId())
+            ->generateUrl();
+        return $this->redirect($targetUrl);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    #[Route('/admin/{_locale<%app.supported_locales%>/remove_from_progress/{id}', name: 'remove_from_progress')]
+    public function removeCarGroupFromProgress(CarGroup $carGroup)
+    {
+        $carGroup->setStatus(0);
+        $this->carRepository->unloadAllCarInGroup($carGroup->getId());
+
+        $this->entityManager->persist($carGroup);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('admin');
     }
 }
