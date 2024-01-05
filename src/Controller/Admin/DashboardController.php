@@ -54,9 +54,14 @@ class DashboardController extends AbstractDashboardController
             $filesInQueue = $importCarsTransport->getMessageCount();
         }
 
+        $exportedCars = $this->carGroupRepository->findExportedCarGroups();
+        $approveCar = $this->carRepository->confirmCarGroup("");
+
         return $this->render('admin/dashboard.html.twig', [
             'carsInQueue' => $carsInQueue ?? null,
             'filesInQueue' => $filesInQueue ?? null,
+            'exportedCars' => $exportedCars ?? null,
+            'approveCar' => $approveCar ?? null,
             'toApproveNotifications' => $this->getToApproveNotifications(),
             'workInProgressNotifications' => $this->getWorkInProgressNotifications(),
         ]);

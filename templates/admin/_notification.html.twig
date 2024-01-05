@@ -12,3 +12,69 @@
     {% endfor %}
     </div>
 {% endif %}
+
+<h2>For admin to approve</h2>
+{% if toApproveNotifications is not empty %}
+<div class="row">
+    <section class="mb-2">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col">#</th>
+                    <th scope="col">{{ 'entity.carGroup.gid'|trans }}</th>
+                    <th scope="col">{{ 'entity.carGroup.front_license_plate'|trans }}</th>
+                    <th scope="col">{{ 'entity.carGroup.back_license_plate'|trans }}</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                {% for carGroup in toApproveNotifications %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ carGroup.gid }}</td>
+                        <td>{{ carGroup.frontLicensePlate }}</td>
+                        <td>{{ carGroup.backLicensePlate }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% else %}
+There are no car groups for approval
+{% endif %}
+
+<h2>Now scanned car groups</h2>
+{% if workInProgressNotifications is not empty%}
+    <div class="row">
+        <section class="mb-2">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr class="table-primary">
+                        <th scope="col">#</th>
+                        <th scope="col">{{ 'entity.carGroup.gid'|trans }}</th>
+                        <th scope="col">{{ 'entity.carGroup.front_license_plate'|trans }}</th>
+                        <th scope="col">{{ 'entity.carGroup.back_license_plate'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for carGroup in workInProgressNotifications %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ attribute(carGroup, 0).gid }}</td>
+                            <td>{{ attribute(carGroup, 0).frontLicensePlate }}</td>
+                            <td>{{ attribute(carGroup, 0).backLicensePlate }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+{% else %}
+    There are no currently scanned car groups
+{% endif %}

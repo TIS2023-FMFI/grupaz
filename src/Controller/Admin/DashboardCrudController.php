@@ -18,7 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class CarGroupCrudController extends AbstractCrudController
+class DashboardCrudController extends AbstractCrudController
 {
     private $entityManager;
 
@@ -26,7 +26,7 @@ class CarGroupCrudController extends AbstractCrudController
     {
         $this->entityManager = $entityManager;
     }
-    
+
     public static function getEntityFqcn(): string
     {
         return CarGroup::class;
@@ -34,11 +34,8 @@ class CarGroupCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index','entity.carGroup.name')
-            ->setPageTitle('edit', 'entity.carGroup.name')
-            ->setPageTitle('detail','entity.carGroup.name')
-            ->setEntityLabelInPlural('entity.carGroup.car_groups')
-            ->setEntityLabelInSingular('entity.carGroup.name')
+            ->setPageTitle('index','main.dashboard')
+            ->setPageTitle('detail','main.dashboard')
             ->setSearchFields(['gid'])
             ->setDefaultSort(['exportTime' => 'DESC', 'gid' => 'DESC',])
             // the max number of entities to display per page
@@ -52,19 +49,16 @@ class CarGroupCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $exportAction = Action::new('export')
-            ->setLabel('crud.export')
             ->linkToRoute('app_export_car')
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
         $importAction = Action::new('import')
-            ->setLabel('crud.import')
             ->linkToRoute('app_import_car')
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
         $deleteAction = Action::new('remove')
-            ->setLabel('crud.remove')
             ->linkToRoute('app_delete_car')
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
@@ -80,10 +74,11 @@ class CarGroupCrudController extends AbstractCrudController
 //            ->linkToRoute('app_import_car')
 //            ->setCssClass('btn btn-primary')
 //        ;
-        return $actions
+        return parent::configureActions($actions)
             ->add(Crud::PAGE_INDEX, $importAction)
             ->add(Crud::PAGE_INDEX, $exportAction)
             ->add(Crud::PAGE_INDEX, $deleteAction)
+            ->add(Crud::PAGE_INDEX, $approveAction)
             ->add(Crud::PAGE_DETAIL, $approveAction)
 //            ->add(Crud::PAGE_DETAIL, $cimportAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
@@ -92,7 +87,7 @@ class CarGroupCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
     }
-    
+
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $changes = $this->getEntityChanges($entityInstance);
@@ -133,7 +128,6 @@ class CarGroupCrudController extends AbstractCrudController
         return [
             FormField::addTab('main.info'),
             IdField::new('id')
-                ->setLabel('crud.id')
                 ->onlyOnIndex(),
             TextField::new('gid')
                 ->setLabel('entity.carGroup.gid'),
@@ -175,6 +169,9 @@ class CarGroupCrudController extends AbstractCrudController
         ];
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     */
     public function approve(String $gid, CarRepository $car): ?Car
     {
         return $car->confirmCarGroup($gid);
