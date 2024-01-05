@@ -100,10 +100,12 @@ approve:
 import:
   file:
     upload: Priložený súbor
+    count_in_queue: V rade na spracovanie čaká %filesInQueue% súborov.
   car:
     success: Naimportovali ste %importedCars% aút.
     no_cars_in_file: V danom súbore nie sú žiadne autá.
     wrong_file_keys: V danom súbore sú zle nastavené názvy stĺpcov.
+    count_in_queue: V rade na spracovanie čaká %carsInQueue% áut.
 history:
   singular: História
   plural: História
