@@ -1,18 +1,3 @@
-{% if toApproveNotifications is not empty %}
-    <div class="alert alert-info">
-        {% for notification in toApproveNotifications %}
-        <p>{{ notification.gid }}</p>
-    {% endfor %}
-    </div>
-{% endif %}
-{% if workInProgressNotifications is not empty %}
-    <div class="alert alert-info">
-    {% for notification in workInProgressNotifications %}
-        <p {% if loop.last %}class="mb-0" {% endif %}>{{ attribute(notification, 0).gid }}, loaded cars {{ attribute(notification, 2) }} / {{ attribute(notification, 1) }}</p>
-    {% endfor %}
-    </div>
-{% endif %}
-
 <h2>For admin to approve</h2>
 {% if toApproveNotifications is not empty %}
 <div class="row">
@@ -30,7 +15,11 @@
                 </thead>
                 <tbody class="table-group-divider">
                 {% for carGroup in toApproveNotifications %}
-                    <tr>
+                    {% set url = ea_url()
+                        .setController('App\\Controller\\Admin\\CarGroupCrudController')
+                        .setAction('detail')
+                        .setEntityId(carGroup.id) %}
+                    <tr onclick="window.location.href='{{ url }}';" style="cursor:pointer;">
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ carGroup.gid }}</td>
                         <td>{{ carGroup.frontLicensePlate }}</td>
@@ -47,7 +36,7 @@
 There are no car groups for approval
 {% endif %}
 
-<h2>Now scanned car groups</h2>
+<h2>Scanning progress</h2>
 {% if workInProgressNotifications is not empty%}
     <div class="row">
         <section class="mb-2">
@@ -57,8 +46,11 @@ There are no car groups for approval
                     <tr class="table-primary">
                         <th scope="col">#</th>
                         <th scope="col">{{ 'entity.carGroup.gid'|trans }}</th>
+                        <th scope="col">Scanned</th>
+                        <th scope="col">All</th>
                         <th scope="col">{{ 'entity.carGroup.front_license_plate'|trans }}</th>
                         <th scope="col">{{ 'entity.carGroup.back_license_plate'|trans }}</th>
+                        <th scope="col">Zmazat z progresu</th>
                     </tr>
                     </thead>
                     <tbody class="table-group-divider">
@@ -66,8 +58,13 @@ There are no car groups for approval
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
                             <td>{{ attribute(carGroup, 0).gid }}</td>
+                            <td>{{ attribute(carGroup, 2) }}</td>
+                            <td>{{ attribute(carGroup, 1) }}</td>
                             <td>{{ attribute(carGroup, 0).frontLicensePlate }}</td>
                             <td>{{ attribute(carGroup, 0).backLicensePlate }}</td>
+                            <td>
+                                <a href="{{ path('remove_from_progress', {'id': attribute(carGroup, 0).id}) }}" style="display: block">X</a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
