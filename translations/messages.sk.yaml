@@ -79,12 +79,18 @@ export:
   car:
     no_data_in_interval: Žiadne dáta na export od %start% do %end%.
 delete:
+  name: Zmazanie
+  confirm_name: Potvrdenie zmazania
   start: Od dátumu vrátane
   end: Po dátum vrátane
   car:
     no_data_in_interval: Žiadne dáta na zmazanie od %start% do %end%.
-  confirmation: Zmazanie potvrdené
+  confirmation: Zmazanie grupáží od %start% do %end% potvrdené.
   control: Naozaj chcete zmazať všetky grupáže?
+  close: Zavrieť
+  deletion: Zmazať
+approve:
+  confirmation: Grupáž s číslom %gid% bola schválená.
 import:
   file:
     upload: Priložený súbor
