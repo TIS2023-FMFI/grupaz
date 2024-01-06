@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\CarGroup;
-use App\Form\CarGroupType;
 use App\Form\EndFormType;
 use App\Form\FilterCarGroupType;
-use App\Repository\CarGroupRepository;
 use App\Repository\CarRepository;
-use App\Service\Import;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
