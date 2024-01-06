@@ -34,11 +34,11 @@ class AppController extends AbstractController
         $end->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $carGroup = $form->get('gid')->getData();
-            if ($carGroup->getStatus() >= 3){
+            if ($carGroup->getStatus() >= CarGroup::STATUS_ALL_SCANNED){
                 $this->addFlash('warning', 'entity.carGroup.closed');
                 return $this->redirectToRoute('app_index');
             }
-            $carGroup->setStatus(1);
+            $carGroup->setStatus(CarGroup::STATUS_START);
             $carRepository->unloadAllCarInGroup($carGroup->getId());
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_group_view', [

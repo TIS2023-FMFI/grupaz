@@ -18,9 +18,9 @@ class CarGroupController extends AbstractController
     #[Route('/{_locale<%app.supported_locales%>}/group-{id}', name: 'view')]
     public function view(CarGroup $carGroup, Request $request, ManagerRegistry $managerRegistry, CarRepository $carRepository): Response
     {
-        if ($carGroup->getStatus() != 1) {
-            if ($carGroup->getStatus() < 3){
-                $carGroup->setStatus(0);
+        if ($carGroup->getStatus() != CarGroup::STATUS_START) {
+            if ($carGroup->getStatus() < CarGroup::STATUS_ALL_SCANNED){
+                $carGroup->setStatus(CarGroup::STATUS_FREE);
             }
             $this->addFlash('danger', 'entity.carGroup.no_access');
             return $this->redirectToRoute('app_index');
@@ -30,7 +30,7 @@ class CarGroupController extends AbstractController
         $form = $this->createForm(CarGroupType::class, $carGroup);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $carGroup->setStatus(2);
+            $carGroup->setStatus(CarGroup::STATUS_SCANNING);
             $carRepository->unloadAllCarInGroup($carGroup->getId());
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_car_view', [
@@ -39,7 +39,7 @@ class CarGroupController extends AbstractController
         }
         if ($end->isSubmitted() && $end->isValid()) {
             $carRepository->unloadAllCarInGroup($carGroup->getId());
-            $carGroup->setStatus(0);
+            $carGroup->setStatus(CarGroup::STATUS_FREE);
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_index_no_locale');
         }
