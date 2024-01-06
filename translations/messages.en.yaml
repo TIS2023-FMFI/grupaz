@@ -15,6 +15,7 @@ main:
   password: Password
   create: Create
   info: Information
+  loading: Loading data
 crud:
   id: ID
   edit: Edit
@@ -22,6 +23,7 @@ crud:
   remove: Remove
   import: Import
   export: Export
+  approve: Approve
 entity:
   car:
     name: Car
@@ -61,6 +63,7 @@ entity:
       scanning: Scanning
       start: Logged in
       free: Free
+    approved: Car group approved and exported
   user:
     name: User
     users: Users
@@ -99,7 +102,7 @@ delete:
   car:
     no_data_in_interval: There are no data for deletion from %start% to %end%.
   confirmation: Deletion of car groups from %start% to %end% confirmed.
-  control: Are you sure you want to delete data from %start% to %end%?
+  control: Are you sure you want to delete data from chosen interval?
   close: Close
   deletion: Delete
 approve:

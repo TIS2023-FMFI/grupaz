@@ -31,7 +31,7 @@ class ImportCarHandler
                 $carGroup = new CarGroup();
                 $carGroup->setGid($uploadCar->getGid());
                 $carGroup->setImportTime(now());
-                $carGroup->setStatus(0);
+                $carGroup->setStatus(CarGroup::STATUS_FREE);
                 $manager->persist($carGroup);
             }
             $carGroup->setReceiver($uploadCar->getReceiver());
@@ -44,8 +44,8 @@ class ImportCarHandler
             {
                 $car = new Car();
                 $car->setVis($uploadCar->getVis());
-                $car->setStatus(0);
-                $car->setIsDamaged(0);
+                $car->setStatus(Car::STATUS_FREE);
+                $car->setIsDamaged(Car::STATUS_IS_NEW);
                 $manager->persist($car);
             }
             $car->setCarGroup($carGroup);

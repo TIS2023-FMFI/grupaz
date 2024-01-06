@@ -6,7 +6,6 @@ use App\Form\ExportType;
 use App\Repository\CarRepository;
 use App\Serializer\CarNormalizer;
 use App\Service\FileResponse;
-use DateTimeImmutable;
 use App\Entity\Log;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
