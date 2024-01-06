@@ -123,6 +123,6 @@ log:
   log: Log
   logs: Logy
   time: Čas
-  adminid: Id admina
-  objectid: Id objeku
-  objectclass: Trieda objektu
+  admin_id: Id admina
+  object_id: Id objeku
+  object_class: Trieda objektu

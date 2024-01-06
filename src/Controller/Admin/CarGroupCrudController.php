@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CarGroup;
-use App\Entity\Car;
 use App\Entity\Log;
 use App\Repository\CarRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,7 +81,7 @@ class CarGroupCrudController extends AbstractCrudController
             ->setIcon('fa fa-check-circle')
             ->displayIf(static function (CarGroup $carGroup): bool {
                 return $carGroup->getStatus() == 3;
-            });;
+            });
 
         return $actions
             ->add(Crud::PAGE_INDEX, $importAction)
@@ -185,7 +184,7 @@ class CarGroupCrudController extends AbstractCrudController
         if (!$carGroup instanceof CarGroup) {
             throw new \LogicException('Entity is missing or not a CarGroup');
         }
-        $carGroup->setStatus(4);
+        $carGroup->setStatus(CarGroup::STATUS_APPROVED);
         $carGroup->setExportTime(new \DateTimeImmutable());
         $this->entityManager->flush();
 
@@ -204,7 +203,7 @@ class CarGroupCrudController extends AbstractCrudController
     #[Route('/admin/{_locale<%app.supported_locales%>/remove_from_progress/{id}', name: 'remove_from_progress')]
     public function removeCarGroupFromProgress(CarGroup $carGroup)
     {
-        $carGroup->setStatus(0);
+        $carGroup->setStatus(CarGroup::STATUS_FREE);
         $this->carRepository->unloadAllCarInGroup($carGroup->getId());
 
         $this->entityManager->persist($carGroup);

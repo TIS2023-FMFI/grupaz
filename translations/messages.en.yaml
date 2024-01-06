@@ -123,6 +123,6 @@ log:
   log: Log
   logs: Logs
   time: Time
-  adminid: Admin Id
-  objectid: Object Id
-  objectclass: Object Class
+  admin_id: Admin Id
+  object_id: Object Id
+  object_class: Object Class
