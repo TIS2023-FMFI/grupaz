@@ -41,6 +41,7 @@ class ImportController extends AbstractController
                             '%importedCars%' => $importedCars
                         ])
                     );
+                    return $this->redirectToRoute('admin');
                 }
                 else {
                     $this->addFlash(

@@ -28,13 +28,14 @@ class DeleteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $start = $form->get('start')->getData();
             $end = $form->get('end')->getData();
+            $end = $end->modify('23:59:59');
             $result = $carGroupRepository->deleteByFormData($start, $end);
             if ($result === 0) {
                 $this->addFlash(
                     'warning',
                     new TranslatableMessage('delete.car.no_data_in_interval', [
-                        '%start%' => $start->format('Y-m-d'),
-                        '%end%' => $end->format('Y-m-d')
+                        '%start%' => $start->format('Y-m-d H:i'),
+                        '%end%' => $end->format('Y-m-d H:i')
                     ])
                 );
             }
