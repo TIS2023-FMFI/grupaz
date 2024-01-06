@@ -55,11 +55,11 @@ class LogCrudController extends AbstractCrudController
             TextField::new('log')
                 ->setLabel('log.log'),
             IntegerField::new('admin_id')
-                ->setLabel('log.adminid'),
+                ->setLabel('log.admin_id'),
             IntegerField::new('object_id')
-                ->setLabel('log.objectid'),
+                ->setLabel('log.object_id'),
             TextField::new('object_class')
-                ->setLabel('log.objectclass'),
+                ->setLabel('log.object_class'),
 
         ];
     }
