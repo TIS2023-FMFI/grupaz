@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Car;
 use App\Entity\CarGroup;
 use App\Form\EndFormType;
 use App\Form\ScanCarFormType;
@@ -19,9 +20,9 @@ class CarController extends AbstractController
     #[Route('/{_locale<%app.supported_locales%>}/group-{id}/car', name: 'view')]
     public function view(CarGroup $carGroup, CarRepository $carRepository, Request $request, ManagerRegistry $managerRegistry): Response
     {
-        if ($carGroup->getStatus() != 2) {
-            if ($carGroup->getStatus() < 3) {
-                $carGroup->setStatus(0);
+        if ($carGroup->getStatus() != CarGroup::STATUS_SCANNING) {
+            if ($carGroup->getStatus() < CarGroup::STATUS_ALL_SCANNED) {
+                $carGroup->setStatus(CarGroup::STATUS_FREE);
             }
             $this->addFlash('danger', 'entity.carGroup.no_access');
             return $this->redirectToRoute('app_index');
@@ -52,13 +53,13 @@ class CarController extends AbstractController
             }
 
             if ($car != null) {
-                $car->setStatus(1);
+                $car->setStatus(Car::STATUS_SCANNED);
                 $managerRegistry->getManager()->flush();
             }
             $count = $carRepository->countAllLoaded($carGroup->getId()) + $carRepository->countAllDamaged($carGroup->getId());
             if ($last === null && $count === $carGroup->getCars()->count()) {
                 $this->addFlash('success', 'entity.car.all_loaded');
-                $carGroup->setStatus(3);
+                $carGroup->setStatus(CarGroup::STATUS_ALL_SCANNED);
                 $managerRegistry->getManager()->flush();
                 return $this->redirectToRoute('app_index');
             }
@@ -67,7 +68,7 @@ class CarController extends AbstractController
         }
         if ($end->isSubmitted() && $end->isValid()) {
             $carRepository->unloadAllCarInGroup($carGroup->getId());
-            $carGroup->setStatus(0);
+            $carGroup->setStatus(CarGroup::STATUS_FREE);
             $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('app_index_no_locale');
         }

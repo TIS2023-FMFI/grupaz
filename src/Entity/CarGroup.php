@@ -12,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CarGroupRepository::class)]
 class CarGroup
 {
+    public const STATUS_FREE = 0;
+    public const STATUS_START = 1;
+    public const STATUS_SCANNING = 2;
+    public const STATUS_ALL_SCANNED = 3;
+    public const STATUS_APPROVED = 4;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

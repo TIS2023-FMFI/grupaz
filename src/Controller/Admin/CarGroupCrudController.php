@@ -76,6 +76,7 @@ class CarGroupCrudController extends AbstractCrudController
             ->setCssClass('btn btn-primary')
         ;
         $approveAction = Action::new('approve')
+            ->setLabel('crud.approve')
             ->linkToCrudAction('approve')
             ->addCssClass('btn btn-success')
             ->setIcon('fa fa-check-circle')
@@ -158,11 +159,11 @@ class CarGroupCrudController extends AbstractCrudController
             ChoiceField::new('status')
                 ->setLabel('entity.carGroup.status.name')
                 ->setTranslatableChoices([
-                    4 => ('entity.carGroup.status.approved'),
-                    3 => ('entity.carGroup.status.all_scanned'),
-                    2 => ('entity.carGroup.status.scanning'),
-                    1 => ('entity.carGroup.status.start'),
-                    0 => ('entity.carGroup.status.free'),
+                    CarGroup::STATUS_APPROVED => ('entity.carGroup.status.approved'),
+                    CarGroup::STATUS_ALL_SCANNED => ('entity.carGroup.status.all_scanned'),
+                    CarGroup::STATUS_SCANNING => ('entity.carGroup.status.scanning'),
+                    CarGroup::STATUS_START => ('entity.carGroup.status.start'),
+                    CarGroup::STATUS_FREE => ('entity.carGroup.status.free'),
                 ]),
             FormField::addTab('entity.car.cars'),
             AssociationField::new('cars')
@@ -188,7 +189,7 @@ class CarGroupCrudController extends AbstractCrudController
         $carGroup->setExportTime(new \DateTimeImmutable());
         $this->entityManager->flush();
 
-        $this->addFlash('success', "grupaz schvalena");
+        $this->addFlash('success', 'entity.carGroup.approved');
         $targetUrl = $adminUrlGenerator
             ->setController(self::class)
             ->setAction(Crud::PAGE_DETAIL)

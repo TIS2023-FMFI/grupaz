@@ -6,15 +6,11 @@ use App\Form\DeleteType;
 use App\Repository\CarGroupRepository;
 use App\Entity\Log;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Translation\TranslatableMessage;
 
 #[Route('/admin/{_locale<%app.supported_locales%>}/delete', name:'app_delete_')]
@@ -28,13 +24,14 @@ class DeleteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $start = $form->get('start')->getData();
             $end = $form->get('end')->getData();
+            $end = $end->modify('23:59:59');
             $result = $carGroupRepository->deleteByFormData($start, $end);
             if ($result === 0) {
                 $this->addFlash(
                     'warning',
                     new TranslatableMessage('delete.car.no_data_in_interval', [
-                        '%start%' => $start->format('Y-m-d'),
-                        '%end%' => $end->format('Y-m-d')
+                        '%start%' => $start->format('Y-m-d H:i'),
+                        '%end%' => $end->format('Y-m-d H:i')
                     ])
                 );
             }

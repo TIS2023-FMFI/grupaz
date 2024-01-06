@@ -5,9 +5,7 @@ namespace App\Controller\Admin;
 use App\Form\UploadType;
 use App\Service\FileUploader;
 use App\Entity\Log;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +39,7 @@ class ImportController extends AbstractController
                             '%importedCars%' => $importedCars
                         ])
                     );
+                    return $this->redirectToRoute('admin');
                 }
                 else {
                     $this->addFlash(
