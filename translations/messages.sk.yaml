@@ -15,6 +15,7 @@ main:
   password: Heslo
   create: Vytvoriť
   info: Informácie
+  loading: Načítavam
 crud:
   id: ID
   edit: Upraviť
@@ -22,6 +23,7 @@ crud:
   remove: Odstrániť
   import: Importovať
   export: Exportovať
+  approve: Schváliť
 entity:
   car:
     name: Auto
@@ -61,6 +63,7 @@ entity:
       scanning: Skenovanie
       start: Prihlásená
       free: Voľná
+    approved: Grupáž schvalená a vyexportovaná
   user:
     name: Používateľ
     users: Používatelia
@@ -99,7 +102,7 @@ delete:
   car:
     no_data_in_interval: Žiadne dáta na zmazanie od %start% do %end%.
   confirmation: Zmazanie grupáží od %start% do %end% potvrdené.
-  control: Naozaj chcete zmazať všetky grupáže?
+  control: Naozaj chcete zmazať dáta zo zvoleného intervalu?
   close: Zavrieť
   deletion: Zmazať
 approve:
