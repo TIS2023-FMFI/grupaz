@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Car>
@@ -62,17 +63,22 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
-    public function unloadAllCarInGroup(int $id): ?bool
+    public function unloadAllCarInGroup(int $id): ?int
     {
-        return $this->createQueryBuilder('car')
-            ->update()
-            ->set('car.status', 0)
-            ->where('car.carGroup = :car_carGroup')
-            ->setParameter('car_carGroup', $id)
-            ->getQuery()->getOneOrNullResult();
+        $this->getEntityManager()->beginTransaction();
+        try {
+            $result = $this->createQueryBuilder('car')
+                ->update()
+                ->set('car.status', 0)
+                ->where('car.carGroup = :car_carGroup')
+                ->setParameter('car_carGroup', $id)
+                ->getQuery()->getOneOrNullResult();
+            $this->getEntityManager()->commit();
+            return $result;
+        } catch (Exception) {
+            $this->getEntityManager()->rollback();
+            return -1;
+        }
     }
 
     /**
