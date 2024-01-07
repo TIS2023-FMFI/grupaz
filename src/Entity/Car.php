@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CarRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarRepository::class)]
 class Car
@@ -19,6 +20,7 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 8, unique: true)]
+    #[Assert\Length(min: 8, max: 8)]
     private ?string $vis = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -116,5 +118,23 @@ class Car
         $this->isDamaged = $isDamaged;
 
         return $this;
+    }
+
+    public static function translateIsDamaged(?int $cons): string
+    {
+        return match ($cons) {
+            self::STATUS_IS_DAMAGED => 'Poškodené',
+            self::STATUS_IS_NEW => 'Nepoškodené',
+            default => 'nenastavené',
+        };
+    }
+
+    public static function translateStatus(?int $cons): string
+    {
+        return match ($cons) {
+            self::STATUS_FREE => 'Voľné',
+            self::STATUS_SCANNED => 'Naskenované',
+            default => 'nenastavené',
+        };
     }
 }

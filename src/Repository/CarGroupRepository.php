@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<CarGroup>
@@ -33,6 +34,7 @@ class CarGroupRepository extends ServiceEntityRepository
             ->setParameter('gid', $gid)
             ->getQuery()->getOneOrNullResult();
     }
+
     public function findToAdminApprove()
     {
         return $this->createQueryBuilder('c')
@@ -49,6 +51,7 @@ class CarGroupRepository extends ServiceEntityRepository
             ->setParameter('startedScan', 2)
             ->getQuery()->getResult();
     }
+
     public function deleteByFormData(DateTimeInterface $startTime, DateTimeInterface $endTime): int
     {
         $carGroupIds = $this->createQueryBuilder('cg')
@@ -59,21 +62,27 @@ class CarGroupRepository extends ServiceEntityRepository
             ->setParameter('toTime', $endTime)
             ->getQuery()
             ->getResult();
-
-        $this->createQueryBuilder('cg')
-            ->delete('App\Entity\Car', 'car')
-            ->where('car.carGroup IN (:carGroupIds)')
-            ->setParameter('carGroupIds', $carGroupIds)
-            ->getQuery()
-            ->execute();
-
-        return $this->createQueryBuilder('cg')
-            ->delete('App\Entity\CarGroup', 'carGroup')
-            ->where('carGroup.exportTime >= :fromTime')
-            ->andWhere('carGroup.exportTime <= :toTime')
-            ->setParameter('fromTime', $startTime)
-            ->setParameter('toTime', $endTime)
-            ->getQuery()
-            ->execute();
+        $this->getEntityManager()->beginTransaction();
+        try {
+            $this->createQueryBuilder('cg')
+                ->delete('App\Entity\Car', 'car')
+                ->where('car.carGroup IN (:carGroupIds)')
+                ->setParameter('carGroupIds', $carGroupIds)
+                ->getQuery()
+                ->execute();
+            $result = $this->createQueryBuilder('cg')
+                ->delete('App\Entity\CarGroup', 'carGroup')
+                ->where('carGroup.exportTime >= :fromTime')
+                ->andWhere('carGroup.exportTime <= :toTime')
+                ->setParameter('fromTime', $startTime)
+                ->setParameter('toTime', $endTime)
+                ->getQuery()
+                ->execute();
+            $this->getEntityManager()->commit();
+            return $result;
+        } catch (Exception) {
+            $this->getEntityManager()->rollback();
+            return -1;
+        }
     }
 }

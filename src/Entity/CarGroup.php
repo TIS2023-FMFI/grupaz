@@ -194,4 +194,16 @@ class CarGroup
 
         return $this;
     }
+
+    public static function translateStatus(?int $cons): string
+    {
+        return match ($cons) {
+            self::STATUS_FREE => 'Voľná',
+            self::STATUS_START => 'Prihlásená',
+            self::STATUS_SCANNING => 'Skenovanie',
+            self::STATUS_ALL_SCANNED => 'Naskenovaná',
+            self::STATUS_APPROVED => 'Schválená',
+            default => 'nenastavené',
+        };
+    }
 }

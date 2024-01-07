@@ -121,9 +121,17 @@ class CarGroupCrudController extends AbstractCrudController
         $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
 
         foreach ($entityChangeSet as $field => $change) {
+            dump($change);
             if ($change[0] instanceof \DateTimeInterface && $change[1] instanceof \DateTimeInterface) {
                 $changes[] = sprintf('%s: %s => %s', $field, $change[0]->format('Y-m-d H:i:s'), $change[1]->format('Y-m-d H:i:s'));
-            } else {
+            } else if ($change[0] instanceof \DateTimeInterface) {
+                $changes[] = sprintf('%s: %s => nenastavené', $field, $change[0]->format('Y-m-d H:i:s'));
+            } else if ($change[1] instanceof \DateTimeInterface) {
+                $changes[] = sprintf('%s: nenastavené => %s', $field, $change[1]->format('Y-m-d H:i:s'));
+            } else if ($field === 'status') {
+                $changes[] = sprintf('%s: %s => %s', $field, CarGroup::translateStatus($change[0]), CarGroup::translateStatus($change[1]));
+//                    CarGroup::class->translateStatus($change[0]), CarGroup::class->translateStatus($change[1]));
+            } else{
                 $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
             }
         }

@@ -23,17 +23,18 @@ class CarCrudController extends AbstractCrudController
     {
         $this->entityManager = $entityManager;
     }
-    
+
     public static function getEntityFqcn(): string
     {
         return Car::class;
     }
+
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index','entity.car.cars')
+            ->setPageTitle('index', 'entity.car.cars')
             ->setPageTitle('edit', 'entity.car.name')
-            ->setPageTitle('detail','entity.car.name')
+            ->setPageTitle('detail', 'entity.car.name')
             ->setEntityLabelInPlural('entity.car.cars')
             ->setEntityLabelInSingular('entity.car.name')
             ->setSearchFields(['vis'])
@@ -46,7 +47,7 @@ class CarCrudController extends AbstractCrudController
             // set this number to 0 to display a simple "< Previous | Next >" pager
             ->setPaginatorRangeSize(3);
     }
-    
+
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $changes = $this->getEntityChanges($entityInstance);
@@ -73,43 +74,48 @@ class CarCrudController extends AbstractCrudController
         $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
 
         foreach ($entityChangeSet as $field => $change) {
-            $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
+            if ($field === 'isDamaged') {
+                $changes[] = sprintf('%s: %s => %s', $field, Car::translateIsDamaged($change[0]), Car::translateIsDamaged($change[1]));
+            } else if ($field === 'status') {
+                $changes[] = sprintf('%s: %s => %s', $field, Car::translateStatus($change[0]), Car::translateStatus($change[1]));
+            } else {
+                $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
+            }
         }
 
         return $changes;
     }
+
     public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $log = new Log();
         $log->setTime(new \DateTimeImmutable());
         $log->setLog('Auto vymazané.');
-        $log->setAdminId((int) $this->getUser()->getId());
-        $log->setObjectId((int) $entityInstance->getId());
+        $log->setAdminId((int)$this->getUser()->getId());
+        $log->setObjectId((int)$entityInstance->getId());
         $log->setObjectClass('Car');
 
         $entityManager->persist($log);
         $entityManager->remove($entityInstance);
         $entityManager->flush();
     }
-    
+
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->remove(Crud::PAGE_INDEX, Action::NEW)
-            ;
+            ->remove(Crud::PAGE_INDEX, Action::NEW);
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->onlyOnDetail(),
+            IdField::new('id')->hideOnForm(),
             TextField::new('vis')
                 ->setLabel('entity.car.vis'),
             AssociationField::new('carGroup')
                 ->setLabel('entity.carGroup.name'),
             TextEditorField::new('note')
-                ->hideOnIndex()
                 ->setLabel('entity.car.note'),
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
