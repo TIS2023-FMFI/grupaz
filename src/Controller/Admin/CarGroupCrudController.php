@@ -119,56 +119,36 @@ class CarGroupCrudController extends AbstractCrudController
         $unitOfWork = $this->entityManager->getUnitOfWork();
         $unitOfWork->computeChangeSets();
 
-        $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
-        dump($entityChangeSet);
-        foreach ($entityChangeSet as $field => $change) {
-            if ($field === 'exportTime') {
-                $changes[] = sprintf('%s: %s => %s',
-                    $field,
-                    ($change[0] === null) ? 'nenastavené' : $change[0]->format('Y-m-d H:i:s'),
-                    ($change[1] === null) ? 'nenastavené' : $change[1]->format('Y-m-d H:i:s')
-                );
-            }
-            else if ($field === 'status') {
-                $changes[] = sprintf('%s: %s => %s',
-                    $field,
-                    CarGroup::translateStatus($change[0]),
-                    CarGroup::translateStatus($change[1]));
-            }
-            else{
-                $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
+        $scheduledForUpdate = $unitOfWork->getScheduledEntityUpdates();
+        foreach ($scheduledForUpdate as $item) {
+            $entityChangeSet = $unitOfWork->getEntityChangeSet($item);
+            foreach ($entityChangeSet as $field => $change) {
+                if ($field === 'exportTime') {
+                    $changes[] = sprintf('%s: %s => %s',
+                        $field,
+                        ($change[0] === null) ? 'nenastavené' : $change[0]->format('Y-m-d H:i:s'),
+                        ($change[1] === null) ? 'nenastavené' : $change[1]->format('Y-m-d H:i:s')
+                    );
+                }
+                else if ($field === 'status') {
+                    $changes[] = sprintf('%s: %s => %s',
+                        $field,
+                        CarGroup::translateStatus($change[0]),
+                        CarGroup::translateStatus($change[1]));
+                }
+                else if ($field === 'carGroup') {
+                    $changes[] = sprintf('Auto %s -> %s: %s => %s',
+                        $item->getVis(),
+                        $field,
+                        ($change[0] === null) ? 'nenastavené' : $change[0],
+                        ($change[1] === null) ? 'nenastavené' : $change[1]
+                    );
+                }
+                else{
+                    $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
+                }
             }
         }
-
-//        $originalCars = $unitOfWork->getOriginalEntityData($entity)['cars']->toArray();
-//        $newCars = $entity->getCars()->toArray();
-//        dump($originalCars);
-//        dump($newCars);
-//        $addedCarsVis = array_diff(
-//            array_map(function ($car) {
-//                return $car->getVis();
-//            }, $newCars),
-//            array_map(function ($car) {
-//                return $car->getVis();
-//            }, $originalCars)
-//        );
-//
-//        $removedCarsVis = array_diff(
-//            array_map(function ($car) {
-//                return $car->getVis();
-//            }, $originalCars),
-//            array_map(function ($car) {
-//                return $car->getVis();
-//            }, $newCars)
-//        );
-//
-//        if (!empty($addedCarsVis)) {
-//            $changes[] = sprintf('%s (Added): %s', $field, implode(', ', $addedCarsVis));
-//        }
-//
-//        if (!empty($removedCarsVis)) {
-//            $changes[] = sprintf('%s (Removed): %s', $field, implode(', ', $removedCarsVis));
-//        }
         return $changes;
     }
 
