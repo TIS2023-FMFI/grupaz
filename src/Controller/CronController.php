@@ -21,7 +21,7 @@ class CronController extends AbstractController
     public function process(KernelInterface $kernel): Response
     {
         //runs every 30 seconds, and runs whole 30 seconds
-        $time = 10 * 3 - 5;
+        $time = 10 * 60 - 5;
 
         //order of receivers is important; higher they are sooner they are processed
         $receivers = [
