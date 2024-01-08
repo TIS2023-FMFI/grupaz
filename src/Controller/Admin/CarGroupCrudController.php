@@ -98,18 +98,19 @@ class CarGroupCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $changes = $this->getEntityChanges($entityInstance);
-
         parent::updateEntity($entityManager, $entityInstance);
 
-        $log = new Log();
-        $log->setTime(new \DateTimeImmutable());
-        $log->setLog('Grupáž upravená. Zmeny: ' . implode(', ', $changes));
-        $log->setAdminId((int)$this->getUser()->getId());
-        $log->setObjectId((int)$entityInstance->getId());
-        $log->setObjectClass('Cargroup');
+        if (!empty($changes)) {
+            $log = new Log();
+            $log->setTime(new \DateTimeImmutable());
+            $log->setLog('Grupáž upravená. Zmeny: ' . implode(', ', $changes));
+            $log->setAdminId((int)$this->getUser()->getId());
+            $log->setObjectId((int)$entityInstance->getId());
+            $log->setObjectClass('Cargroup');
 
-        $entityManager->persist($log);
-        $entityManager->flush();
+            $entityManager->persist($log);
+            $entityManager->flush();
+        }
     }
 
     private function getEntityChanges($entity): array
@@ -119,24 +120,58 @@ class CarGroupCrudController extends AbstractCrudController
         $unitOfWork->computeChangeSets();
 
         $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
-
+        dump($entityChangeSet);
         foreach ($entityChangeSet as $field => $change) {
-            dump($change);
-            if ($change[0] instanceof \DateTimeInterface && $change[1] instanceof \DateTimeInterface) {
-                $changes[] = sprintf('%s: %s => %s', $field, $change[0]->format('Y-m-d H:i:s'), $change[1]->format('Y-m-d H:i:s'));
-            } else if ($change[0] instanceof \DateTimeInterface) {
-                $changes[] = sprintf('%s: %s => nenastavené', $field, $change[0]->format('Y-m-d H:i:s'));
-            } else if ($change[1] instanceof \DateTimeInterface) {
-                $changes[] = sprintf('%s: nenastavené => %s', $field, $change[1]->format('Y-m-d H:i:s'));
-            } else if ($field === 'status') {
-                $changes[] = sprintf('%s: %s => %s', $field, CarGroup::translateStatus($change[0]), CarGroup::translateStatus($change[1]));
-//                    CarGroup::class->translateStatus($change[0]), CarGroup::class->translateStatus($change[1]));
-            } else{
+            if ($field === 'exportTime') {
+                $changes[] = sprintf('%s: %s => %s',
+                    $field,
+                    ($change[0] === null) ? 'nenastavené' : $change[0]->format('Y-m-d H:i:s'),
+                    ($change[1] === null) ? 'nenastavené' : $change[1]->format('Y-m-d H:i:s')
+                );
+            }
+            else if ($field === 'status') {
+                $changes[] = sprintf('%s: %s => %s',
+                    $field,
+                    CarGroup::translateStatus($change[0]),
+                    CarGroup::translateStatus($change[1]));
+            }
+            else{
                 $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
             }
         }
+
+//        $originalCars = $unitOfWork->getOriginalEntityData($entity)['cars']->toArray();
+//        $newCars = $entity->getCars()->toArray();
+//        dump($originalCars);
+//        dump($newCars);
+//        $addedCarsVis = array_diff(
+//            array_map(function ($car) {
+//                return $car->getVis();
+//            }, $newCars),
+//            array_map(function ($car) {
+//                return $car->getVis();
+//            }, $originalCars)
+//        );
+//
+//        $removedCarsVis = array_diff(
+//            array_map(function ($car) {
+//                return $car->getVis();
+//            }, $originalCars),
+//            array_map(function ($car) {
+//                return $car->getVis();
+//            }, $newCars)
+//        );
+//
+//        if (!empty($addedCarsVis)) {
+//            $changes[] = sprintf('%s (Added): %s', $field, implode(', ', $addedCarsVis));
+//        }
+//
+//        if (!empty($removedCarsVis)) {
+//            $changes[] = sprintf('%s (Removed): %s', $field, implode(', ', $removedCarsVis));
+//        }
         return $changes;
     }
+
 
     public function configureFields(string $pageName): iterable
     {

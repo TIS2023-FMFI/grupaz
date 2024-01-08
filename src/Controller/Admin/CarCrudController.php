@@ -54,15 +54,17 @@ class CarCrudController extends AbstractCrudController
 
         parent::updateEntity($entityManager, $entityInstance);
 
-        $log = new Log();
-        $log->setTime(new \DateTimeImmutable());
-        $log->setLog('Auto upravené. Zmeny: ' . implode(', ', $changes));
-        $log->setAdminId((int)$this->getUser()->getId());
-        $log->setObjectId((int)$entityInstance->getId());
-        $log->setObjectClass('Car');
+        if (!empty($changes)) {
+            $log = new Log();
+            $log->setTime(new \DateTimeImmutable());
+            $log->setLog('Auto upravené. Zmeny: ' . implode(', ', $changes));
+            $log->setAdminId((int)$this->getUser()->getId());
+            $log->setObjectId((int)$entityInstance->getId());
+            $log->setObjectClass('Car');
 
-        $entityManager->persist($log);
-        $entityManager->flush();
+            $entityManager->persist($log);
+            $entityManager->flush();
+        }
     }
 
     private function getEntityChanges($entity): array
@@ -75,9 +77,15 @@ class CarCrudController extends AbstractCrudController
 
         foreach ($entityChangeSet as $field => $change) {
             if ($field === 'isDamaged') {
-                $changes[] = sprintf('%s: %s => %s', $field, Car::translateIsDamaged($change[0]), Car::translateIsDamaged($change[1]));
+                $changes[] = sprintf('%s: %s => %s',
+                    $field,
+                    Car::translateIsDamaged($change[0]),
+                    Car::translateIsDamaged($change[1]));
             } else if ($field === 'status') {
-                $changes[] = sprintf('%s: %s => %s', $field, Car::translateStatus($change[0]), Car::translateStatus($change[1]));
+                $changes[] = sprintf('%s: %s => %s',
+                    $field,
+                    Car::translateStatus($change[0]),
+                    Car::translateStatus($change[1]));
             } else {
                 $changes[] = sprintf('%s: %s => %s', $field, $change[0], $change[1]);
             }
@@ -110,12 +118,14 @@ class CarCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')
+                ->hideOnForm()
+                ->setLabel('crud.id'),
             TextField::new('vis')
                 ->setLabel('entity.car.vis'),
             AssociationField::new('carGroup')
                 ->setLabel('entity.carGroup.name'),
-            TextEditorField::new('note')
+            TextField::new('note')
                 ->setLabel('entity.car.note'),
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
