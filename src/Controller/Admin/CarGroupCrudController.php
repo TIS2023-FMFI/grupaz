@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\CarGroup;
 use App\Entity\Log;
 use App\Repository\CarRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -44,7 +45,6 @@ class CarGroupCrudController extends AbstractCrudController
             ->setPageTitle('detail','entity.carGroup.name')
             ->setEntityLabelInPlural('entity.carGroup.car_groups')
             ->setEntityLabelInSingular('entity.carGroup.name')
-            ->setSearchFields(['gid'])
             ->setDefaultSort(['exportTime' => 'DESC', 'gid' => 'DESC',])
             // the max number of entities to display per page
             ->setPaginatorPageSize(30)
@@ -89,12 +89,31 @@ class CarGroupCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $deleteAction)
             ->add(Crud::PAGE_DETAIL, $approveAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
     }
-    
+    public function createEntity(string $entityFqcn)
+    {
+        $carGroup = new CarGroup();
+        $carGroup->setImportTime(new DateTimeImmutable());
+
+        return $carGroup;
+    }
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        parent::persistEntity($entityManager, $entityInstance);
+        $log = new Log();
+        $log->setTime(new DateTimeImmutable());
+        $log->setLog('Grupáž vytvorena. ID: ' . $entityInstance->getGid());
+        $log->setAdminId((int)$this->getUser()->getId());
+        $log->setObjectId((int)$entityInstance->getId());
+        $log->setObjectClass('Cargroup');
+
+        $entityManager->persist($log);
+        $entityManager->flush();
+    }
+
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $changes = $this->getEntityChanges($entityInstance);
@@ -102,7 +121,7 @@ class CarGroupCrudController extends AbstractCrudController
 
         if (!empty($changes)) {
             $log = new Log();
-            $log->setTime(new \DateTimeImmutable());
+            $log->setTime(new DateTimeImmutable());
             $log->setLog('Grupáž upravená. Zmeny: ' . implode(', ', $changes));
             $log->setAdminId((int)$this->getUser()->getId());
             $log->setObjectId((int)$entityInstance->getId());
@@ -161,8 +180,7 @@ class CarGroupCrudController extends AbstractCrudController
                 ->setLabel('crud.id')
                 ->onlyOnIndex(),
             TextField::new('gid')
-                ->setLabel('entity.carGroup.gid')
-                ->hideOnForm(),
+                ->setLabel('entity.carGroup.gid'),
             TextField::new('frontLicensePlate')
                 ->setLabel('entity.carGroup.front_license_plate'),
             TextField::new('backLicensePlate')
@@ -208,7 +226,7 @@ class CarGroupCrudController extends AbstractCrudController
             throw new \LogicException('Entity is missing or not a CarGroup');
         }
         $carGroup->setStatus(CarGroup::STATUS_APPROVED);
-        $carGroup->setExportTime(new \DateTimeImmutable());
+        $carGroup->setExportTime(new DateTimeImmutable());
         $this->entityManager->flush();
 
         $this->addFlash('success', 'entity.carGroup.approved');
