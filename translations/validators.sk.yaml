@@ -1,5 +1,6 @@
 car_group:
   invalid_gid: Grupáž %gid% neexistuje!
+  not_unique: Grupáž s daným ID už existuje.
 car:
   not_unique: Auto s daným VIS už existuje.
 user:

@@ -1,7 +1,8 @@
 car_group:
   invalid_gid: Car group %gid% does not exist!
+  not_unique: There is already a car group with given ID.
 car:
-  not_unique: There is already an car with given VIS.
+  not_unique: There is already a car with given VIS.
 user:
   not_unique: There is already an account with this email.
 password:
