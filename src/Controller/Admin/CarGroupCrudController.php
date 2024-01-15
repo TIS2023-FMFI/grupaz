@@ -103,9 +103,27 @@ class CarGroupCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         parent::persistEntity($entityManager, $entityInstance);
+
+        $logText = 'Grupáž vytvorená. ID: ' . $entityInstance->getGid();
+        $logText .= ', status: ' . CarGroup::translateStatus($entityInstance->getStatus());
+
+        if ($entityInstance->getFrontLicensePlate() != null)
+            $logText .= ', frontLicensePlate: ' . $entityInstance->getFrontLicensePlate();
+        if ($entityInstance->getBackLicensePlate() != null)
+            $logText .= ', backLicensePlate: ' . $entityInstance->getBackLicensePlate();
+        if ($entityInstance->getExportTime() != null)
+            $logText .= ', exportTime: ' . $entityInstance->getExportTime()->format('Y-m-d H:i:s');
+        if (!empty($entityInstance->getCars())){
+            $logText .= ', cars: ';
+            foreach ($entityInstance->getCars() as $car){
+                $logText .= $car . ', ';
+            }
+            $logText = rtrim($logText, ', ');
+        }
+
         $log = new Log();
         $log->setTime(new DateTimeImmutable());
-        $log->setLog('Grupáž vytvorena. ID: ' . $entityInstance->getGid());
+        $log->setLog($logText);
         $log->setAdminId((int)$this->getUser()->getId());
         $log->setObjectId((int)$entityInstance->getId());
         $log->setObjectClass('Cargroup');
