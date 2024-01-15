@@ -1,5 +1,9 @@
 car_group:
   invalid_gid: Car group %gid% does not exist!
+car:
+  not_unique: There is already an car with given VIS.
+user:
+  not_unique: There is already an account with this email.
 password:
   enter: Please enter a password.
   limit: Your password should be at least 5 characters.

@@ -1,5 +1,9 @@
 car_group:
   invalid_gid: Grupáž %gid% neexistuje!
+car:
+  not_unique: Auto s daným VIS už existuje.
+user:
+  not_unique: Užívateľ s daným emailom už existuje.
 password:
   enter: Prosím zadajte heslo.
   limit: Tvoje heslo má mať aspoň 5 znakov.
