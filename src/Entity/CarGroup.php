@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CarGroupRepository::class)]
+#[UniqueEntity(fields: ['gid'], message: 'car_group.not_unique')]
+
 class CarGroup
 {
     public const STATUS_FREE = 0;
@@ -24,7 +27,7 @@ class CarGroup
 
     #[ORM\Column(length: 3, unique: true)]
     #[Assert\NotBlank()]
-    #[Assert\Length(max: 3)]
+    #[Assert\Length(min: 3, max: 3)]
     private ?string $gid = null;
 
     #[ORM\Column(length: 10, nullable: true)]
