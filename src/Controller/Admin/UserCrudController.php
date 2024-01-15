@@ -74,15 +74,17 @@ class UserCrudController extends AbstractCrudController
 
         parent::updateEntity($entityManager, $entityInstance);
 
-        $log = new Log();
-        $log->setTime(new DateTimeImmutable());
-        $log->setLog('Používateľ upravený. Zmeny: ' . implode(', ', $changes));
-        $log->setAdminId((int)$this->getUser()->getId());
-        $log->setObjectId((int)$entityInstance->getId());
-        $log->setObjectClass('User');
+        if (!empty($changes)) {
+            $log = new Log();
+            $log->setTime(new DateTimeImmutable());
+            $log->setLog('Používateľ upravený. Zmeny: ' . implode(', ', $changes));
+            $log->setAdminId((int)$this->getUser()->getId());
+            $log->setObjectId((int)$entityInstance->getId());
+            $log->setObjectClass('User');
 
-        $entityManager->persist($log);
-        $entityManager->flush();
+            $entityManager->persist($log);
+            $entityManager->flush();
+        }
     }
 
     private function getEntityChanges($entity): array
