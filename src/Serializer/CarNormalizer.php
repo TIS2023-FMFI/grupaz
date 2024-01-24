@@ -18,6 +18,7 @@ class CarNormalizer implements NormalizerInterface
             'front_licence_plate' => $object->getCarGroup()->getFrontLicensePlate(),
             'back_licence_plate' => $object->getCarGroup()->getBackLicensePlate(),
             'destination' => $object->getCarGroup()->getDestination(),
+            'receiver' => $object->getCarGroup()->getReceiver(),
             'exported_time' => $object->getCarGroup()->getExportTime()->format('Y-m-d'),
             'note' => $object->getNote(),
             'replaced_car' => $object->getReplacedCar(),
