@@ -130,10 +130,15 @@ class CarCrudController extends AbstractCrudController
             AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car')
                 ->setFormTypeOption('query_builder', function (EntityRepository $entityRepository) {
-                    return $entityRepository->createQueryBuilder('e')
+                    $subQuery = $entityRepository->createQueryBuilder('sub')
+                        ->select('replace.id')
+                        ->leftJoin('sub.replacedCar', 'replace')
+                        ->andWhere('replace.id IS NOT NULL');
+                    $qb = $entityRepository->createQueryBuilder('e');
+                    return $qb
                         ->andWhere('e.isDamaged = :damaged')
-                        ->setParameter("damaged", 0)
-                        ;
+                        ->andWhere($qb->getEntityManager()->getExpressionBuilder()->notIn('e.id', $subQuery->getDQL()))
+                        ->setParameter('damaged', 0);
                 }),
             ChoiceField::new('isDamaged')
                 ->setLabel('entity.car.isDamaged.name')
