@@ -36,7 +36,7 @@ entity:
       free: Free
       name: State
     isDamaged:
-      name: damaged
+      name: Damaged
       damaged: yes
       new: no
     wrong_car: 'Warning! Wrong car: %carVis%'
