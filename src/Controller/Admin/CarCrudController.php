@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Car;
 use App\Entity\Log;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -12,7 +13,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CarCrudController extends AbstractCrudController
@@ -128,19 +128,26 @@ class CarCrudController extends AbstractCrudController
             TextField::new('note')
                 ->setLabel('entity.car.note'),
             AssociationField::new('replacedCar')
-                ->setLabel('entity.car.replaced_car'),
-            ChoiceField::new('status')
-                ->setLabel('entity.car.status.name')
-                ->setTranslatableChoices([
-                    Car::STATUS_SCANNED => ('entity.car.status.scanned'),
-                    Car::STATUS_FREE => ('entity.car.status.free'),
-                ]),
+                ->setLabel('entity.car.replaced_car')
+                ->setFormTypeOption('query_builder', function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('e')
+                        ->andWhere('e.isDamaged = :damaged')
+                        ->setParameter("damaged", 0)
+                        ;
+                }),
             ChoiceField::new('isDamaged')
                 ->setLabel('entity.car.isDamaged.name')
                 ->setTranslatableChoices([
                     Car::STATUS_IS_DAMAGED => ('entity.car.isDamaged.damaged'),
                     Car::STATUS_IS_NEW => ('entity.car.isDamaged.new'),
                 ]),
+            ChoiceField::new('status')
+                ->setLabel('entity.car.status.name')
+                ->setTranslatableChoices([
+                    Car::STATUS_SCANNED => ('entity.car.status.scanned'),
+                    Car::STATUS_FREE => ('entity.car.status.free'),
+                ]),
+
         ];
     }
 
