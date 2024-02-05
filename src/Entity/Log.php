@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LogRepository;
-use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
@@ -23,7 +23,7 @@ class Log
     #[ORM\Column]
     private ?int $admin_id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $object_id = null;
 
     #[ORM\Column(length: 255)]
