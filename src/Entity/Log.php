@@ -23,7 +23,7 @@ class Log
     #[ORM\Column]
     private ?int $admin_id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $object_id = null;
 
     #[ORM\Column(length: 255)]
