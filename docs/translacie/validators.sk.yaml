@@ -1,0 +1,18 @@
+car_group:
+  invalid_gid: Grupáž %gid% neexistuje!
+  not_unique: Grupáž s daným ID už existuje.
+car:
+  not_unique: Auto s daným VIS už existuje.
+user:
+  not_unique: Užívateľ s daným emailom už existuje.
+password:
+  enter: Prosím zadajte heslo.
+  limit: Tvoje heslo má mať aspoň 5 znakov.
+  match: Obe zadané heslá musia byť rovnaké.
+email:
+  enter: Prosím zadajte valídnu emailovú adresu.
+form:
+  date_range:
+    invalid: Zadaný dátumový interval je nesprávny.
+  import:
+    invalid_document: Prosim importujte validný dokument

@@ -1,0 +1,128 @@
+title:
+  worker_form:
+  choose_language:
+  scan_form:
+form:
+  submit:
+  check:
+form_help:
+main:
+  homepage:
+  language:
+  dashboard:
+  logout:
+  login:
+  password:
+  create:
+  info:
+  loading:
+crud:
+  id:
+  edit:
+  detail:
+  remove:
+  import:
+  export:
+  approve:
+entity:
+  car:
+    name:
+    cars:
+    replaced_car:
+    vis:
+    note:
+    status:
+      scanned:
+      free:
+      name:
+    isDamaged:
+      name:
+      damaged:
+      new:
+    wrong_car:
+    all_loaded:
+    timeout_title:
+    timeout_text:
+    timeout_button:
+  carGroup:
+    car_groups:
+    name:
+    gid:
+    front_license_plate:
+    back_license_plate:
+    receiver:
+    destination:
+    import_time:
+    export_time:
+    closed:
+    no_access:
+    status:
+      name:
+      approved:
+      all_scanned:
+      scanning:
+      start:
+      free:
+    approved:
+  user:
+    name:
+    users:
+    email:
+    register:
+    new:
+    roles:
+    forgot_password:
+    new_password:
+    repeat_password:
+    reset_request:
+    reset_password:
+    enter_email:
+    send_email:
+    email_sent:
+    message_after_sending:
+    check_spam:
+    invalid_permissions:
+    approve:
+    deny:
+    no_approve:
+    scanning:
+    scanned:
+    all:
+    no_deny:
+export:
+  start:
+  end:
+  car:
+    no_data_in_interval:
+delete:
+  name:
+  confirm_name:
+  start:
+  end:
+  car:
+    no_data_in_interval:
+  confirmation:
+  control:
+  close:
+  deletion:
+approve:
+  confirmation:
+import:
+  file:
+    upload:
+    count_in_queue:
+  car:
+    success:
+    no_cars_in_file:
+    wrong_file_keys:
+    count_in_queue:
+history:
+  singular:
+  plural:
+log:
+  log:
+  logs:
+  time:
+  admin_id:
+  object_id:
+  object_class:

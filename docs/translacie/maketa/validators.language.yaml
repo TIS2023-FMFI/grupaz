@@ -1,0 +1,18 @@
+car_group:
+  invalid_gid:
+  not_unique:
+car:
+  not_unique:
+user:
+  not_unique:
+password:
+  enter:
+  limit:
+  match:
+email:
+  enter:
+form:
+  date_range:
+    invalid:
+  import:
+    invalid_document:
