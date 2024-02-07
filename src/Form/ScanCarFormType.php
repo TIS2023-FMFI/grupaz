@@ -22,6 +22,7 @@ class ScanCarFormType extends AbstractType
                 ,
                 'attr' => [
                     'autofocus' => 'autofocus',
+                    'inputmode' => 'none',
                 ],
             ])
             ->add('submit', SubmitType::class, [
