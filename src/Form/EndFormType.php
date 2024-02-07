@@ -12,7 +12,8 @@ class EndFormType extends AbstractType
     {
         $builder
             ->add('submit', SubmitType::class, [
-                'label' => '✘',
+                'label' => '<i class="fa fa-home"></i>',
+                'label_html' => true,
                 'attr' => ['class' => 'btn-lg mt-3 px-5 fw-bold btn btn-danger'],
             ])
         ;
