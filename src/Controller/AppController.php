@@ -51,4 +51,9 @@ class AppController extends AbstractController
             'end' => $end,
         ]);
     }
+    #[Route('/{_locale<%app.supported_locales%>}/success', name: 'success')]
+    public function success(): Response
+    {
+        return $this->render('app/success.html.twig');
+    }
 }
