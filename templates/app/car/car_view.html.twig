@@ -52,7 +52,7 @@
         <div class="row">
             <section class="mb-2">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                {{ form_widget(form) }}
+                {{ form_row(form.vis, {'value': ''}) }}
                 {{ form_end(form) }}
             </section>
         </div>
