@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Success{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const redirectionTimeout = 10000
+        const startTimer = () => {
+            setTimeout(function () {
+                window.location = "{{ path('app_index_no_locale') }}"
+            }, redirectionTimeout);
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            startTimer()
+        });
+    </script>
+
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="col-md-6 offset-md-3 text-center">
+            <h2 class="text-center mb-5 display-5 text-success fw-bold text-shadow">{{ 'entity.car.all_loaded'|trans }}</h2>
+            <i class="fa fa-check-circle text-success" style="font-size: 100px;"></i>
+        </div>
+        <hr>
+    </div>
+{% endblock %}

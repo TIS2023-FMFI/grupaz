@@ -58,10 +58,9 @@ class CarController extends AbstractController
             }
             $count = $carRepository->countAllLoaded($carGroup->getId()) + $carRepository->countAllDamaged($carGroup->getId());
             if ($last === null && $count === $carGroup->getCars()->count()) {
-                $this->addFlash('success', 'entity.car.all_loaded');
                 $carGroup->setStatus(CarGroup::STATUS_ALL_SCANNED);
                 $managerRegistry->getManager()->flush();
-                return $this->redirectToRoute('app_index');
+                return $this->redirectToRoute('success');
             }
 
             return $this->redirectToRoute('app_car_view', ['id' => $carGroup->getId(), 'last' => $last]);
