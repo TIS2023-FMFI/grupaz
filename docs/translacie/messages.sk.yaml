@@ -1,0 +1,128 @@
+title:
+  worker_form: Vyplňte informácie
+  choose_language: Vyberte si jazyk
+  scan_form: Naskenujte čísla VIS
+form:
+  submit: Odoslať
+  check: Skontrolovať
+form_help:
+main:
+  homepage: Domov
+  language: Jazyk
+  dashboard: Hlavný panel
+  logout: Odhlásenie
+  login: Prihlásenie
+  password: Heslo
+  create: Vytvoriť
+  info: Informácie
+  loading: Načítavam
+crud:
+  id: ID
+  edit: Upraviť
+  detail: Detail
+  remove: Odstrániť
+  import: Importovať
+  export: Exportovať
+  approve: Schváliť
+entity:
+  car:
+    name: Auto
+    cars: Autá
+    replaced_car: Náhradné vozidlo
+    vis: VIS
+    note: Poznámka
+    status:
+      scanned: Naskenované
+      free: Voľné
+      name: Stav
+    isDamaged:
+      name: Pokazené
+      damaged: áno
+      new: nie
+    wrong_car: 'Pozor! Naskenovali ste zle auto: %carVis%'
+    all_loaded: Všetky autá sú úspešne naskenované.
+    timeout_title: Nebola zachytená žiadna aktivita!
+    timeout_text: Ak chcete pokračovať v skenovaní vozidiel, stlačte tlačidlo nižšie.
+    timeout_button: Chcem pokračovať.
+  carGroup:
+    car_groups: Grupáže
+    name: Grupáž
+    gid: Id grupáže
+    front_license_plate: EČV kamióna
+    back_license_plate: EČV prívesu
+    receiver: Príjemca
+    destination: Destinácia
+    import_time: Čas nahratia
+    export_time: Čas exportu
+    closed: Grupáž je už uzatvorená.
+    no_access: Táto operácia nie je dovolená!
+    status:
+      name: Stav
+      approved: Schválená
+      all_scanned: Naskenovaná
+      scanning: Skenovanie
+      start: Prihlásená
+      free: Voľná
+    approved: Grupáž schvalená a vyexportovaná
+  user:
+    name: Používateľ
+    users: Používatelia
+    email: Email
+    register: Registrácia
+    new: Nový používateľ
+    roles: Používateľské roly
+    forgot_password: Zabudli ste svoje heslo?
+    new_password: Nové helo
+    repeat_password: Zopakuj heslo
+    reset_request: Tvoja požiadavka na vyresetovanie hesla
+    reset_password: Obnovenie hesla
+    enter_email: Zadaj svoj email a my ti pošleme link na zmenu hesla.
+    send_email: Poslať email na zmenu hesla
+    email_sent: Email na zresetovanie hesla poslaný
+    message_after_sending: Ak existuje účet s daným emailom, tak sme Vám poslali mail, ktorý obsahuje link, ktorý môžete použíť na zmenenie hesla. Tento link expiruje do %expiry%.
+    check_spam: Ak Vám nepríde email skontrolujte si spam alebo <a href="%path%">skúste znova</a>.
+    invalid_permissions: Nemáte dostatočné povolenia na vykonanie tejto akcie.
+    approve: Pre admina na schválenie
+    deny: Zrušiť naloženie
+    no_approve: Žiadna grupáž na schválenie.
+    scanning: Prebieha skenovanie
+    scanned: Naskenované
+    all: Všetky
+    no_deny: Práve sa neskenuje žiadna grupáž.
+export:
+  start: Od dátumu vrátane
+  end: Po dátum vrátane
+  car:
+    no_data_in_interval: Žiadne dáta na export od %start% do %end%.
+delete:
+  name: Zmazanie
+  confirm_name: Potvrdenie zmazania
+  start: Od dátumu vrátane
+  end: Po dátum vrátane
+  car:
+    no_data_in_interval: Žiadne dáta na zmazanie od %start% do %end%.
+  confirmation: Zmazanie grupáží od %start% do %end% potvrdené.
+  control: Naozaj chcete zmazať dáta zo zvoleného intervalu?
+  close: Zavrieť
+  deletion: Zmazať
+approve:
+  confirmation: Grupáž s číslom %gid% bola schválená.
+import:
+  file:
+    upload: Priložený súbor
+    count_in_queue: V rade na spracovanie čaká %filesInQueue% súborov.
+  car:
+    success: Naimportovali ste %importedCars% aút.
+    no_cars_in_file: V danom súbore nie sú žiadne autá.
+    wrong_file_keys: V danom súbore sú zle nastavené názvy stĺpcov.
+    count_in_queue: V rade na spracovanie čaká %carsInQueue% áut.
+history:
+  singular: História
+  plural: História
+log:
+  log: Log
+  logs: Logy
+  time: Čas
+  admin_id: Id admina
+  object_id: Id objeku
+  object_class: Trieda objektu
