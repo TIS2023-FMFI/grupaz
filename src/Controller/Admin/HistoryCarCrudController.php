@@ -22,11 +22,11 @@ class HistoryCarCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index', 'entity.car.cars')
+            ->setPageTitle('index', 'history.car.plural')
             ->setPageTitle('edit', 'entity.car.name')
             ->setPageTitle('detail', 'entity.car.name')
-            ->setEntityLabelInPlural('entity.car.cars')
-            ->setEntityLabelInSingular('entity.car.name')
+            ->setEntityLabelInPlural('history.car.plural')
+            ->setEntityLabelInSingular('history.car.singular')
             ->setDefaultSort(['id' => 'ASC'])
             // the max number of entities to display per page
             ->setPaginatorPageSize(30)
@@ -55,11 +55,11 @@ class HistoryCarCrudController extends AbstractCrudController
                 ->setLabel('crud.id'),
             TextField::new('vis')
                 ->setLabel('entity.car.vis'),
-            AssociationField::new('carGroup')
+            AssociationField::new('historyCarGroup')
                 ->setLabel('entity.carGroup.name'),
             TextField::new('note')
                 ->setLabel('entity.car.note'),
-            AssociationField::new('replacedCar')
+            TextField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
             ChoiceField::new('isDamaged')
                 ->setLabel('entity.car.isDamaged.name')

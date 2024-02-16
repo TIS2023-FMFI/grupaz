@@ -23,8 +23,8 @@ class HistoryCarGroupCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural('history.plural')
-            ->setEntityLabelInSingular('history.singular')
+            ->setEntityLabelInPlural('history.car_group.plural')
+            ->setEntityLabelInSingular('history.car_group.singular')
             ->setDefaultSort(['exportTime' => 'DESC',])
             // the max number of entities to display per page
             ->setPaginatorPageSize(30)

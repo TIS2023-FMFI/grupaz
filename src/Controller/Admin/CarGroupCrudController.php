@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Car;
 use App\Entity\CarGroup;
 use App\Entity\HistoryCar;
 use App\Entity\HistoryCarGroup;
@@ -280,7 +281,8 @@ class CarGroupCrudController extends AbstractCrudController
             $historyCar->setVis($car->getVis());
             $historyCar->setIsDamaged($car->getIsDamaged());
             $historyCar->setNote($car->getNote());
-            $historyCar->setReplacedCar($car->getReplacedCar()?->getVis());
+
+            $historyCar->setReplacedCar($this->recursed($car));
 
             $historyCarGroup->addCar($historyCar);
             $this->entityManager->persist($historyCar);
@@ -289,5 +291,25 @@ class CarGroupCrudController extends AbstractCrudController
 
         $this->entityManager->persist($historyCarGroup);
         $this->entityManager->remove($carGroup);
+    }
+
+    private function recursed(Car $car): ?HistoryCar
+    {
+        if ($car->getReplacedCar() == null){
+            return null;
+        }
+        $replacedCar = $car->getReplacedCar();
+        $historyCar = new HistoryCar();
+
+        $historyCar->setStatus($replacedCar->getStatus());
+        $historyCar->setVis($replacedCar->getVis());
+        $historyCar->setIsDamaged($replacedCar->getIsDamaged());
+        $historyCar->setNote($replacedCar->getNote());
+
+        $historyCar->setReplacedCar($this->recursed($replacedCar));
+
+        $this->entityManager->persist($historyCar);
+        $this->entityManager->remove($replacedCar);
+        return $historyCar;
     }
 }

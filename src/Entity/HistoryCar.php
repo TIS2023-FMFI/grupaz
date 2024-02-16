@@ -33,8 +33,9 @@ class HistoryCar
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $isDamaged = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $replacedCar = null;
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?self $replacedCar = null;
+
 
     public function getId(): ?int
     {
@@ -100,15 +101,16 @@ class HistoryCar
         return $this;
     }
 
-    public function getReplacedCar(): ?string
+    public function getReplacedCar(): ?self
     {
         return $this->replacedCar;
     }
 
-    public function setReplacedCar(?string $replacedCar): static
+    public function setReplacedCar(?self $replacedCar): static
     {
         $this->replacedCar = $replacedCar;
 
         return $this;
     }
+    
 }
