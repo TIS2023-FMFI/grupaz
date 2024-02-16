@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Form\DeleteType;
 use App\Repository\CarGroupRepository;
 use App\Entity\Log;
+use App\Repository\HistoryCarGroupRepository;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,7 @@ use Symfony\Component\Translation\TranslatableMessage;
 class DeleteController extends AbstractController
 {
     #[Route('/car',name: 'car')]
-    public function car(Request $request, CarGroupRepository $carGroupRepository, ManagerRegistry $managerRegistry): Response
+    public function car(Request $request, HistoryCarGroupRepository $historyCarGroupRepository, ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(DeleteType::class);
         $form->handleRequest($request);
@@ -25,7 +26,7 @@ class DeleteController extends AbstractController
             $start = $form->get('start')->getData();
             $end = $form->get('end')->getData();
             $end = $end->modify('23:59:59');
-            $result = $carGroupRepository->deleteByFormData($start, $end);
+            $result = $historyCarGroupRepository->deleteByFormData($start, $end);
             if ($result === 0) {
                 $this->addFlash(
                     'warning',
