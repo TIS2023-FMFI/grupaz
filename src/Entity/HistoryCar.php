@@ -99,23 +99,6 @@ class HistoryCar
 
         return $this;
     }
-    public static function translateIsDamaged(?int $cons): string
-    {
-        return match ($cons) {
-            self::STATUS_IS_DAMAGED => 'Poškodené',
-            self::STATUS_IS_NEW => 'Nepoškodené',
-            default => 'nenastavené',
-        };
-    }
-
-    public static function translateStatus(?int $cons): string
-    {
-        return match ($cons) {
-            self::STATUS_FREE => 'Voľné',
-            self::STATUS_SCANNED => 'Naskenované',
-            default => 'nenastavené',
-        };
-    }
 
     public function getReplacedCar(): ?string
     {
