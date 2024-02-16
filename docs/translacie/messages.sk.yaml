@@ -117,8 +117,12 @@ import:
     wrong_file_keys: V danom súbore sú zle nastavené názvy stĺpcov.
     count_in_queue: V rade na spracovanie čaká %carsInQueue% áut.
 history:
-  singular: História
-  plural: História
+  car_group:
+    singular: História grupáží
+    plural: História grupáží
+  car:
+    singular: História áut
+    plural: História áut
 log:
   log: Log
   logs: Logy

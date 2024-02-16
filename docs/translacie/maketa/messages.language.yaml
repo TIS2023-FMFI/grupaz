@@ -117,8 +117,12 @@ import:
     wrong_file_keys:
     count_in_queue:
 history:
-  singular:
-  plural:
+  car_group:
+    singular:
+    plural:
+  car:
+    singular:
+    plural:
 log:
   log:
   logs:
