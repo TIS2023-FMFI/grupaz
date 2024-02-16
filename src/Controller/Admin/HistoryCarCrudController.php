@@ -2,11 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Car;
 use App\Entity\HistoryCar;
-use App\Entity\Log;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -18,13 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class HistoryCarCrudController extends AbstractCrudController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public static function getEntityFqcn(): string
     {
         return HistoryCar::class;
