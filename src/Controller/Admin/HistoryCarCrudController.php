@@ -62,7 +62,7 @@ class HistoryCarCrudController extends AbstractCrudController
                 ->setLabel('entity.carGroup.name'),
             TextField::new('note')
                 ->setLabel('entity.car.note'),
-            TextField::new('replacedCar')
+            AssociationField::new('replacedCar')
                 ->setLabel('entity.car.replaced_car'),
             ChoiceField::new('isDamaged')
                 ->setLabel('entity.car.isDamaged.name')
