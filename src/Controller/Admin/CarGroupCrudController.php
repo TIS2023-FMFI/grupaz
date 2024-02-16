@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CarGroup;
+use App\Entity\HistoryCar;
+use App\Entity\HistoryCarGroup;
 use App\Entity\Log;
 use App\Repository\CarRepository;
 use DateTimeImmutable;
@@ -68,12 +70,6 @@ class CarGroupCrudController extends AbstractCrudController
             ->createAsGlobalAction()
             ->setCssClass('btn btn-primary')
         ;
-        $deleteAction = Action::new('remove')
-            ->setLabel('crud.remove')
-            ->linkToRoute('app_delete_car')
-            ->createAsGlobalAction()
-            ->setCssClass('btn btn-primary')
-        ;
         $approveAction = Action::new('approve')
             ->setLabel('crud.approve')
             ->linkToCrudAction('approve')
@@ -86,7 +82,6 @@ class CarGroupCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, $importAction)
             ->add(Crud::PAGE_INDEX, $exportAction)
-            ->add(Crud::PAGE_INDEX, $deleteAction)
             ->add(Crud::PAGE_DETAIL, $approveAction)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
@@ -217,7 +212,6 @@ class CarGroupCrudController extends AbstractCrudController
             ChoiceField::new('status')
                 ->setLabel('entity.carGroup.status.name')
                 ->setTranslatableChoices([
-                    CarGroup::STATUS_APPROVED => ('entity.carGroup.status.approved'),
                     CarGroup::STATUS_ALL_SCANNED => ('entity.carGroup.status.all_scanned'),
                     CarGroup::STATUS_SCANNING => ('entity.carGroup.status.scanning'),
                     CarGroup::STATUS_START => ('entity.carGroup.status.start'),
@@ -245,15 +239,10 @@ class CarGroupCrudController extends AbstractCrudController
         }
         $carGroup->setStatus(CarGroup::STATUS_APPROVED);
         $carGroup->setExportTime(new DateTimeImmutable());
+        $this->createHistoryEntity($carGroup);
         $this->entityManager->flush();
-
         $this->addFlash('success', 'entity.carGroup.approved');
-        $targetUrl = $adminUrlGenerator
-            ->setController(self::class)
-            ->setAction(Crud::PAGE_DETAIL)
-            ->setEntityId($carGroup->getId())
-            ->generateUrl();
-        return $this->redirect($targetUrl);
+        return $this->redirectToRoute('admin');
     }
 
     /**
@@ -269,5 +258,36 @@ class CarGroupCrudController extends AbstractCrudController
         $this->entityManager->flush();
 
         return $this->redirectToRoute('admin');
+    }
+
+    private function createHistoryEntity(CarGroup $carGroup)
+    {
+        $historyCarGroup = new HistoryCarGroup();
+
+        $historyCarGroup->setImportTime($carGroup->getImportTime());
+        $historyCarGroup->setStatus($carGroup->getStatus());
+        $historyCarGroup->setGid($carGroup->getGid());
+        $historyCarGroup->setExportTime($carGroup->getExportTime());
+        $historyCarGroup->setReceiver($carGroup->getReceiver());
+        $historyCarGroup->setDestination($carGroup->getDestination());
+        $historyCarGroup->setBackLicensePlate($carGroup->getBackLicensePlate());
+        $historyCarGroup->setFrontLicensePlate($carGroup->getFrontLicensePlate());
+
+        foreach ($carGroup->getCars() as $car) {
+            $historyCar = new HistoryCar();
+
+            $historyCar->setStatus($car->getStatus());
+            $historyCar->setVis($car->getVis());
+            $historyCar->setIsDamaged($car->getIsDamaged());
+            $historyCar->setNote($car->getNote());
+            $historyCar->setReplacedCar($car->getReplacedCar()?->getVis());
+
+            $historyCarGroup->addCar($historyCar);
+            $this->entityManager->persist($historyCar);
+            $this->entityManager->remove($car);
+        }
+
+        $this->entityManager->persist($historyCarGroup);
+        $this->entityManager->remove($carGroup);
     }
 }

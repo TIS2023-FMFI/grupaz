@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Car;
 use App\Entity\CarGroup;
+use App\Entity\HistoryCarGroup;
 use App\Entity\User;
 use App\Entity\Log;
 use App\Repository\CarGroupRepository;
@@ -90,8 +91,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToRoute('main.homepage', 'fa fa-home', 'app_index_no_locale');
         yield MenuItem::linkToDashboard('main.dashboard', 'fa fa-clipboard');
-        yield MenuItem::linkToCrud('history.singular', 'fas fa-list', CarGroup::class)
-            ->setController(HistoryCarGroupCrudController::class);
+        yield MenuItem::linkToCrud('history.singular', 'fas fa-list', HistoryCarGroup::class);
         yield MenuItem::section("");
         yield MenuItem::linkToCrud('entity.car.cars', 'fas fa-car', Car::class);
         yield MenuItem::linkToCrud('entity.carGroup.name', 'fas fa-list', CarGroup::class)

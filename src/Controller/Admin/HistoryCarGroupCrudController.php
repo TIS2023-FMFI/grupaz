@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CarGroup;
+use App\Entity\HistoryCarGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -11,15 +12,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class HistoryCarGroupCrudController extends CarGroupCrudController
+class HistoryCarGroupCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return CarGroup::class;
+        return HistoryCarGroup::class;
     }
     public function configureCrud(Crud $crud): Crud
     {
@@ -35,20 +40,68 @@ class HistoryCarGroupCrudController extends CarGroupCrudController
             // set this number to 0 to display a simple "< Previous | Next >" pager
             ->setPaginatorRangeSize(3);
     }
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): \Doctrine\ORM\QueryBuilder
-    {
-        return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->andWhere('entity.exportTime IS NOT NULL');
-    }
     public function configureActions(Actions $actions): Actions
     {
+        $deleteAction = Action::new('remove')
+            ->setLabel('crud.remove')
+            ->linkToRoute('app_delete_car')
+            ->createAsGlobalAction()
+            ->setCssClass('btn btn-primary')
+        ;
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
-            ->remove(Crud::PAGE_INDEX, Action::DELETE)
-            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ->remove(Crud::PAGE_DETAIL, Action::EDIT)
             ->remove(Crud::PAGE_INDEX, Action::EDIT)
+            ->add(Crud::PAGE_INDEX, $deleteAction)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
+    }
+    public function configureFields(string $pageName): iterable
+    {
+        return [
+            FormField::addTab('main.info'),
+            IdField::new('id')
+                ->setLabel('crud.id')
+                ->onlyOnIndex(),
+            TextField::new('gid')
+                ->setLabel('entity.carGroup.gid'),
+            TextField::new('frontLicensePlate')
+                ->setLabel('entity.carGroup.front_license_plate'),
+            TextField::new('backLicensePlate')
+                ->setLabel('entity.carGroup.back_license_plate'),
+            TextField::new('destination')
+                -> onlyOnDetail()
+                ->setLabel('entity.carGroup.destination'),
+            TextField::new('receiver')
+                -> onlyOnDetail()
+                ->setLabel('entity.carGroup.receiver'),
+            DateTimeField::new('importTime')
+                ->onlyOnDetail()
+                ->setLabel('entity.carGroup.import_time'),
+            DateTimeField::new('exportTime')
+                ->setLabel('entity.carGroup.export_time'),
+            ChoiceField::new('status')
+                ->setLabel('entity.carGroup.status.name')
+                ->setTranslatableChoices([
+                    CarGroup::STATUS_APPROVED => ('entity.carGroup.status.approved'),
+                    CarGroup::STATUS_ALL_SCANNED => ('entity.carGroup.status.all_scanned'),
+                    CarGroup::STATUS_SCANNING => ('entity.carGroup.status.scanning'),
+                    CarGroup::STATUS_START => ('entity.carGroup.status.start'),
+                    CarGroup::STATUS_FREE => ('entity.carGroup.status.free'),
+                ]),
+            FormField::addTab('entity.car.cars'),
+            AssociationField::new('cars')
+                ->onlyOnDetail()
+                ->setLabel('entity.car.cars')
+                ->setTemplatePath('admin\show_cars_in_car_group.html.twig'),
+            AssociationField::new('cars')
+                ->hideOnDetail()
+                ->setLabel('entity.car.cars')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                ]),
+        ];
     }
 }
